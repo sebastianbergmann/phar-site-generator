@@ -1,5 +1,6 @@
 /html/*.phar*
 /html/index.html
+/html/releases.rss
 /.idea
 /composer.lock
 /composer.phar

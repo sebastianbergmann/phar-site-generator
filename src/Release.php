@@ -118,4 +118,12 @@ class Release
     {
         return $this->isLatest;
     }
+
+    /**
+     * @return string
+     */
+    public function date()
+    {
+        return $this->date;
+    }
 }

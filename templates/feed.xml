@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF xmlns="http://purl.org/rss/1.0/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:content="http://purl.org/rss/1.0/modules/content/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <channel rdf:about="http://{site}">
+  <link>http://{site}/</link>
+  <dc:creator>{email}</dc:creator>
+  <dc:publisher>{email}</dc:publisher>
+  <dc:language>en-us</dc:language>
+  <items>
+   <rdf:Seq>
+{items_list}
+   </rdf:Seq>
+  </items>
+  <title>Latest Releases on {site}</title>
+  <description>The latest releases on {site}.</description>
+ </channel>
+{items}
+</rdf:RDF>
+
