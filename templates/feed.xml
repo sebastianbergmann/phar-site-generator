@@ -10,12 +10,10 @@
   <dc:language>en-us</dc:language>
   <items>
    <rdf:Seq>
-{items_list}
-   </rdf:Seq>
+{items_list}   </rdf:Seq>
   </items>
   <title>Latest Releases on {site}</title>
   <description>The latest releases on {site}.</description>
  </channel>
-{items}
-</rdf:RDF>
+{items}</rdf:RDF>
 

@@ -1,15 +1,15 @@
 <?php
-namespace SebastianBergmann\PharSite;
+namespace SebastianBergmann\PharSiteGenerator;
 
 class Collector
 {
     /**
      * @param  string $directory
-     * @return Release[]
+     * @return ReleaseCollection
      */
     public function collect($directory)
     {
-        $releases = array();
+        $releases = new ReleaseCollection;
 
         foreach (new \GlobIterator($directory . '/*.phar') as $file) {
             if (!$file->isLink() &&
@@ -24,32 +24,16 @@ class Collector
                     @exec($file->getPathname() . ' --manifest 2> /dev/null', $manifest);
                 }
 
-                if (!isset($releases[$name])) {
-                    $releases[$name] = array();
-                }
-
-                $releases[$name][$version] = new Release(
-                    $name,
-                    $version,
-                    $manifest,
-                    date(DATE_W3C, $file->getMTime()),
-                    $this->humanFilesize($file->getSize()),
-                    sha1_file($file->getPathname())
+                $releases->add(
+                    new Release(
+                        $name,
+                        $version,
+                        $manifest,
+                        date(DATE_W3C, $file->getMTime()),
+                        $this->humanFilesize($file->getSize()),
+                        sha1_file($file->getPathname())
+                    )
                 );
-            }
-        }
-
-        ksort($releases);
-
-        foreach ($releases as $package => $versions) {
-            uksort($versions, 'strnatcmp');
-
-            $versions = array_reverse($versions, true);
-
-            foreach ($versions as $release) {
-                /** @var Release $release */
-                $release->latest();
-                break;
             }
         }
 

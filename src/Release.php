@@ -1,5 +1,5 @@
 <?php
-namespace SebastianBergmann\PharSite;
+namespace SebastianBergmann\PharSiteGenerator;
 
 class Release
 {
@@ -14,7 +14,7 @@ class Release
     private $version;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $manifest;
 
@@ -32,11 +32,6 @@ class Release
      * @var string
      */
     private $sha1;
-
-    /**
-     * @var boolean
-     */
-    private $isLatest = false;
 
     /**
      * @param string  $package
@@ -59,64 +54,25 @@ class Release
     /**
      * @return string
      */
-    public function __toString()
+    public function package()
     {
-        return sprintf(
-            '      <tr%s>
-       <td>%s<a href="https://phar.phpunit.de/%s-%s.phar">%s-%s.phar</a>%s</td>
-       <td>%s%s%s</td>
-       <td>%s%s%s</td>
-       <td>%s<a href="https://phar.phpunit.de/%s-%s.phar.asc">%s-%s.phar.asc</a>%s</td>
-       <td>%s<tt>%s</tt>%s</td>
-      </tr>
-',
-            sprintf(
-                ' class="phar" data-title="Manifest" data-content="<ul>%s</ul>" data-placement="bottom" data-html="true"',
-                join(
-                    '',
-                    array_map(
-                        function ($item) {
-                            return '<li>' . $item . '</li>';
-                        },
-                        $this->manifest
-                    )
-                )
-            ),
-            $this->isLatest ? '<strong>' : '',
-            $this->package,
-            $this->version,
-            $this->package,
-            $this->version,
-            $this->isLatest ? '</strong>' : '',
-            $this->isLatest ? '<strong>' : '',
-            $this->size,
-            $this->isLatest ? '</strong>' : '',
-            $this->isLatest ? '<strong>' : '',
-            $this->date,
-            $this->isLatest ? '</strong>' : '',
-            $this->isLatest ? '<strong>' : '',
-            $this->package,
-            $this->version,
-            $this->package,
-            $this->version,
-            $this->isLatest ? '</strong>' : '',
-            $this->isLatest ? '<strong>' : '',
-            $this->sha1,
-            $this->isLatest ? '</strong>' : ''
-        );
-    }
-
-    public function latest()
-    {
-        $this->isLatest = true;
+        return $this->package;
     }
 
     /**
-     * @return boolean
+     * @return string
      */
-    public function isLatest()
+    public function version()
     {
-        return $this->isLatest;
+        return $this->version;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function manifest()
+    {
+        return $this->manifest;
     }
 
     /**
@@ -125,5 +81,21 @@ class Release
     public function date()
     {
         return $this->date;
+    }
+
+    /**
+     * @return string
+     */
+    public function size()
+    {
+        return $this->size;
+    }
+
+    /**
+     * @return string
+     */
+    public function sha1()
+    {
+        return $this->sha1;
     }
 }
