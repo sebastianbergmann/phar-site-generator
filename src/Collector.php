@@ -44,7 +44,8 @@ class Collector
      * @param  integer $bytes
      * @return string
      */
-    private function humanFilesize($bytes) {
+    private function humanFilesize($bytes)
+    {
         $sz = 'BKMGTP';
         $factor = floor((strlen($bytes) - 1) / 3);
         return sprintf("%.2f", $bytes / pow(1024, $factor)) . @$sz[$factor];
