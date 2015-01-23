@@ -3,10 +3,12 @@
     <target name="build" depends="prepare,lint,phpcs"/>
 
     <target name="clean" description="Cleanup build artifacts">
-        <delete dir="${basedir}/bin"/>
-        <delete dir="${basedir}/build"/>
         <delete dir="${basedir}/vendor"/>
         <delete file="${basedir}/composer.lock"/>
+        <delete dir="${basedir}/build/phar"/>
+        <delete>
+            <fileset dir="${basedir}/build" includes="*.phar"/>
+        </delete>
     </target>
 
     <target name="composer" description="Install dependencies with Composer">
@@ -48,6 +50,79 @@
             <arg value="--extensions=php" />
             <arg path="${basedir}/src" />
         </exec>
+    </target>
+
+    <target name="signed-phar"
+            description="Create signed PHAR archive of PHPUnit and all its dependencies (release)"
+            depends="phar">
+        <exec executable="bash" outputproperty="version">
+            <arg value="-c" />
+            <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+        </exec>
+
+        <exec executable="gpg" failonerror="true">
+            <arg value="--armor" />
+            <arg value="--detach-sign" />
+            <arg path="${basedir}/build/phpunit-${version}.phar" />
+        </exec>
+    </target>
+
+    <target name="phar"
+            description="Create PHAR archive of phar-site-generator and all its dependencies"
+            depends="clean,composer,phar-build">
+        <mkdir dir="${basedir}/build/phar"/>
+    </target>
+
+    <target name="phar-build">
+        <exec executable="bash" outputproperty="version">
+            <arg value="-c" />
+            <arg value="${basedir}/phar-site-generator --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+        </exec>
+
+        <copy todir="${basedir}/build/phar/src">
+            <fileset dir="${basedir}/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
+        <copy file="${basedir}/vendor/phpunit/php-text-template/LICENSE" tofile="${basedir}/build/phar/php-text-template/LICENSE"/>
+        <copy todir="${basedir}/build/phar/php-text-template">
+            <fileset dir="${basedir}/vendor/phpunit/php-text-template/Text">
+                <include name="**/*.php" />
+                <exclude name="**/Autoload.*" />
+            </fileset>
+        </copy>
+
+        <copy file="${basedir}/vendor/sebastian/version/LICENSE" tofile="${basedir}/build/phar/sebastian-version/LICENSE"/>
+        <copy todir="${basedir}/build/phar/sebastian-version">
+            <fileset dir="${basedir}/vendor/sebastian/version/src">
+                <include name="**/*.php" />
+                <exclude name="**/autoload.php" />
+            </fileset>
+        </copy>
+
+        <copy todir="${basedir}/build/phar/symfony">
+            <fileset dir="${basedir}/vendor/symfony">
+                <include name="**/*.php" />
+                <exclude name="**/Tests/**" />
+            </fileset>
+        </copy>
+
+        <exec executable="${basedir}/build/phar-manifest.php" output="${basedir}/build/phar/manifest.txt"/>
+
+        <exec executable="phpab">
+            <arg value="--all" />
+            <arg value="--phar" />
+            <arg value="--output" />
+            <arg path="${basedir}/build/phar-site-generator-${version}.phar" />
+            <arg value="--template" />
+            <arg path="${basedir}/build/phar-autoload.php.in" />
+            <arg value="--indent" />
+            <arg value="            " />
+            <arg path="${basedir}/build/phar" />
+        </exec>
+
+        <chmod file="${basedir}/build/phar-site-generator-${version}.phar" perm="ugo+rx"/>
     </target>
 </project>
 
