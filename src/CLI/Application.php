@@ -1,5 +1,5 @@
 <?php
-namespace SebastianBergmann\PharSiteGenerator\CLI;
+namespace SebastianBergmann\PharSiteGenerator;
 
 use SebastianBergmann\Version;
 use Symfony\Component\Console\Application as AbstractApplication;
@@ -12,7 +12,7 @@ class Application extends AbstractApplication
 {
     public function __construct()
     {
-        $version = new Version('1.0.0', dirname(dirname(__DIR__)));
+        $version = new Version('1.1', dirname(dirname(__DIR__)));
         parent::__construct('phar-site-generator', $version->getVersion());
     }
 

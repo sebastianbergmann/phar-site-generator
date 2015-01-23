@@ -1,9 +1,6 @@
 <?php
-namespace SebastianBergmann\PharSiteGenerator\CLI;
+namespace SebastianBergmann\PharSiteGenerator;
 
-use SebastianBergmann\PharSiteGenerator\Collector;
-use SebastianBergmann\PharSiteGenerator\FeedRenderer;
-use SebastianBergmann\PharSiteGenerator\PageRenderer;
 use Symfony\Component\Console\Command\Command as AbstractCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -64,5 +61,46 @@ class Command extends AbstractCommand
         );
 
         $pageRenderer->render($releases);
+
+        $this->copyAssets($path);
+    }
+
+    /**
+     * @param string $target
+     */
+    private function copyAssets($target)
+    {
+        $dir = $this->getDirectory($target . '/css');
+        copy(__DIR__ . '/../assets/css/bootstrap.min.css', $dir . '/bootstrap.min.css');
+        copy(__DIR__ . '/../assets/css/style.css', $dir . '/style.css');
+
+        $dir = $this->getDirectory($target . '/fonts');
+        copy(__DIR__ . '/../assets/fonts/glyphicons-halflings-regular.eot', $dir . '/glyphicons-halflings-regular.eot');
+        copy(__DIR__ . '/../assets/fonts/glyphicons-halflings-regular.svg', $dir . '/glyphicons-halflings-regular.svg');
+        copy(__DIR__ . '/../assets/fonts/glyphicons-halflings-regular.ttf', $dir . '/glyphicons-halflings-regular.ttf');
+        copy(__DIR__ . '/../assets/fonts/glyphicons-halflings-regular.woff', $dir . '/glyphicons-halflings-regular.woff');
+
+        $dir = $this->getDirectory($target . '/js');
+        copy(__DIR__ . '/../assets/js/bootstrap.min.js', $dir . '/bootstrap.min.js');
+        copy(__DIR__ . '/../assets/js/html5shiv.min.js', $dir . '/html5shiv.min.js');
+        copy(__DIR__ . '/../assets/js/jquery.min.js', $dir . '/jquery.min.js');
+    }
+
+    /**
+     * @param  string $directory
+     * @return string
+     * @throws RuntimeException
+     */
+    private function getDirectory($directory)
+    {
+        if (is_dir($directory)) {
+            return $directory;
+        }
+
+        if (@mkdir($directory, 0777, true)) {
+            return $directory;
+        }
+
+        throw new RuntimeException;
     }
 }
