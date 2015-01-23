@@ -8,22 +8,22 @@ class FeedRenderer extends AbstractRenderer
      */
     public function render(ReleaseCollection $releases)
     {
-        $feedTemplate     = new \Text_Template(__DIR__ . '/../templates/feed.xml');
-        $feedItemTemplate = new \Text_Template(__DIR__ . '/../templates/item.xml');
+        $feedTemplate     = new \Text_Template(__DIR__ . '/templates/feed.xml');
+        $feedItemTemplate = new \Text_Template(__DIR__ . '/templates/item.xml');
         $rdfList          = '';
         $rdfItems         = '';
 
         foreach ($releases->latestReleasesSortedByDate() as $release) {
             $rdfList .= sprintf(
                 '    <rdf:li rdf:resource="%s/%s-%s.phar"/>' . "\n",
-                $this->site(),
+                $this->domain(),
                 $release->package(),
                 $release->version()
             );
 
             $feedItemTemplate->setVar(
                 [
-                    'site'    => $this->site(),
+                    'domain'  => $this->domain(),
                     'package' => $release->package(),
                     'version' => $release->version(),
                     'date'    => $release->date(),
@@ -38,7 +38,7 @@ class FeedRenderer extends AbstractRenderer
             [
                 'items_list' => $rdfList,
                 'items'      => $rdfItems,
-                'site'       => $this->site(),
+                'domain'     => $this->domain(),
                 'email'      => $this->email()
             ]
         );

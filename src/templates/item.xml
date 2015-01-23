@@ -1,6 +1,6 @@
- <item rdf:about="https://{site}/{package}-{version}.phar">
+ <item rdf:about="https://{domain}/{package}-{version}.phar">
   <title>{package} {version}</title>
-  <link>https://{site}/{package}-{version}.phar</link>
+  <link>https://{domain}/{package}-{version}.phar</link>
   <content:encoded>{content}</content:encoded>
   <dc:date>{date}</dc:date>
  </item>

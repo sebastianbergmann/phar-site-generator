@@ -1,7 +1,9 @@
 {
     "require": {
         "php": "~5.4",
-        "phpunit/php-text-template": "~1.2"
+        "phpunit/php-text-template": "~1.0",
+        "sebastian/version": "~1.0",
+        "symfony/console": "~2.6"
     },
     "autoload": {
         "classmap": [

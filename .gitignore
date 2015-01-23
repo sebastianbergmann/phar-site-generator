@@ -5,4 +5,5 @@
 /composer.lock
 /composer.phar
 /vendor
-
+/build
+/cache.properties

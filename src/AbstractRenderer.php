@@ -11,7 +11,7 @@ abstract class AbstractRenderer
     /**
      * @var string
      */
-    private $site;
+    private $domain;
 
     /**
      * @var string
@@ -20,13 +20,13 @@ abstract class AbstractRenderer
 
     /**
      * @param string $target
-     * @param string $site
+     * @param string $domain
      * @param string $email
      */
-    public function __construct($target, $site, $email)
+    public function __construct($target, $domain, $email)
     {
         $this->target = $target;
-        $this->site   = $site;
+        $this->domain = $domain;
         $this->email  = $email;
     }
 
@@ -41,9 +41,9 @@ abstract class AbstractRenderer
     /**
      * @return string
      */
-    protected function site()
+    protected function domain()
     {
-        return $this->site;
+        return $this->domain;
     }
 
     /**

@@ -20,11 +20,11 @@ class PageRenderer extends AbstractRenderer
             $allReleases .= $this->renderRelease($release);
         }
 
-        $page = new \Text_Template(__DIR__ . '/../templates/page.html');
+        $page = new \Text_Template(__DIR__ . '/templates/page.html');
 
         $page->setVar(
             [
-                'site'            => $this->site(),
+                'domain'          => $this->domain(),
                 'latest_releases' => $latestReleases,
                 'all_releases'    => $allReleases
             ]
@@ -40,11 +40,11 @@ class PageRenderer extends AbstractRenderer
      */
     private function renderRelease(Release $release, $latest = false)
     {
-        $item = new \Text_Template(__DIR__ . '/../templates/item.html');
+        $item = new \Text_Template(__DIR__ . '/templates/item.html');
 
         $item->setVar(
             [
-                'site'        => $this->site(),
+                'domain'      => $this->domain(),
                 'package'     => $release->package(),
                 'version'     => $release->version(),
                 'date'        => $release->date(),
