@@ -19,7 +19,7 @@ We distribute a [PHP Archive (PHAR)](http://php.net/phar) that has all required 
 * The PHAR repository administrator
 * The path where the `*.phar` and * *.phar.asc` files are located and the site is generated
 
-Here is the command use to generate [phar.phpunit.de](https://phar.phpunit.de/)
+Here is the command used to generate [phar.phpunit.de](https://phar.phpunit.de/)
 
     php phar-site-generator.phar phar.phpunit.de \
                                  sebastian@phpunit.de \
