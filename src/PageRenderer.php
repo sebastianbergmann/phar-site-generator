@@ -58,7 +58,7 @@ class PageRenderer extends AbstractRenderer
                 'version'     => $release->version(),
                 'date'        => $release->date(),
                 'size'        => $release->size(),
-                'sha1'        => $release->sha1(),
+                'sha256'      => $release->sha256(),
                 'strongOpen'  => $latest ? '<strong>' : '',
                 'strongClose' => $latest ? '</strong>' : '',
                 'manifest'    => implode(

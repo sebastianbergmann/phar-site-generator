@@ -40,24 +40,24 @@ class Release
     /**
      * @var string
      */
-    private $sha1;
+    private $sha256;
 
     /**
-     * @param string $package
-     * @param string $version
-     * @param array  $manifest
-     * @param string $date
-     * @param string $size
-     * @param string $sha1
+     * @param string  $package
+     * @param string  $version
+     * @param array   $manifest
+     * @param string  $date
+     * @param string  $size
+     * @param string  $sha256
      */
-    public function __construct($package, $version, array $manifest, $date, $size, $sha1)
+    public function __construct($package, $version, array $manifest, $date, $size, $sha256)
     {
         $this->package  = $package;
         $this->version  = $version;
         $this->manifest = $manifest;
         $this->date     = $date;
         $this->size     = $size;
-        $this->sha1     = $sha1;
+        $this->sha256   = $sha256;
     }
 
     /**
@@ -103,8 +103,8 @@ class Release
     /**
      * @return string
      */
-    public function sha1()
+    public function sha256()
     {
-        return $this->sha1;
+        return $this->sha256;
     }
 }
