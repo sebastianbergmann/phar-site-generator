@@ -63,6 +63,14 @@ class Command extends AbstractCommand
 
         $feedRenderer->render($releases);
 
+        $metaDataRenderer = new MetaDataRenderer(
+            $this->getDirectory($path . DIRECTORY_SEPARATOR . 'latest-version-of') . DIRECTORY_SEPARATOR,
+            $input->getArgument('domain'),
+            $input->getArgument('email')
+        );
+
+        $metaDataRenderer->render($releases);
+
         $pageRenderer = new PageRenderer(
             $path . DIRECTORY_SEPARATOR . 'index.html',
             $input->getArgument('domain'),
