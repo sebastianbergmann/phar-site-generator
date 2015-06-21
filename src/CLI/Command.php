@@ -46,14 +46,14 @@ class Command extends AbstractCommand
      * @param InputInterface  $input  An InputInterface instance
      * @param OutputInterface $output An OutputInterface instance
      *
-     * @return null|integer null or 0 if everything went fine, or an error code
+     * @return null|int null or 0 if everything went fine, or an error code
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $path = realpath($input->getArgument('path'));
 
         $collector = new Collector;
-        $releases = $collector->collect($path);
+        $releases  = $collector->collect($path);
 
         $feedRenderer = new FeedRenderer(
             $path . DIRECTORY_SEPARATOR . 'releases.rss',
@@ -105,7 +105,7 @@ class Command extends AbstractCommand
     }
 
     /**
-     * @param  string $directory
+     * @param  string           $directory
      * @return string
      * @throws RuntimeException
      */

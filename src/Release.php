@@ -43,12 +43,12 @@ class Release
     private $sha1;
 
     /**
-     * @param string  $package
-     * @param string  $version
-     * @param array   $manifest
-     * @param string  $date
-     * @param string  $size
-     * @param string  $sha1
+     * @param string $package
+     * @param string $version
+     * @param array  $manifest
+     * @param string $date
+     * @param string $size
+     * @param string $sha1
      */
     public function __construct($package, $version, array $manifest, $date, $size, $sha1)
     {

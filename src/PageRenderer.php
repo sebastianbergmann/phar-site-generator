@@ -43,8 +43,8 @@ class PageRenderer extends AbstractRenderer
     }
 
     /**
-     * @param Release $release
-     * @param boolean $latest
+     * @param  Release $release
+     * @param  bool    $latest
      * @return string
      */
     private function renderRelease(Release $release, $latest = false)
@@ -61,7 +61,7 @@ class PageRenderer extends AbstractRenderer
                 'sha1'        => $release->sha1(),
                 'strongOpen'  => $latest ? '<strong>' : '',
                 'strongClose' => $latest ? '</strong>' : '',
-                'manifest'    => join(
+                'manifest'    => implode(
                     '',
                     array_map(
                         function ($item) {

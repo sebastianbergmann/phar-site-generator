@@ -13,7 +13,7 @@ namespace SebastianBergmann\PharSiteGenerator;
 class Collector
 {
     /**
-     * @param  string $directory
+     * @param  string            $directory
      * @return ReleaseCollection
      */
     public function collect($directory)
@@ -26,7 +26,7 @@ class Collector
                 stripos($file->getBasename(), 'beta') === false) {
                 $parts    = explode('-', $file->getBasename('.phar'));
                 $version  = array_pop($parts);
-                $name     = join('-', $parts);
+                $name     = implode('-', $parts);
                 $manifest = array();
 
                 if (strpos(file_get_contents($file->getPathname()), '--manifest')) {
@@ -50,13 +50,14 @@ class Collector
     }
 
     /**
-     * @param  integer $bytes
+     * @param  int    $bytes
      * @return string
      */
     private function humanFilesize($bytes)
     {
-        $sz = 'BKMGTP';
+        $sz     = 'BKMGTP';
         $factor = floor((strlen($bytes) - 1) / 3);
-        return sprintf("%.2f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+
+        return sprintf('%.2f', $bytes / pow(1024, $factor)) . @$sz[$factor];
     }
 }
