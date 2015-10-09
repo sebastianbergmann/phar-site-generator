@@ -18,10 +18,6 @@ class MetaDataRenderer extends AbstractRenderer
     public function render(ReleaseCollection $releases)
     {
         foreach ($releases->latestReleases() as $release) {
-            if (empty($release->package()))  {
-                var_dump($release);
-            }
-
             file_put_contents(
                 $this->target() . $release->package(),
                 $release->version()
