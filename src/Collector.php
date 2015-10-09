@@ -24,10 +24,11 @@ class Collector
             if (!$file->isLink() &&
                 stripos($file->getBasename(), 'alpha') === false &&
                 stripos($file->getBasename(), 'beta') === false) {
-                $parts    = explode('-', $file->getBasename('.phar'));
-                $version  = array_pop($parts);
-                $name     = implode('-', $parts);
-                $manifest = array();
+                $parts         = explode('-', $file->getBasename('.phar'));
+                $version       = array_pop($parts);
+                $versionSeries = join('.', array_slice(explode('.', $version), 0, 2));
+                $name          = implode('-', $parts);
+                $manifest      = array();
 
                 if (strpos(file_get_contents($file->getPathname()), '--manifest')) {
                     @exec($file->getPathname() . ' --manifest 2> /dev/null', $manifest);
@@ -37,6 +38,7 @@ class Collector
                     new Release(
                         $name,
                         $version,
+                        $versionSeries,
                         $manifest,
                         date(DATE_W3C, $file->getMTime()),
                         $this->humanFilesize($file->getSize()),

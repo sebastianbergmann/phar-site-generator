@@ -23,5 +23,12 @@ class MetaDataRenderer extends AbstractRenderer
                 $release->version()
             );
         }
+
+        foreach ($releases->latestReleasesPerPackageAndVersionSeries() as $release) {
+            file_put_contents(
+                $this->target() . $release->package() . '-' . $release->versionSeries(),
+                $release->version()
+            );
+        }
     }
 }

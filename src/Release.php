@@ -45,19 +45,21 @@ class Release
     /**
      * @param string $package
      * @param string $version
+     * @param string $versionSeries
      * @param array  $manifest
      * @param string $date
      * @param string $size
      * @param string $sha1
      */
-    public function __construct($package, $version, array $manifest, $date, $size, $sha1)
+    public function __construct($package, $version, $versionSeries, array $manifest, $date, $size, $sha1)
     {
-        $this->package  = $package;
-        $this->version  = $version;
-        $this->manifest = $manifest;
-        $this->date     = $date;
-        $this->size     = $size;
-        $this->sha1     = $sha1;
+        $this->package       = $package;
+        $this->version       = $version;
+        $this->versionSeries = $versionSeries;
+        $this->manifest      = $manifest;
+        $this->date          = $date;
+        $this->size          = $size;
+        $this->sha1          = $sha1;
     }
 
     /**
@@ -74,6 +76,14 @@ class Release
     public function version()
     {
         return $this->version;
+    }
+
+    /**
+     * @return string
+     */
+    public function versionSeries()
+    {
+        return $this->versionSeries;
     }
 
     /**
