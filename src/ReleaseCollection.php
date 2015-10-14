@@ -38,7 +38,8 @@ class ReleaseCollection
             }
 
             if (!isset($this->releases[$package]['latest'][$release->versionSeries()]) ||
-                version_compare($release->versionSeries(), $this->releases[$package]['latest'][$release->versionSeries()]->version(), '>=')) {
+                version_compare($release->version(), $this->releases[$package]['latest'][$release->versionSeries()]->version(), '>=')) {
+                $this->releases[$package]['latest'][$release->versionSeries()] = $release;
             }
         }
 
