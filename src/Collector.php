@@ -42,7 +42,7 @@ class Collector
                         $manifest,
                         date(DATE_W3C, $file->getMTime()),
                         $this->humanFilesize($file->getSize()),
-                        sha1_file($file->getPathname())
+                        hash_file('sha256', $file->getPathname())
                     )
                 );
             }
