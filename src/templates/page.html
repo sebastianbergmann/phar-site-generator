@@ -15,38 +15,34 @@
   <div class="container">
    <h1>{domain}</h1>
    <h2>Latest Releases</h2>
-   <div class="table-responsive">
-    <table class="table table-hover">
-     <thead>
-      <tr>
-       <th>PHAR</th>
-       <th>Size</th>
-       <th>Last Modified</th>
-       <th>GPG Signature</th>
-       <th>SHA256 Checksum</th>
-      </tr>
-     </thead>
-     <tbody>
-{latest_releases}     </tbody>
-    </table>
-   </div>
+   <table class="table table-condensed table-hover">
+    <thead>
+     <tr>
+      <th>PHAR</th>
+      <th>Size</th>
+      <th>Last Modified</th>
+      <th>GPG Signature</th>
+      <th>SHA256 Checksum</th>
+     </tr>
+    </thead>
+    <tbody>
+{latest_releases}    </tbody>
+   </table>
    <hr/>
    <h2>All Releases</h2>
-   <div class="table-responsive">
-    <table class="table table-hover">
-     <thead>
-      <tr>
-       <th>PHAR</th>
-       <th>Size</th>
-       <th>Last Modified</th>
-       <th>GPG Signature</th>
-       <th>SHA256 Checksum</th>
-      </tr>
-     </thead>
-     <tbody>
-{all_releases}     </tbody>
-    </table>
-   </div>
+   <table class="table table-condensed table-hover">
+    <thead>
+     <tr>
+      <th>PHAR</th>
+      <th>Size</th>
+      <th>Last Modified</th>
+      <th>GPG Signature</th>
+      <th>SHA256 Checksum</th>
+     </tr>
+    </thead>
+    <tbody>
+{all_releases}    </tbody>
+   </table>
   </div>
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
