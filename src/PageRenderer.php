@@ -49,7 +49,23 @@ class PageRenderer extends AbstractRenderer
      */
     private function renderRelease(Release $release, $latest = false)
     {
-        $item = new \Text_Template(__DIR__ . '/templates/item.html');
+        $item     = new \Text_Template(__DIR__ . '/templates/item.html');
+        $manifest = '';
+
+        if (!empty($release->manifest())) {
+            $manifest = sprintf(
+                ' class="phar" data-title="Manifest" data-content="<ul>%s</ul>" data-placement="bottom" data-html="true"',
+                implode(
+                    '',
+                    array_map(
+                        function ($item) {
+                            return '<li>' . $item . '</li>';
+                        },
+                        $release->manifest()
+                    )
+                )
+            );
+        }
 
         $item->setVar(
             [
@@ -61,15 +77,7 @@ class PageRenderer extends AbstractRenderer
                 'sha256'      => $release->sha256(),
                 'strongOpen'  => $latest ? '<strong>' : '',
                 'strongClose' => $latest ? '</strong>' : '',
-                'manifest'    => implode(
-                    '',
-                    array_map(
-                        function ($item) {
-                            return '<li>' . $item . '</li>';
-                        },
-                        $release->manifest()
-                    )
-                )
+                'manifest'    => $manifest
             ]
         );
 
