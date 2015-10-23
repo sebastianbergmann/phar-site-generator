@@ -34,7 +34,8 @@ class Collector
                     $manifest = file('phar://' . $file->getPathname() . '/manifest.txt');
                 } elseif (file_exists('phar://' . $file->getPathname() . '/phar/manifest.txt')) {
                     $manifest = file('phar://' . $file->getPathname() . '/phar/manifest.txt');
-                } elseif (is_executable($file->getPathname())) {
+                } elseif (is_executable($file->getPathname()) &&
+                          strpos(file_get_contents($file->getPathname()), '--manifest')) {
                     @exec($file->getPathname() . ' --manifest 2> /dev/null', $manifest);
                 }
 
