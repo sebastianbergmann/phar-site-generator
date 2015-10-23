@@ -30,7 +30,11 @@ class Collector
                 $name          = implode('-', $parts);
                 $manifest      = array();
 
-                if (strpos(file_get_contents($file->getPathname()), '--manifest')) {
+                if (file_exists('phar://' . $file->getPathname() . '/manifest.txt')) {
+                    $manifest = file('phar://' . $file->getPathname() . '/manifest.txt');
+                } elseif (file_exists('phar://' . $file->getPathname() . '/phar/manifest.txt')) {
+                    $manifest = file('phar://' . $file->getPathname() . '/phar/manifest.txt');
+                } elseif (is_executable($file->getPathname())) {
                     @exec($file->getPathname() . ' --manifest 2> /dev/null', $manifest);
                 }
 
