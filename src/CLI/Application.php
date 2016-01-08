@@ -20,7 +20,7 @@ class Application extends AbstractApplication
 {
     public function __construct()
     {
-        $version = new Version('1.4.1', dirname(dirname(__DIR__)));
+        $version = new Version('1.5.0', dirname(dirname(__DIR__)));
         parent::__construct('phar-site-generator', $version->getVersion());
     }
 
