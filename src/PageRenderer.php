@@ -43,8 +43,9 @@ class PageRenderer extends AbstractRenderer
     }
 
     /**
-     * @param  Release $release
-     * @param  bool    $latest
+     * @param Release $release
+     * @param bool    $latest
+     *
      * @return string
      */
     private function renderRelease(Release $release, $latest = false)

@@ -10,13 +10,7 @@
 
 namespace SebastianBergmann\PharSiteGenerator;
 
-/**
- * Rendering code for phar.io repository xml
- *
- * @author Arne Blankerts <arne@blankerts.de>
- * @package SebastianBergmann\PharSiteGenerator
- */
-class PharIORenderer extends AbstractRenderer
+class PharIoRenderer extends AbstractRenderer
 {
     /**
      * @var \DOMDocument
@@ -27,15 +21,18 @@ class PharIORenderer extends AbstractRenderer
      * @var \DOMXPath
      */
     private $xp;
+
     /**
      * @param ReleaseCollection $releases
      */
     public function render(ReleaseCollection $releases)
     {
         $this->initRepository();
+
         foreach ($releases->allReleases() as $release) {
             $this->addRelease($release);
         }
+
         $this->saveRepository();
     }
 
@@ -62,6 +59,7 @@ class PharIORenderer extends AbstractRenderer
         $releaseNode->appendChild($hashNode);
 
         $container = $this->getContainer($release->package());
+
         if ($container->hasChildNodes()) {
             $container->insertBefore(
                 $releaseNode,
@@ -77,9 +75,11 @@ class PharIORenderer extends AbstractRenderer
         $result = $this->xp->query(
             sprintf('//phive:phar[@name="%s"]', $package)
         );
+
         if ($result->length > 0) {
             return $result->item(0);
         }
+
         $pharNode = $this->addElement('phar');
         $pharNode->setAttribute('name', $package);
         $this->repository->documentElement->appendChild($pharNode);
@@ -103,7 +103,7 @@ class PharIORenderer extends AbstractRenderer
     private function saveRepository()
     {
         $this->repository->preserveWhiteSpace = false;
-        $this->repository->formatOutput = true;
+        $this->repository->formatOutput       = true;
         $this->repository->save($this->target());
     }
 }

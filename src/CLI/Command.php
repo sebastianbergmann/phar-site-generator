@@ -79,11 +79,12 @@ class Command extends AbstractCommand
 
         $pageRenderer->render($releases);
 
-        $pharIORenderer = new PharIORenderer(
+        $pharIORenderer = new PharIoRenderer(
             $path . DIRECTORY_SEPARATOR . 'phive.xml',
             $input->getArgument('domain'),
             $input->getArgument('email')
         );
+
         $pharIORenderer->render($releases);
 
         $this->copyAssets($path);
@@ -112,8 +113,10 @@ class Command extends AbstractCommand
     }
 
     /**
-     * @param  string           $directory
+     * @param string $directory
+     *
      * @return string
+     *
      * @throws RuntimeException
      */
     private function getDirectory($directory)

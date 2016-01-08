@@ -13,7 +13,8 @@ namespace SebastianBergmann\PharSiteGenerator;
 class Collector
 {
     /**
-     * @param  string            $directory
+     * @param string $directory
+     *
      * @return ReleaseCollection
      */
     public function collect($directory)
@@ -26,9 +27,9 @@ class Collector
                 stripos($file->getBasename(), 'beta') === false) {
                 $parts         = explode('-', $file->getBasename('.phar'));
                 $version       = array_pop($parts);
-                $versionSeries = join('.', array_slice(explode('.', $version), 0, 2));
+                $versionSeries = implode('.', array_slice(explode('.', $version), 0, 2));
                 $name          = implode('-', $parts);
-                $manifest      = array();
+                $manifest      = [];
 
                 if (file_exists('phar://' . $file->getPathname() . '/manifest.txt')) {
                     $manifest = file('phar://' . $file->getPathname() . '/manifest.txt');
@@ -57,7 +58,8 @@ class Collector
     }
 
     /**
-     * @param  int    $bytes
+     * @param int $bytes
+     *
      * @return string
      */
     private function humanFilesize($bytes)
