@@ -10,33 +10,49 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ## [1.4.1] - 2015-10-23
 
+### Changed
+
 * Minor tweaks and fixes
 
 ## [1.4.0] - 2015-10-22
+
+### Changed
 
 * Use SHA256 instead of SHA1
 
 ## [1.3.0] - 2015-10-14
 
+### Changed
+
 * Improved the generator for "latest version" metadata
 
 ## [1.2.0] - 2015-06-03
+
+### Added
 
 * Implemented generator for "latest version" metadata
 
 ## [1.1.2] - 2015-01-24
 
+### Changed
+
 * Reverted "Use SHA256 instead of SHA1"
 
 ## [1.1.1] - 2015-01-24
+
+### Changed
 
 * Use SHA256 instead of SHA1
 
 ## [1.1.0] - 2015-01-24
 
+### Changed
+
 * Minor tweaks and fixes
 
 ## [1.0.0] - 2015-01-23
+
+### Added
 
 * Initial release
 
