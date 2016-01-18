@@ -11,7 +11,9 @@
 
 We distribute a [PHP Archive (PHAR)](http://php.net/phar) that has all required (as well as some optional) dependencies of phar-site-generator bundled in a single file:
 
-    wget https://phar.phpunit.de/phar-site-generator.phar
+```
+wget https://phar.phpunit.de/phar-site-generator.phar
+```
 
 `phar-site-generator` requires three arguments:
 
@@ -19,9 +21,15 @@ We distribute a [PHP Archive (PHAR)](http://php.net/phar) that has all required 
 * The PHAR repository administrator
 * The path where the `*.phar` and `*.phar.asc` files are located and the site is generated
 
+The `--nginx-config` option can be used to generate a configuration file for use with Nginx that sets up redirects from `https://phar.phpunit.de/phpunit.phar` to the latest `https://phar.phpunit.de/phpunit-X.Y.Z.phar`, for instance.
+
 Here is the command used to generate [phar.phpunit.de](https://phar.phpunit.de/)
 
-    php phar-site-generator.phar phar.phpunit.de \
-                                 sebastian@phpunit.de \
-                                 /webspace/phar.phpunit.de/html
+```
+php phar-site-generator.phar \
+    --nginx-config /webspace/phar.phpunit.de/redirects.conf \
+    phar.phpunit.de \
+    sebastian@phpunit.de \
+    /webspace/phar.phpunit.de/html
+```
 
