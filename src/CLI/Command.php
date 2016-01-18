@@ -12,6 +12,7 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 use Symfony\Component\Console\Command\Command as AbstractCommand;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -37,6 +38,12 @@ class Command extends AbstractCommand
                 'path',
                 InputArgument::REQUIRED,
                 'The path where the *.phar and *.phar.asc files are located and the site is generated'
+            )
+            ->addOption(
+                'nginx-config',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The file to which the Nginx configuration is written'
             );
     }
 
@@ -55,37 +62,43 @@ class Command extends AbstractCommand
         $collector = new Collector;
         $releases  = $collector->collect($path);
 
-        $feedRenderer = new FeedRenderer(
+        $renderer = new FeedRenderer(
             $path . DIRECTORY_SEPARATOR . 'releases.rss',
             $input->getArgument('domain'),
             $input->getArgument('email')
         );
 
-        $feedRenderer->render($releases);
+        $renderer->render($releases);
 
-        $metaDataRenderer = new MetaDataRenderer(
+        $renderer = new MetaDataRenderer(
             $this->getDirectory($path . DIRECTORY_SEPARATOR . 'latest-version-of') . DIRECTORY_SEPARATOR,
             $input->getArgument('domain'),
             $input->getArgument('email')
         );
 
-        $metaDataRenderer->render($releases);
+        $renderer->render($releases);
 
-        $pageRenderer = new PageRenderer(
+        $renderer = new PageRenderer(
             $path . DIRECTORY_SEPARATOR . 'index.html',
             $input->getArgument('domain'),
             $input->getArgument('email')
         );
 
-        $pageRenderer->render($releases);
+        $renderer->render($releases);
 
-        $pharIORenderer = new PharIoRenderer(
+        $renderer = new PharIoRenderer(
             $path . DIRECTORY_SEPARATOR . 'phive.xml',
             $input->getArgument('domain'),
             $input->getArgument('email')
         );
 
-        $pharIORenderer->render($releases);
+        $renderer->render($releases);
+
+        if ($input->getOption('nginx-config')) {
+            $renderer = new NginxConfigRenderer;
+
+            $renderer->render($releases, $input->getOption('nginx-config'));
+        }
 
         $this->copyAssets($path);
     }
