@@ -17,8 +17,8 @@ class FeedRenderer extends AbstractRenderer
      */
     public function render(ReleaseCollection $releases)
     {
-        $feedTemplate     = new \Text_Template(__DIR__ . '/templates/feed.xml');
-        $feedItemTemplate = new \Text_Template(__DIR__ . '/templates/item.xml');
+        $feedTemplate     = new \Text_Template(__DIR__ . '/../templates/feed.xml');
+        $feedItemTemplate = new \Text_Template(__DIR__ . '/../templates/item.xml');
         $rdfList          = '';
         $rdfItems         = '';
 

@@ -90,7 +90,7 @@ class PharIoRenderer extends AbstractRenderer
     private function initRepository()
     {
         $this->repository = new \DOMDocument('1.0', 'UTF-8');
-        $this->repository->load(__DIR__ . '/templates/phive.xml');
+        $this->repository->load(__DIR__ . '/../templates/phive.xml');
         $this->xp = new \DOMXPath($this->repository);
         $this->xp->registerNamespace('phive', 'https://phar.io/repository');
     }
