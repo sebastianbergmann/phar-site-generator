@@ -26,6 +26,13 @@ class NginxConfigRenderer
                 $release->package(),
                 $release->version()
             );
+
+            $buffer .= sprintf(
+                "rewrite ^/%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
+                $release->package(),
+                $release->package(),
+                $release->version()
+            );
         }
 
         file_put_contents($target, $buffer);
