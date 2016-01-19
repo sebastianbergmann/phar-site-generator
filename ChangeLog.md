@@ -8,6 +8,10 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Implemented generator for Nginx redirect configuration
 
+### Changed
+
+* An XML configuration file is now used to configure the PHAR site
+
 ## [1.5.0] - 2016-01-08
 
 ### Added

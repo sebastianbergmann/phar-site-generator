@@ -15,21 +15,14 @@ We distribute a [PHP Archive (PHAR)](http://php.net/phar) that has all required 
 wget https://phar.phpunit.de/phar-site-generator.phar
 ```
 
-`phar-site-generator` requires three arguments:
+`phar-site-generator` requires an XML configuration file:
 
-* The domain where the PHAR repository is hosted
-* The PHAR repository administrator
-* The path where the `*.phar` and `*.phar.asc` files are located and the site is generated
-
-The `--nginx-config` option can be used to generate a configuration file for use with Nginx that sets up redirects from `https://phar.phpunit.de/phpunit.phar` to the latest `https://phar.phpunit.de/phpunit-X.Y.Z.phar`, for instance.
-
-Here is the command used to generate [phar.phpunit.de](https://phar.phpunit.de/)
-
-```
-php phar-site-generator.phar \
-    --nginx-config /webspace/phar.phpunit.de/redirects.conf \
-    phar.phpunit.de \
-    sebastian@phpunit.de \
-    /webspace/phar.phpunit.de/html
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phar-site>
+    <domain>phar.phpunit.de</domain>
+    <email>sebastian@phpunit.de</email>
+    <directory>/webspace/phar.phpunit.de/html</directory>
+</phar-site>
 ```
 

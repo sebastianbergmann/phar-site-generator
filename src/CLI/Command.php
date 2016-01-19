@@ -25,26 +25,10 @@ class Command extends AbstractCommand
     {
         $this->setName('phar-site-generator')
              ->addArgument(
-                 'domain',
+                 'configuration',
                  InputArgument::REQUIRED,
-                 'The domain the generated site is hosted at'
-             )
-            ->addArgument(
-                'email',
-                InputArgument::REQUIRED,
-                'The email of the site administrator'
-            )
-            ->addArgument(
-                'path',
-                InputArgument::REQUIRED,
-                'The path where the *.phar and *.phar.asc files are located and the site is generated'
-            )
-            ->addOption(
-                'nginx-config',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The file to which the Nginx configuration is written'
-            );
+                 'The XML configuration file'
+             );
     }
 
     /**
@@ -57,50 +41,54 @@ class Command extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = realpath($input->getArgument('path'));
+        $configurationLoader = new ConfigurationLoader;
+
+        $configuration = $configurationLoader->load(
+            $input->getArgument('configuration')
+        );
 
         $collector = new ReleaseCollector;
-        $releases  = $collector->collect($path);
+        $releases  = $collector->collect($configuration->directory());
 
         $renderer = new FeedRenderer(
-            $path . DIRECTORY_SEPARATOR . 'releases.rss',
-            $input->getArgument('domain'),
-            $input->getArgument('email')
+            $configuration->directory() . DIRECTORY_SEPARATOR . 'releases.rss',
+            $configuration->domain(),
+            $configuration->email()
         );
 
         $renderer->render($releases);
 
         $renderer = new MetaDataRenderer(
-            $this->getDirectory($path . DIRECTORY_SEPARATOR . 'latest-version-of') . DIRECTORY_SEPARATOR,
-            $input->getArgument('domain'),
-            $input->getArgument('email')
+            $this->getDirectory($configuration->directory() . DIRECTORY_SEPARATOR . 'latest-version-of') . DIRECTORY_SEPARATOR,
+            $configuration->domain(),
+            $configuration->email()
         );
 
         $renderer->render($releases);
 
         $renderer = new PageRenderer(
-            $path . DIRECTORY_SEPARATOR . 'index.html',
-            $input->getArgument('domain'),
-            $input->getArgument('email')
+            $configuration->directory() . DIRECTORY_SEPARATOR . 'index.html',
+            $configuration->domain(),
+            $configuration->email()
         );
 
         $renderer->render($releases);
 
         $renderer = new PharIoRenderer(
-            $path . DIRECTORY_SEPARATOR . 'phive.xml',
-            $input->getArgument('domain'),
-            $input->getArgument('email')
+            $configuration->directory() . DIRECTORY_SEPARATOR . 'phive.xml',
+            $configuration->domain(),
+            $configuration->email()
         );
 
         $renderer->render($releases);
 
-        if ($input->getOption('nginx-config')) {
+        if ($configuration->shouldGenerateNginxConfigurationFile()) {
             $renderer = new NginxConfigRenderer;
 
-            $renderer->render($releases, $input->getOption('nginx-config'));
+            $renderer->render($releases, $configuration->nginxConfigurationFile());
         }
 
-        $this->copyAssets($path);
+        $this->copyAssets($configuration->directory());
     }
 
     /**
