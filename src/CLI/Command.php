@@ -59,7 +59,7 @@ class Command extends AbstractCommand
     {
         $path = realpath($input->getArgument('path'));
 
-        $collector = new Collector;
+        $collector = new ReleaseCollector;
         $releases  = $collector->collect($path);
 
         $renderer = new FeedRenderer(

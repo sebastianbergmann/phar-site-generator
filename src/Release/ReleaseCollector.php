@@ -10,7 +10,7 @@
 
 namespace SebastianBergmann\PharSiteGenerator;
 
-class Collector
+class ReleaseCollector
 {
     /**
      * @param string $directory
