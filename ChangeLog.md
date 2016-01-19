@@ -2,7 +2,7 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [1.6.0] - 2016-MM-DD
+## [2.0.0] - 2016-MM-DD
 
 ### Added
 
@@ -62,7 +62,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
-[1.6.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/1.5.0...1.6.0
+[2.0.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/1.5.0...2.0.0
 [1.5.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/1.4.1...1.5.0
 [1.4.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/1.4.0...1.4.1
 [1.4.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/1.3.0...1.4.0
