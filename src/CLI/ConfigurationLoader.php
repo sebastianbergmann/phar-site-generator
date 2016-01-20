@@ -27,8 +27,8 @@ class ConfigurationLoader
 
         $configuration = new Configuration(
             $document->getElementsByTagName('directory')->item(0)->textContent,
-            $document->getElementsByTagName('email')->item(0)->textContent,
-            $document->getElementsByTagName('domain')->item(0)->textContent
+            $document->getElementsByTagName('domain')->item(0)->textContent,
+            $document->getElementsByTagName('email')->item(0)->textContent
         );
 
         if ($document->getElementsByTagName('nginx')->item(0)) {
