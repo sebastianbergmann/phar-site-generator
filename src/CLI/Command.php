@@ -12,7 +12,6 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 use Symfony\Component\Console\Command\Command as AbstractCommand;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -85,7 +84,11 @@ class Command extends AbstractCommand
         if ($configuration->shouldGenerateNginxConfigurationFile()) {
             $renderer = new NginxConfigRenderer;
 
-            $renderer->render($releases, $configuration->nginxConfigurationFile());
+            $renderer->render(
+                $releases,
+                $configuration->additionalReleaseSeries(),
+                $configuration->nginxConfigurationFile()
+            );
         }
 
         $this->copyAssets($configuration->directory());

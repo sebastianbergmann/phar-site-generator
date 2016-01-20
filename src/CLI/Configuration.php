@@ -33,6 +33,11 @@ class Configuration
     private $nginxConfigurationFile;
 
     /**
+     * @var array
+     */
+    private $additionalReleaseSeries = [];
+
+    /**
      * @param string $directory
      * @param string $domain
      * @param string $email
@@ -50,6 +55,20 @@ class Configuration
     public function setNginxConfigurationFile($filename)
     {
         $this->nginxConfigurationFile = $filename;
+    }
+
+    /**
+     * @param string $package
+     * @param string $series
+     * @param string $alias
+     */
+    public function addAdditionalReleaseSeries($package, $series, $alias)
+    {
+        $this->additionalReleaseSeries[] = [
+            'package' => $package,
+            'series'  => $series,
+            'alias'   => $alias
+        ];
     }
 
     /**
@@ -90,5 +109,13 @@ class Configuration
     public function nginxConfigurationFile()
     {
         return $this->nginxConfigurationFile;
+    }
+
+    /**
+     * @return array
+     */
+    public function additionalReleaseSeries()
+    {
+        return $this->additionalReleaseSeries;
     }
 }

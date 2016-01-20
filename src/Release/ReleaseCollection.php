@@ -90,11 +90,22 @@ class ReleaseCollection
                     continue;
                 }
 
-                $latest[] = $this->releases[$package]['latest'][$versionSeries];
+                $latest[] = $this->latestReleaseOfVersionSeries($package, $versionSeries);
             }
         }
 
         return $latest;
+    }
+
+    /**
+     * @param string $package
+     * @param string $versionSeries
+     *
+     * @return Release
+     */
+    public function latestReleaseOfVersionSeries($package, $versionSeries)
+    {
+        return $this->releases[$package]['latest'][$versionSeries];
     }
 
     /**

@@ -14,8 +14,10 @@ class NginxConfigRenderer
 {
     /**
      * @param ReleaseCollection $releases
+     * @param array             $additionalReleaseSeries
+     * @param string            $target
      */
-    public function render(ReleaseCollection $releases, $target)
+    public function render(ReleaseCollection $releases, array $additionalReleaseSeries, $target)
     {
         $buffer = '';
 
@@ -32,6 +34,30 @@ class NginxConfigRenderer
                 $release->package(),
                 $release->package(),
                 $release->version()
+            );
+        }
+
+        foreach ($additionalReleaseSeries as $item) {
+            $buffer .= sprintf(
+                "rewrite ^/%s-%s.phar$ /%s-%s.phar redirect;\n",
+                $item['package'],
+                $item['alias'],
+                $item['package'],
+                $releases->latestReleaseOfVersionSeries(
+                    $item['package'],
+                    $item['series']
+                )->version()
+            );
+
+            $buffer .= sprintf(
+                "rewrite ^/%s-%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
+                $item['package'],
+                $item['alias'],
+                $item['package'],
+                $releases->latestReleaseOfVersionSeries(
+                    $item['package'],
+                    $item['series']
+                )->version()
             );
         }
 
