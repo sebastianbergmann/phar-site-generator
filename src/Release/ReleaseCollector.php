@@ -23,6 +23,7 @@ class ReleaseCollector
 
         foreach (new \GlobIterator($directory . '/*.phar') as $file) {
             if (!$file->isLink() &&
+                stripos($file->getBasename(), 'nightly') === false &&
                 stripos($file->getBasename(), 'alpha') === false &&
                 stripos($file->getBasename(), 'beta') === false) {
                 $parts         = explode('-', $file->getBasename('.phar'));
