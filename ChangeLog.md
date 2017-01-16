@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [2.0.4] - 2017-01-16
+
+### Changed
+
+* Removed usage of inline JavaScript
+
 ## [2.0.3] - 2017-01-16
 
 ### Changed
