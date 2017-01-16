@@ -114,6 +114,7 @@ class Command extends AbstractCommand
         copy(__DIR__ . '/../assets/js/bootstrap.min.js', $dir . '/bootstrap.min.js');
         copy(__DIR__ . '/../assets/js/html5shiv.min.js', $dir . '/html5shiv.min.js');
         copy(__DIR__ . '/../assets/js/jquery.min.js', $dir . '/jquery.min.js');
+        copy(__DIR__ . '/../assets/js/popover.js', $dir . '/popover.js');
     }
 
     /**
