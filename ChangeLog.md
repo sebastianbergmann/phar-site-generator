@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [2.0.3] - 2017-01-16
+
+### Changed
+
+* Updated CSS and JavaScript assets
+
 ## [2.0.2] - 2016-04-04
 
 ### Changed
