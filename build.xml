@@ -1,54 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="phar-site-generator" default="build">
-    <target name="build" depends="prepare,lint,phpcs"/>
+<project name="phar-site-generator" default="setup">
+    <target name="setup" depends="clean,install-dependencies"/>
 
     <target name="clean" description="Cleanup build artifacts">
+        <delete dir="${basedir}/build/phar"/>
         <delete dir="${basedir}/vendor"/>
         <delete file="${basedir}/composer.lock"/>
-        <delete dir="${basedir}/build/phar"/>
         <delete>
-            <fileset dir="${basedir}/build" includes="*.phar*"/>
+            <fileset dir="${basedir}/build">
+                <include name="**/phar-site-generator*.phar"/>
+                <include name="**/phar-site-generator*.phar.asc"/>
+            </fileset>
         </delete>
     </target>
 
-    <target name="composer" description="Install dependencies with Composer">
-        <tstamp>
-            <format property="thirty.days.ago" pattern="MM/dd/yyyy hh:mm aa" offset="-30" unit="day"/>
-        </tstamp>
-        <delete>
-            <fileset dir="${basedir}">
-                <include name="composer.phar" />
-                <date datetime="${thirty.days.ago}" when="before"/>
-            </fileset>
-        </delete>
-
-        <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar" skipexisting="true"/>
-
-        <exec executable="php">
-            <arg value="composer.phar"/>
-            <arg value="install"/>
+    <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed" description="Install dependencies with Composer">
+        <exec executable="composer" taskname="composer">
+            <arg value="update"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-progress"/>
+            <arg value="--no-ansi"/>
+            <arg value="--no-suggest"/>
+            <arg value="--optimize-autoloader"/>
+            <arg value="--prefer-stable"/>
         </exec>
     </target>
 
-    <target name="prepare" depends="clean,composer" description="Prepare for build">
-    </target>
-
-    <target name="lint">
-        <apply executable="php" failonerror="true">
-            <arg value="-l" />
-
-            <fileset dir="${basedir}/src">
-                <include name="**/*.php" />
-                <modified />
-            </fileset>
-        </apply>
-    </target>
-
-    <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer">
-        <exec executable="phpcs">
-            <arg value="--standard=PSR2" />
-            <arg value="--extensions=php" />
-            <arg path="${basedir}/src" />
+    <target name="install-tools" unless="tools-installed" depends="-tools-installed" description="Install tools using phive">
+        <exec executable="phive" taskname="phive">
+            <arg value="install"/>
         </exec>
     </target>
 
@@ -69,7 +49,7 @@
 
     <target name="phar"
             description="Create PHAR archive of phar-site-generator and all its dependencies"
-            depends="clean,composer,phar-build">
+            depends="setup,install-tools,phar-build">
         <mkdir dir="${basedir}/build/phar"/>
     </target>
 
@@ -116,7 +96,7 @@
 
         <exec executable="${basedir}/build/phar-manifest.php" output="${basedir}/build/phar/manifest.txt"/>
 
-        <exec executable="phpab">
+        <exec executable="${basedir}/tools/phpab">
             <arg value="--all" />
             <arg value="--phar" />
             <arg value="--output" />
@@ -130,5 +110,12 @@
 
         <chmod file="${basedir}/build/phar-site-generator-${version}.phar" perm="ugo+rx"/>
     </target>
-</project>
 
+    <target name="-dependencies-installed">
+        <available file="${basedir}/vendor" property="dependencies-installed" type="dir"/>
+    </target>
+
+    <target name="-tools-installed">
+        <available file="${basedir}/tools" property="tools-installed" type="dir"/>
+    </target>
+</project>

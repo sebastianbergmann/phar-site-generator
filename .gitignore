@@ -1,8 +1,7 @@
 /html
 /.idea
 /composer.lock
-/composer.phar
 /vendor
 /build/phar
 /build/*.phar*
-/cache.properties
+/tools
