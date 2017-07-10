@@ -23,7 +23,7 @@ class FeedRenderer extends AbstractRenderer
         $rdfItems         = '';
 
         foreach ($releases->latestReleasesSortedByDate() as $release) {
-            $rdfList .= sprintf(
+            $rdfList .= \sprintf(
                 '    <rdf:li rdf:resource="%s/%s-%s.phar"/>' . "\n",
                 $this->domain(),
                 $release->package(),

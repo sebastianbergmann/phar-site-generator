@@ -33,12 +33,12 @@ class ReleaseCollection
                 'all' => []
             ];
         } else {
-            if (version_compare($release->version(), $this->releases[$package]['latest']['all']->version(), '>=')) {
+            if (\version_compare($release->version(), $this->releases[$package]['latest']['all']->version(), '>=')) {
                 $this->releases[$package]['latest']['all'] = $release;
             }
 
             if (!isset($this->releases[$package]['latest'][$release->versionSeries()]) ||
-                version_compare($release->version(), $this->releases[$package]['latest'][$release->versionSeries()]->version(), '>=')) {
+                \version_compare($release->version(), $this->releases[$package]['latest'][$release->versionSeries()]->version(), '>=')) {
                 $this->releases[$package]['latest'][$release->versionSeries()] = $release;
             }
         }
@@ -85,7 +85,7 @@ class ReleaseCollection
                 continue;
             }
 
-            foreach (array_keys($this->releases[$package]['latest']) as $versionSeries) {
+            foreach (\array_keys($this->releases[$package]['latest']) as $versionSeries) {
                 if ($versionSeries == 'all') {
                     continue;
                 }
@@ -115,7 +115,7 @@ class ReleaseCollection
     {
         $latest = $this->latestReleases();
 
-        usort(
+        \usort(
             $latest,
             function ($a, $b) {
                 return $a->date() <= $b->date();
@@ -132,7 +132,7 @@ class ReleaseCollection
     {
         $latest = $this->latestReleases();
 
-        usort(
+        \usort(
             $latest,
             function ($a, $b) {
                 return $a->package() >= $b->package();

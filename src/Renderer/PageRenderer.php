@@ -54,11 +54,11 @@ class PageRenderer extends AbstractRenderer
         $manifest = '';
 
         if (!empty($release->manifest())) {
-            $manifest = sprintf(
+            $manifest = \sprintf(
                 ' class="phar" data-title="Manifest" data-content="<ul>%s</ul>" data-placement="bottom" data-html="true"',
-                implode(
+                \implode(
                     '',
-                    array_map(
+                    \array_map(
                         function ($item) {
                             return '<li>' . $item . '</li>';
                         },

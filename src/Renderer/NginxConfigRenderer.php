@@ -22,14 +22,14 @@ class NginxConfigRenderer
         $buffer = '';
 
         foreach ($releases->latestReleases() as $release) {
-            $buffer .= sprintf(
+            $buffer .= \sprintf(
                 "rewrite ^/%s.phar$ /%s-%s.phar redirect;\n",
                 $release->package(),
                 $release->package(),
                 $release->version()
             );
 
-            $buffer .= sprintf(
+            $buffer .= \sprintf(
                 "rewrite ^/%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
                 $release->package(),
                 $release->package(),
@@ -38,7 +38,7 @@ class NginxConfigRenderer
         }
 
         foreach ($releases->latestReleasesPerPackageAndVersionSeries() as $release) {
-            $buffer .= sprintf(
+            $buffer .= \sprintf(
                 "rewrite ^/%s-%s.phar$ /%s-%s.phar redirect;\n",
                 $release->package(),
                 $release->versionSeries(),
@@ -46,7 +46,7 @@ class NginxConfigRenderer
                 $release->version()
             );
 
-            $buffer .= sprintf(
+            $buffer .= \sprintf(
                 "rewrite ^/%s-%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
                 $release->package(),
                 $release->versionSeries(),
@@ -56,7 +56,7 @@ class NginxConfigRenderer
         }
 
         foreach ($additionalReleaseSeries as $item) {
-            $buffer .= sprintf(
+            $buffer .= \sprintf(
                 "rewrite ^/%s-%s.phar$ /%s-%s.phar redirect;\n",
                 $item['package'],
                 $item['alias'],
@@ -67,7 +67,7 @@ class NginxConfigRenderer
                 )->version()
             );
 
-            $buffer .= sprintf(
+            $buffer .= \sprintf(
                 "rewrite ^/%s-%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
                 $item['package'],
                 $item['alias'],
@@ -79,6 +79,6 @@ class NginxConfigRenderer
             );
         }
 
-        file_put_contents($target, $buffer);
+        \file_put_contents($target, $buffer);
     }
 }

@@ -38,7 +38,7 @@ class PharIoRenderer extends AbstractRenderer
 
     private function addRelease(Release $release)
     {
-        $url = sprintf(
+        $url = \sprintf(
             'https://%s/%s-%s.phar',
             $this->domain(),
             $release->package(),
@@ -73,7 +73,7 @@ class PharIoRenderer extends AbstractRenderer
     private function getContainer($package)
     {
         $result = $this->xp->query(
-            sprintf('//phive:phar[@name="%s"]', $package)
+            \sprintf('//phive:phar[@name="%s"]', $package)
         );
 
         if ($result->length > 0) {
