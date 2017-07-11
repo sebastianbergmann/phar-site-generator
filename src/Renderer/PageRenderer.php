@@ -12,9 +12,6 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 class PageRenderer extends AbstractRenderer
 {
-    /**
-     * @param ReleaseCollection $releases
-     */
     public function render(ReleaseCollection $releases)
     {
         $latestReleases = '';

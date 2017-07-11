@@ -62,8 +62,5 @@ abstract class AbstractRenderer
         return $this->email;
     }
 
-    /**
-     * @param ReleaseCollection $releases
-     */
     abstract public function render(ReleaseCollection $releases);
 }

@@ -12,9 +12,6 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 class FeedRenderer extends AbstractRenderer
 {
-    /**
-     * @param ReleaseCollection $releases
-     */
     public function render(ReleaseCollection $releases)
     {
         $feedTemplate     = new \Text_Template(__DIR__ . '/../templates/feed.xml');

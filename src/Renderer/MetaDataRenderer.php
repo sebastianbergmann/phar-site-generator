@@ -12,9 +12,6 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 class MetaDataRenderer extends AbstractRenderer
 {
-    /**
-     * @param ReleaseCollection $releases
-     */
     public function render(ReleaseCollection $releases)
     {
         foreach ($releases->latestReleases() as $release) {

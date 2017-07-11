@@ -22,9 +22,6 @@ class PharIoRenderer extends AbstractRenderer
      */
     private $xp;
 
-    /**
-     * @param ReleaseCollection $releases
-     */
     public function render(ReleaseCollection $releases)
     {
         $this->initRepository();

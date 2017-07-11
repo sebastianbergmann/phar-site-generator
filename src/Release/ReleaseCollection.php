@@ -17,9 +17,6 @@ class ReleaseCollection
      */
     private $releases = ['all' => []];
 
-    /**
-     * @param Release $release
-     */
     public function add(Release $release)
     {
         $package = $release->package();
@@ -63,7 +60,7 @@ class ReleaseCollection
         $latest = [];
 
         foreach ($this->releases as $package => $releases) {
-            if ($package == 'all') {
+            if ($package === 'all') {
                 continue;
             }
 
@@ -81,12 +78,12 @@ class ReleaseCollection
         $latest = [];
 
         foreach ($this->releases as $package => $releases) {
-            if ($package == 'all') {
+            if ($package === 'all') {
                 continue;
             }
 
             foreach (\array_keys($this->releases[$package]['latest']) as $versionSeries) {
-                if ($versionSeries == 'all') {
+                if ($versionSeries === 'all') {
                     continue;
                 }
 
@@ -117,7 +114,7 @@ class ReleaseCollection
 
         \usort(
             $latest,
-            function ($a, $b) {
+            function (Release $a, Release $b) {
                 return $a->date() <= $b->date();
             }
         );
@@ -134,7 +131,7 @@ class ReleaseCollection
 
         \usort(
             $latest,
-            function ($a, $b) {
+            function (Release $a, Release $b) {
                 return $a->package() >= $b->package();
             }
         );
