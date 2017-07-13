@@ -24,8 +24,8 @@ class ReleaseCollection
         if (!isset($this->releases[$package])) {
             $this->releases[$package] = [
                 'latest' => [
-                    'all'                     => $release,
-                    $release->versionSeries() => $release
+                    'all'                    => $release,
+                    $release->minorVersion() => $release
                 ],
                 'all' => []
             ];
@@ -34,9 +34,9 @@ class ReleaseCollection
                 $this->releases[$package]['latest']['all'] = $release;
             }
 
-            if (!isset($this->releases[$package]['latest'][$release->versionSeries()]) ||
-                \version_compare($release->version(), $this->releases[$package]['latest'][$release->versionSeries()]->version(), '>=')) {
-                $this->releases[$package]['latest'][$release->versionSeries()] = $release;
+            if (!isset($this->releases[$package]['latest'][$release->minorVersion()]) ||
+                \version_compare($release->version(), $this->releases[$package]['latest'][$release->minorVersion()]->version(), '>=')) {
+                $this->releases[$package]['latest'][$release->minorVersion()] = $release;
             }
         }
 
@@ -73,7 +73,7 @@ class ReleaseCollection
     /**
      * @return Release[]
      */
-    public function latestReleasesPerPackageAndVersionSeries()
+    public function latestReleasesPerPackageAndMinorVersion()
     {
         $latest = [];
 
@@ -82,12 +82,12 @@ class ReleaseCollection
                 continue;
             }
 
-            foreach (\array_keys($this->releases[$package]['latest']) as $versionSeries) {
-                if ($versionSeries === 'all') {
+            foreach (\array_keys($this->releases[$package]['latest']) as $minorVersion) {
+                if ($minorVersion === 'all') {
                     continue;
                 }
 
-                $latest[] = $this->latestReleaseOfVersionSeries($package, $versionSeries);
+                $latest[] = $this->latestReleaseOfMinorVersion($package, $minorVersion);
             }
         }
 
@@ -96,13 +96,13 @@ class ReleaseCollection
 
     /**
      * @param string $package
-     * @param string $versionSeries
+     * @param string $minorVersion
      *
      * @return Release
      */
-    public function latestReleaseOfVersionSeries($package, $versionSeries)
+    public function latestReleaseOfMinorVersion($package, $minorVersion)
     {
-        return $this->releases[$package]['latest'][$versionSeries];
+        return $this->releases[$package]['latest'][$minorVersion];
     }
 
     /**

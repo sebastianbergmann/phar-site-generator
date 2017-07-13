@@ -23,6 +23,11 @@ class Release
     private $version;
 
     /**
+     * @var string
+     */
+    private $minorVersion;
+
+    /**
      * @var string[]
      */
     private $manifest;
@@ -45,21 +50,21 @@ class Release
     /**
      * @param string $package
      * @param string $version
-     * @param string $versionSeries
+     * @param string $minorVersion
      * @param array  $manifest
      * @param string $date
      * @param string $size
      * @param string $sha256
      */
-    public function __construct($package, $version, $versionSeries, array $manifest, $date, $size, $sha256)
+    public function __construct($package, $version, $minorVersion, array $manifest, $date, $size, $sha256)
     {
-        $this->package       = $package;
-        $this->version       = $version;
-        $this->versionSeries = $versionSeries;
-        $this->manifest      = $manifest;
-        $this->date          = $date;
-        $this->size          = $size;
-        $this->sha256        = $sha256;
+        $this->package      = $package;
+        $this->version      = $version;
+        $this->minorVersion = $minorVersion;
+        $this->manifest     = $manifest;
+        $this->date         = $date;
+        $this->size         = $size;
+        $this->sha256       = $sha256;
     }
 
     /**
@@ -81,9 +86,9 @@ class Release
     /**
      * @return string
      */
-    public function versionSeries()
+    public function minorVersion()
     {
-        return $this->versionSeries;
+        return $this->minorVersion;
     }
 
     /**

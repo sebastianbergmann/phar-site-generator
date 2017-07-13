@@ -28,7 +28,7 @@ class ReleaseCollector
                 \stripos($file->getBasename(), 'beta') === false) {
                 $parts         = \explode('-', $file->getBasename('.phar'));
                 $version       = \array_pop($parts);
-                $versionSeries = \implode('.', \array_slice(\explode('.', $version), 0, 2));
+                $minorVersion = \implode('.', \array_slice(\explode('.', $version), 0, 2));
                 $name          = \implode('-', $parts);
                 $manifest      = [];
 
@@ -45,7 +45,7 @@ class ReleaseCollector
                     new Release(
                         $name,
                         $version,
-                        $versionSeries,
+                        $minorVersion,
                         $manifest,
                         \date(DATE_W3C, $file->getMTime()),
                         $this->humanFilesize($file->getSize()),

@@ -37,11 +37,11 @@ class NginxConfigRenderer
             );
         }
 
-        foreach ($releases->latestReleasesPerPackageAndVersionSeries() as $release) {
+        foreach ($releases->latestReleasesPerPackageAndMinorVersion() as $release) {
             $buffer .= \sprintf(
                 "rewrite ^/%s-%s.phar$ /%s-%s.phar redirect;\n",
                 $release->package(),
-                $release->versionSeries(),
+                $release->minorVersion(),
                 $release->package(),
                 $release->version()
             );
@@ -49,7 +49,7 @@ class NginxConfigRenderer
             $buffer .= \sprintf(
                 "rewrite ^/%s-%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
                 $release->package(),
-                $release->versionSeries(),
+                $release->minorVersion(),
                 $release->package(),
                 $release->version()
             );
@@ -61,7 +61,7 @@ class NginxConfigRenderer
                 $item['package'],
                 $item['alias'],
                 $item['package'],
-                $releases->latestReleaseOfVersionSeries(
+                $releases->latestReleaseOfMinorVersion(
                     $item['package'],
                     $item['series']
                 )->version()
@@ -72,7 +72,7 @@ class NginxConfigRenderer
                 $item['package'],
                 $item['alias'],
                 $item['package'],
-                $releases->latestReleaseOfVersionSeries(
+                $releases->latestReleaseOfMinorVersion(
                     $item['package'],
                     $item['series']
                 )->version()

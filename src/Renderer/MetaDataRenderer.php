@@ -21,9 +21,9 @@ class MetaDataRenderer extends AbstractRenderer
             );
         }
 
-        foreach ($releases->latestReleasesPerPackageAndVersionSeries() as $release) {
+        foreach ($releases->latestReleasesPerPackageAndMinorVersion() as $release) {
             \file_put_contents(
-                $this->target() . $release->package() . '-' . $release->versionSeries(),
+                $this->target() . $release->package() . '-' . $release->minorVersion(),
                 $release->version()
             );
         }
