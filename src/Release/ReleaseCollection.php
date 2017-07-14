@@ -13,35 +13,42 @@ namespace SebastianBergmann\PharSiteGenerator;
 class ReleaseCollection
 {
     /**
+     * @var Release[]
+     */
+    private $all = [];
+
+    /**
      * @var array
      */
-    private $releases = ['all' => []];
+    private $latestVersion = [];
+
+    /**
+     * @var array
+     */
+    private $latestMinorVersion = [];
 
     public function add(Release $release)
     {
-        $package = $release->package();
+        $package      = $release->package();
+        $minorVersion = $release->minorVersion();
 
-        if (!isset($this->releases[$package])) {
-            $this->releases[$package] = [
-                'latest' => [
-                    'all'                    => $release,
-                    $release->minorVersion() => $release
-                ],
-                'all' => []
-            ];
+        if (!isset($this->latestVersion[$package])) {
+            $this->latestVersion[$package] = $release;
         } else {
-            if (\version_compare($release->version(), $this->releases[$package]['latest']['all']->version(), '>=')) {
-                $this->releases[$package]['latest']['all'] = $release;
-            }
-
-            if (!isset($this->releases[$package]['latest'][$release->minorVersion()]) ||
-                \version_compare($release->version(), $this->releases[$package]['latest'][$release->minorVersion()]->version(), '>=')) {
-                $this->releases[$package]['latest'][$release->minorVersion()] = $release;
+            if (\version_compare($release->version(), $this->latestVersion[$package]->version(), '>=')) {
+                $this->latestVersion[$package] = $release;
             }
         }
 
-        $this->releases[$package]['all'][] = $release;
-        $this->releases['all'][]           = $release;
+        if (!isset($this->latestMinorVersion[$package])) {
+            $this->latestMinorVersion[$package] = [$minorVersion => $release];
+        } elseif (!isset($this->latestMinorVersion[$package][$minorVersion])) {
+            $this->latestMinorVersion[$package][$minorVersion] = $release;
+        } elseif (\version_compare($release->version(), $this->latestMinorVersion[$package][$minorVersion]->version(), '>=')) {
+            $this->latestMinorVersion[$package][$minorVersion] = $release;
+        }
+
+        $this->all[] = $release;
     }
 
     /**
@@ -49,7 +56,7 @@ class ReleaseCollection
      */
     public function allReleases()
     {
-        return $this->releases['all'];
+        return $this->all;
     }
 
     /**
@@ -57,17 +64,7 @@ class ReleaseCollection
      */
     public function latestReleases()
     {
-        $latest = [];
-
-        foreach ($this->releases as $package => $releases) {
-            if ($package === 'all') {
-                continue;
-            }
-
-            $latest[] = $releases['latest']['all'];
-        }
-
-        return $latest;
+        return $this->latestVersion;
     }
 
     /**
@@ -77,17 +74,9 @@ class ReleaseCollection
     {
         $latest = [];
 
-        foreach ($this->releases as $package => $releases) {
-            if ($package === 'all') {
-                continue;
-            }
-
-            foreach (\array_keys($this->releases[$package]['latest']) as $minorVersion) {
-                if ($minorVersion === 'all') {
-                    continue;
-                }
-
-                $latest[] = $this->latestReleaseOfMinorVersion($package, $minorVersion);
+        foreach ($this->packages() as $package) {
+            foreach ($this->latestMinorVersion[$package] as $release) {
+                $latest[] = $release;
             }
         }
 
@@ -102,7 +91,7 @@ class ReleaseCollection
      */
     public function latestReleaseOfMinorVersion($package, $minorVersion)
     {
-        return $this->releases[$package]['latest'][$minorVersion];
+        return $this->latestMinorVersion[$package][$minorVersion];
     }
 
     /**
@@ -137,5 +126,10 @@ class ReleaseCollection
         );
 
         return $latest;
+    }
+
+    public function packages()
+    {
+        return array_keys($this->latestVersion);
     }
 }
