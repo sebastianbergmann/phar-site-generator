@@ -27,10 +27,16 @@ class ReleaseCollection
      */
     private $latestMinorVersion = [];
 
+    /**
+     * @var array
+     */
+    private $latestMajorVersion = [];
+
     public function add(Release $release)
     {
         $package      = $release->package();
         $minorVersion = $release->minorVersion();
+        $majorVersion = $release->majorVersion();
 
         if (!isset($this->latestVersion[$package])) {
             $this->latestVersion[$package] = $release;
@@ -38,6 +44,14 @@ class ReleaseCollection
             if (\version_compare($release->version(), $this->latestVersion[$package]->version(), '>=')) {
                 $this->latestVersion[$package] = $release;
             }
+        }
+
+        if (!isset($this->latestMajorVersion[$package])) {
+            $this->latestMajorVersion[$package] = [$majorVersion => $release];
+        } elseif (!isset($this->latestMajorVersion[$package][$majorVersion])) {
+            $this->latestMajorVersion[$package][$majorVersion] = $release;
+        } elseif (\version_compare($release->version(), $this->latestMajorVersion[$package][$majorVersion]->version(), '>=')) {
+            $this->latestMajorVersion[$package][$majorVersion] = $release;
         }
 
         if (!isset($this->latestMinorVersion[$package])) {
@@ -65,6 +79,22 @@ class ReleaseCollection
     public function latestReleases()
     {
         return $this->latestVersion;
+    }
+
+    /**
+     * @return Release[]
+     */
+    public function latestReleasesPerPackageAndMajorVersion()
+    {
+        $latest = [];
+
+        foreach ($this->packages() as $package) {
+            foreach ($this->latestMajorVersion[$package] as $release) {
+                $latest[] = $release;
+            }
+        }
+
+        return $latest;
     }
 
     /**

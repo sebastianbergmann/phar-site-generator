@@ -37,6 +37,24 @@ class NginxConfigRenderer
             );
         }
 
+        foreach ($releases->latestReleasesPerPackageAndMajorVersion() as $release) {
+            $buffer .= \sprintf(
+                "rewrite ^/%s-%s.phar$ /%s-%s.phar redirect;\n",
+                $release->package(),
+                $release->majorVersion(),
+                $release->package(),
+                $release->version()
+            );
+
+            $buffer .= \sprintf(
+                "rewrite ^/%s-%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
+                $release->package(),
+                $release->majorVersion(),
+                $release->package(),
+                $release->version()
+            );
+        }
+
         foreach ($releases->latestReleasesPerPackageAndMinorVersion() as $release) {
             $buffer .= \sprintf(
                 "rewrite ^/%s-%s.phar$ /%s-%s.phar redirect;\n",
