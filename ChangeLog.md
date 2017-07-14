@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [2.1.0] - 2017-07-14
+
+### Added
+
+* New redirect rule: `package-X` to latest `package-X.Y.Z`
+
 ## [2.0.4] - 2017-01-16
 
 ### Changed
@@ -90,6 +96,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
+[2.1.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.0.2...2.1.0
 [2.0.2]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/1.5.0...2.0.0
