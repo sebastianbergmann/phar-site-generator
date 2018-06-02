@@ -1,6 +1,6 @@
 #!/usr/bin/env php
-<?php
-if ($_SERVER['SCRIPT_NAME'] != '-') {
+<?php declare(strict_types=1);
+if ($_SERVER['SCRIPT_NAME'] !== '-') {
     $phar = realpath($_SERVER['SCRIPT_NAME']);
 } else {
     $files = get_included_files();
@@ -31,7 +31,7 @@ spl_autoload_register(
 
 Phar::mapPhar('___PHAR___');
 
-if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == '--manifest') {
+if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] === '--manifest') {
     print file_get_contents(__PHARSITEGENERATOR_PHAR_ROOT__ . '/manifest.txt');
     exit;
 }

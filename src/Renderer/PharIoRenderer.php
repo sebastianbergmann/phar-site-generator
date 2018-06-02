@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of phar-site-generator.
  *
@@ -10,7 +10,7 @@
 
 namespace SebastianBergmann\PharSiteGenerator;
 
-class PharIoRenderer extends AbstractRenderer
+final class PharIoRenderer extends AbstractRenderer
 {
     /**
      * @var \DOMDocument
@@ -22,7 +22,7 @@ class PharIoRenderer extends AbstractRenderer
      */
     private $xp;
 
-    public function render(ReleaseCollection $releases)
+    public function render(ReleaseCollection $releases): void
     {
         $this->initRepository();
 
@@ -33,7 +33,7 @@ class PharIoRenderer extends AbstractRenderer
         $this->saveRepository();
     }
 
-    private function addRelease(Release $release)
+    private function addRelease(Release $release): void
     {
         $url = \sprintf(
             'https://%s/%s-%s.phar',
@@ -67,7 +67,7 @@ class PharIoRenderer extends AbstractRenderer
         }
     }
 
-    private function getContainer($package)
+    private function getContainer(string $package)
     {
         $result = $this->xp->query(
             \sprintf('//phive:phar[@name="%s"]', $package)
@@ -84,7 +84,7 @@ class PharIoRenderer extends AbstractRenderer
         return $pharNode;
     }
 
-    private function initRepository()
+    private function initRepository(): void
     {
         $this->repository = new \DOMDocument('1.0', 'UTF-8');
         $this->repository->load(__DIR__ . '/../templates/phive.xml');
@@ -92,12 +92,12 @@ class PharIoRenderer extends AbstractRenderer
         $this->xp->registerNamespace('phive', 'https://phar.io/repository');
     }
 
-    private function addElement($name)
+    private function addElement(string $name)
     {
         return $this->repository->createElementNS('https://phar.io/repository', $name);
     }
 
-    private function saveRepository()
+    private function saveRepository(): void
     {
         $this->repository->preserveWhiteSpace = false;
         $this->repository->formatOutput       = true;

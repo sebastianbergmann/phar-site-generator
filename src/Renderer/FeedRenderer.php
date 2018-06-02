@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of phar-site-generator.
  *
@@ -10,9 +10,13 @@
 
 namespace SebastianBergmann\PharSiteGenerator;
 
-class FeedRenderer extends AbstractRenderer
+final class FeedRenderer extends AbstractRenderer
 {
-    public function render(ReleaseCollection $releases)
+    /**
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
+    public function render(ReleaseCollection $releases): void
     {
         $feedTemplate     = new \Text_Template(__DIR__ . '/../templates/feed.xml');
         $feedItemTemplate = new \Text_Template(__DIR__ . '/../templates/item.xml');

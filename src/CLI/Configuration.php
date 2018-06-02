@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of phar-site-generator.
  *
@@ -10,7 +10,7 @@
 
 namespace SebastianBergmann\PharSiteGenerator;
 
-class Configuration
+final class Configuration
 {
     /**
      * @var string
@@ -37,32 +37,19 @@ class Configuration
      */
     private $additionalReleaseSeries = [];
 
-    /**
-     * @param string $directory
-     * @param string $domain
-     * @param string $email
-     */
-    public function __construct($directory, $domain, $email)
+    public function __construct(string $directory, string $domain, string $email)
     {
         $this->directory = $directory;
         $this->domain    = $domain;
         $this->email     = $email;
     }
 
-    /**
-     * @param string $filename
-     */
-    public function setNginxConfigurationFile($filename)
+    public function setNginxConfigurationFile(string $filename): void
     {
         $this->nginxConfigurationFile = $filename;
     }
 
-    /**
-     * @param string $package
-     * @param string $series
-     * @param string $alias
-     */
-    public function addAdditionalReleaseSeries($package, $series, $alias)
+    public function addAdditionalReleaseSeries(string $package, string $series, string $alias): void
     {
         $this->additionalReleaseSeries[] = [
             'package' => $package,
@@ -71,50 +58,32 @@ class Configuration
         ];
     }
 
-    /**
-     * @return string
-     */
-    public function directory()
+    public function directory(): string
     {
         return $this->directory;
     }
 
-    /**
-     * @return string
-     */
-    public function domain()
+    public function domain(): string
     {
         return $this->domain;
     }
 
-    /**
-     * @return string
-     */
-    public function email()
+    public function email(): string
     {
         return $this->email;
     }
 
-    /**
-     * @return bool
-     */
-    public function shouldGenerateNginxConfigurationFile()
+    public function shouldGenerateNginxConfigurationFile(): bool
     {
         return $this->nginxConfigurationFile !== null;
     }
 
-    /**
-     * @return string
-     */
-    public function nginxConfigurationFile()
+    public function nginxConfigurationFile(): string
     {
         return $this->nginxConfigurationFile;
     }
 
-    /**
-     * @return array
-     */
-    public function additionalReleaseSeries()
+    public function additionalReleaseSeries(): array
     {
         return $this->additionalReleaseSeries;
     }

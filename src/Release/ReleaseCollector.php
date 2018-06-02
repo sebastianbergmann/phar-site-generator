@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of phar-site-generator.
  *
@@ -12,12 +12,7 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 class ReleaseCollector
 {
-    /**
-     * @param string $directory
-     *
-     * @return ReleaseCollection
-     */
-    public function collect($directory)
+    public function collect(string $directory): ReleaseCollection
     {
         $releases = new ReleaseCollection;
 
@@ -60,16 +55,11 @@ class ReleaseCollector
         return $releases;
     }
 
-    /**
-     * @param int $bytes
-     *
-     * @return string
-     */
-    private function humanFilesize($bytes)
+    private function humanFilesize(int $bytes): string
     {
         $sz     = 'BKMGTP';
         $factor = \floor((\strlen($bytes) - 1) / 3);
 
-        return \sprintf('%.2f', $bytes / \pow(1024, $factor)) . @$sz[$factor];
+        return \sprintf('%.2f', $bytes / 1024 ** $factor) . @$sz[$factor];
     }
 }

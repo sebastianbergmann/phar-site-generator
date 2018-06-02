@@ -1,5 +1,5 @@
 #!/usr/bin/env php
-<?php
+<?php declare(strict_types=1);
 $loaded = false;
 
 foreach (array(__DIR__ . '/../../autoload.php', __DIR__ . '/vendor/autoload.php') as $file) {

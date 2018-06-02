@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of phar-site-generator.
  *
@@ -10,14 +10,9 @@
 
 namespace SebastianBergmann\PharSiteGenerator;
 
-class NginxConfigRenderer
+final class NginxConfigRenderer
 {
-    /**
-     * @param ReleaseCollection $releases
-     * @param array             $additionalReleaseSeries
-     * @param string            $target
-     */
-    public function render(ReleaseCollection $releases, array $additionalReleaseSeries, $target)
+    public function render(ReleaseCollection $releases, array $additionalReleaseSeries, string $target): void
     {
         $buffer = '';
 

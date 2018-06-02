@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of phar-site-generator.
  *
@@ -10,9 +10,13 @@
 
 namespace SebastianBergmann\PharSiteGenerator;
 
-class PageRenderer extends AbstractRenderer
+final class PageRenderer extends AbstractRenderer
 {
-    public function render(ReleaseCollection $releases)
+    /**
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
+    public function render(ReleaseCollection $releases): void
     {
         $latestReleases = '';
 
@@ -40,12 +44,9 @@ class PageRenderer extends AbstractRenderer
     }
 
     /**
-     * @param Release $release
-     * @param bool    $latest
-     *
-     * @return string
+     * @throws \InvalidArgumentException
      */
-    private function renderRelease(Release $release, $latest = false)
+    private function renderRelease(Release $release, bool $latest = false): string
     {
         $item     = new \Text_Template(__DIR__ . '/../templates/item.html');
         $manifest = '';

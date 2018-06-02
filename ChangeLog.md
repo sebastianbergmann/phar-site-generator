@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [3.0.0] - 201Y-MM-DD
+
+### Removed
+
+* This tool is no longer supported on PHP 5.6, PHP 7.0, and PHP 7.1
+
 ## [2.1.0] - 2017-07-14
 
 ### Added
@@ -96,6 +102,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
+[3.0.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.1...3.0.0
 [2.1.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.0.2...2.1.0
 [2.0.2]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.0.0...2.0.1

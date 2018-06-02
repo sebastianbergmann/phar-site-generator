@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of phar-site-generator.
  *
@@ -10,7 +10,7 @@
 
 namespace SebastianBergmann\PharSiteGenerator;
 
-class ReleaseCollection
+final class ReleaseCollection
 {
     /**
      * @var Release[]
@@ -32,7 +32,7 @@ class ReleaseCollection
      */
     private $latestMajorVersion = [];
 
-    public function add(Release $release)
+    public function add(Release $release): void
     {
         $package      = $release->package();
         $minorVersion = $release->minorVersion();
@@ -68,7 +68,7 @@ class ReleaseCollection
     /**
      * @return Release[]
      */
-    public function allReleases()
+    public function allReleases(): array
     {
         return $this->all;
     }
@@ -76,7 +76,7 @@ class ReleaseCollection
     /**
      * @return Release[]
      */
-    public function latestReleases()
+    public function latestReleases(): array
     {
         return $this->latestVersion;
     }
@@ -84,7 +84,7 @@ class ReleaseCollection
     /**
      * @return Release[]
      */
-    public function latestReleasesPerPackageAndMajorVersion()
+    public function latestReleasesPerPackageAndMajorVersion(): array
     {
         $latest = [];
 
@@ -100,7 +100,7 @@ class ReleaseCollection
     /**
      * @return Release[]
      */
-    public function latestReleasesPerPackageAndMinorVersion()
+    public function latestReleasesPerPackageAndMinorVersion(): array
     {
         $latest = [];
 
@@ -113,13 +113,7 @@ class ReleaseCollection
         return $latest;
     }
 
-    /**
-     * @param string $package
-     * @param string $minorVersion
-     *
-     * @return Release
-     */
-    public function latestReleaseOfMinorVersion($package, $minorVersion)
+    public function latestReleaseOfMinorVersion(string $package, string $minorVersion): Release
     {
         return $this->latestMinorVersion[$package][$minorVersion];
     }
@@ -127,7 +121,7 @@ class ReleaseCollection
     /**
      * @return Release[]
      */
-    public function latestReleasesSortedByDate()
+    public function latestReleasesSortedByDate(): array
     {
         $latest = $this->latestReleases();
 
@@ -144,7 +138,7 @@ class ReleaseCollection
     /**
      * @return Release[]
      */
-    public function latestReleasesSortedByPackageName()
+    public function latestReleasesSortedByPackageName(): array
     {
         $latest = $this->latestReleases();
 
@@ -158,8 +152,8 @@ class ReleaseCollection
         return $latest;
     }
 
-    public function packages()
+    public function packages(): array
     {
-        return array_keys($this->latestVersion);
+        return \array_keys($this->latestVersion);
     }
 }

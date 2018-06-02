@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of phar-site-generator.
  *
@@ -10,7 +10,7 @@
 
 namespace SebastianBergmann\PharSiteGenerator;
 
-class Release
+final class Release
 {
     /**
      * @var string
@@ -52,17 +52,7 @@ class Release
      */
     private $sha256;
 
-    /**
-     * @param string $package
-     * @param string $version
-     * @param string $majorVersion
-     * @param string $minorVersion
-     * @param array  $manifest
-     * @param string $date
-     * @param string $size
-     * @param string $sha256
-     */
-    public function __construct($package, $version, $majorVersion, $minorVersion, array $manifest, $date, $size, $sha256)
+    public function __construct(string $package, string $version, string $majorVersion, string $minorVersion, array $manifest, string $date, string $size, string $sha256)
     {
         $this->package      = $package;
         $this->version      = $version;
@@ -74,66 +64,42 @@ class Release
         $this->sha256       = $sha256;
     }
 
-    /**
-     * @return string
-     */
-    public function package()
+    public function package(): string
     {
         return $this->package;
     }
 
-    /**
-     * @return string
-     */
-    public function version()
+    public function version(): string
     {
         return $this->version;
     }
 
-    /**
-     * @return string
-     */
-    public function minorVersion()
+    public function minorVersion(): string
     {
         return $this->minorVersion;
     }
 
-    /**
-     * @return string
-     */
-    public function majorVersion()
+    public function majorVersion(): string
     {
         return $this->majorVersion;
     }
 
-    /**
-     * @return string[]
-     */
-    public function manifest()
+    public function manifest(): array
     {
         return $this->manifest;
     }
 
-    /**
-     * @return string
-     */
-    public function date()
+    public function date(): string
     {
         return $this->date;
     }
 
-    /**
-     * @return string
-     */
-    public function size()
+    public function size(): string
     {
         return $this->size;
     }
 
-    /**
-     * @return string
-     */
-    public function sha256()
+    public function sha256(): string
     {
         return $this->sha256;
     }

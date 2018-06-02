@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of phar-site-generator.
  *
@@ -26,41 +26,27 @@ abstract class AbstractRenderer
      */
     private $email;
 
-    /**
-     * @param string $target
-     * @param string $domain
-     * @param string $email
-     */
-    public function __construct($target, $domain, $email)
+    public function __construct(string $target, string $domain, string $email)
     {
         $this->target = $target;
         $this->domain = $domain;
         $this->email  = $email;
     }
 
-    /**
-     * @return string
-     */
-    protected function target()
+    abstract public function render(ReleaseCollection $releases);
+
+    protected function target(): string
     {
         return $this->target;
     }
 
-    /**
-     * @return string
-     */
-    protected function domain()
+    protected function domain(): string
     {
         return $this->domain;
     }
 
-    /**
-     * @return string
-     */
-    protected function email()
+    protected function email(): string
     {
         return $this->email;
     }
-
-    abstract public function render(ReleaseCollection $releases);
 }

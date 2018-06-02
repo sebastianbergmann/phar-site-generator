@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of phar-site-generator.
  *
@@ -15,12 +15,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Command extends AbstractCommand
+final class Command extends AbstractCommand
 {
-    /**
-     * Configures the current command.
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('phar-site-generator')
              ->addArgument(
@@ -31,14 +28,10 @@ class Command extends AbstractCommand
     }
 
     /**
-     * Executes the current command.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     *
-     * @return null|int null or 0 if everything went fine, or an error code
+     * @throws \TheSeer\fDOM\fDOMException
+     * @throws RuntimeException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $configurationLoader = new ConfigurationLoader;
 
@@ -95,9 +88,9 @@ class Command extends AbstractCommand
     }
 
     /**
-     * @param string $target
+     * @throws RuntimeException
      */
-    private function copyAssets($target)
+    private function copyAssets(string $target): void
     {
         $dir = $this->getDirectory($target . '/css');
         \copy(__DIR__ . '/../assets/css/bootstrap.min.css', $dir . '/bootstrap.min.css');
@@ -118,22 +111,24 @@ class Command extends AbstractCommand
     }
 
     /**
-     * @param string $directory
-     *
-     * @return string
-     *
      * @throws RuntimeException
      */
-    private function getDirectory($directory)
+    private function getDirectory(string $directory): string
     {
-        if (\is_dir($directory)) {
-            return $directory;
+        if (!$this->createDirectory($directory)) {
+            throw new RuntimeException(
+                \sprintf(
+                    'Directory "%s" does not exist.',
+                    $directory
+                )
+            );
         }
 
-        if (@\mkdir($directory, 0777, true)) {
-            return $directory;
-        }
+        return $directory;
+    }
 
-        throw new RuntimeException;
+    private function createDirectory(string $directory): bool
+    {
+        return !(!\is_dir($directory) && !@\mkdir($directory, 0777, true) && !\is_dir($directory));
     }
 }

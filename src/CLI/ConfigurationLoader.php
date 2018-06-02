@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of phar-site-generator.
  *
@@ -13,14 +13,12 @@ namespace SebastianBergmann\PharSiteGenerator;
 use TheSeer\fDOM\fDOMDocument;
 use TheSeer\fDOM\fDOMElement;
 
-class ConfigurationLoader
+final class ConfigurationLoader
 {
     /**
-     * @param string $filename
-     *
-     * @return Configuration
+     * @throws \TheSeer\fDOM\fDOMException
      */
-    public function load($filename)
+    public function load(string $filename)
     {
         $document = new fDOMDocument;
         $document->load($filename);

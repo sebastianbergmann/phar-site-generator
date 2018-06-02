@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of phar-site-generator.
  *
@@ -10,9 +10,9 @@
 
 namespace SebastianBergmann\PharSiteGenerator;
 
-class MetaDataRenderer extends AbstractRenderer
+final class MetaDataRenderer extends AbstractRenderer
 {
-    public function render(ReleaseCollection $releases)
+    public function render(ReleaseCollection $releases): void
     {
         foreach ($releases->latestReleases() as $release) {
             \file_put_contents(
