@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\PharSiteGenerator;
 
 use Symfony\Component\Console\Command\Command as AbstractCommand;
@@ -43,7 +42,7 @@ final class Command extends AbstractCommand
         $releases  = $collector->collect($configuration->directory());
 
         $renderer = new FeedRenderer(
-            $configuration->directory() . DIRECTORY_SEPARATOR . 'releases.rss',
+            $configuration->directory() . \DIRECTORY_SEPARATOR . 'releases.rss',
             $configuration->domain(),
             $configuration->email()
         );
@@ -51,7 +50,7 @@ final class Command extends AbstractCommand
         $renderer->render($releases);
 
         $renderer = new MetaDataRenderer(
-            $this->getDirectory($configuration->directory() . DIRECTORY_SEPARATOR . 'latest-version-of') . DIRECTORY_SEPARATOR,
+            $this->getDirectory($configuration->directory() . \DIRECTORY_SEPARATOR . 'latest-version-of') . \DIRECTORY_SEPARATOR,
             $configuration->domain(),
             $configuration->email()
         );
@@ -59,7 +58,7 @@ final class Command extends AbstractCommand
         $renderer->render($releases);
 
         $renderer = new PageRenderer(
-            $configuration->directory() . DIRECTORY_SEPARATOR . 'index.html',
+            $configuration->directory() . \DIRECTORY_SEPARATOR . 'index.html',
             $configuration->domain(),
             $configuration->email()
         );
@@ -67,7 +66,7 @@ final class Command extends AbstractCommand
         $renderer->render($releases);
 
         $renderer = new PharIoRenderer(
-            $configuration->directory() . DIRECTORY_SEPARATOR . 'phive.xml',
+            $configuration->directory() . \DIRECTORY_SEPARATOR . 'phive.xml',
             $configuration->domain(),
             $configuration->email()
         );

@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\PharSiteGenerator;
 
 class ReleaseCollector
@@ -44,7 +43,7 @@ class ReleaseCollector
                         $majorVersion,
                         $minorVersion,
                         $manifest,
-                        \date(DATE_W3C, $file->getMTime()),
+                        \date(\DATE_W3C, $file->getMTime()),
                         $this->humanFilesize($file->getSize()),
                         \hash_file('sha256', $file->getPathname())
                     )
