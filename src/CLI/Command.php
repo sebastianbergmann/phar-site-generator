@@ -30,7 +30,7 @@ final class Command extends AbstractCommand
      * @throws \TheSeer\fDOM\fDOMException
      * @throws RuntimeException
      */
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $configurationLoader = new ConfigurationLoader;
 
