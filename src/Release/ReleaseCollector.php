@@ -57,7 +57,7 @@ class ReleaseCollector
     private function humanFilesize(int $bytes): string
     {
         $sz     = 'BKMGTP';
-        $factor = \floor((\strlen($bytes) - 1) / 3);
+        $factor = \floor((\strlen((string) $bytes) - 1) / 3);
 
         return \sprintf('%.2f', $bytes / 1024 ** $factor) . @$sz[$factor];
     }
