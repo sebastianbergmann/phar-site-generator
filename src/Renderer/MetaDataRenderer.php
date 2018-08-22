@@ -20,6 +20,13 @@ final class MetaDataRenderer extends AbstractRenderer
             );
         }
 
+        foreach ($releases->latestReleasesPerPackageAndMajorVersion() as $release) {
+            \file_put_contents(
+                $this->target() . $release->package() . '-' . $release->majorVersion(),
+                $release->version()
+            );
+        }
+
         foreach ($releases->latestReleasesPerPackageAndMinorVersion() as $release) {
             \file_put_contents(
                 $this->target() . $release->package() . '-' . $release->minorVersion(),
