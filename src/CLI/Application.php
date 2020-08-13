@@ -9,83 +9,149 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
+use const DIRECTORY_SEPARATOR;
+use const PHP_EOL;
+use function copy;
+use function is_dir;
+use function mkdir;
+use function printf;
+use function sprintf;
 use SebastianBergmann\Version;
-use Symfony\Component\Console\Application as AbstractApplication;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputDefinition;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
-final class Application extends AbstractApplication
+final class Application
 {
-    public function __construct()
-    {
-        $version = new Version('3.0.0', \dirname(__DIR__, 2));
+    private const VERSION = '4.0';
 
-        parent::__construct('phar-site-generator', $version->getVersion());
+    public function run(array $argv): int
+    {
+        $this->printVersion();
+
+        try {
+            $arguments = (new ArgumentsBuilder)->build($argv);
+        } catch (Exception $e) {
+            print PHP_EOL . $e->getMessage() . PHP_EOL;
+
+            return 1;
+        }
+
+        if ($arguments->version()) {
+            return 0;
+        }
+
+        print PHP_EOL;
+
+        if ($arguments->help()) {
+            $this->help();
+
+            return 0;
+        }
+
+        $configuration = (new ConfigurationLoader)->load(
+            $arguments->configuration()
+        );
+
+        $releases  = (new ReleaseCollector)->collect($configuration->directory());
+
+        $renderer = new FeedRenderer(
+            $configuration->directory() . DIRECTORY_SEPARATOR . 'releases.rss',
+            $configuration->domain(),
+            $configuration->email()
+        );
+
+        $renderer->render($releases);
+
+        $renderer = new MetaDataRenderer(
+            $this->getDirectory($configuration->directory() . DIRECTORY_SEPARATOR . 'latest-version-of') . DIRECTORY_SEPARATOR,
+            $configuration->domain(),
+            $configuration->email()
+        );
+
+        $renderer->render($releases);
+
+        $renderer = new PageRenderer(
+            $configuration->directory() . DIRECTORY_SEPARATOR . 'index.html',
+            $configuration->domain(),
+            $configuration->email()
+        );
+
+        $renderer->render($releases);
+
+        $renderer = new PharIoRenderer(
+            $configuration->directory() . DIRECTORY_SEPARATOR . 'phive.xml',
+            $configuration->domain(),
+            $configuration->email()
+        );
+
+        $renderer->render($releases);
+
+        if ($configuration->shouldGenerateNginxConfigurationFile()) {
+            $renderer = new NginxConfigRenderer;
+
+            $renderer->render(
+                $releases,
+                $configuration->additionalReleaseSeries(),
+                $configuration->nginxConfigurationFile()
+            );
+        }
+
+        $this->copyAssets($configuration->directory());
+
+        return 0;
     }
 
-    public function getDefinition(): InputDefinition
+    private function printVersion(): void
     {
-        $inputDefinition = parent::getDefinition();
-        $inputDefinition->setArguments();
-
-        return $inputDefinition;
+        printf(
+            'phar-site-generator %s by Sebastian Bergmann.' . PHP_EOL,
+            (new Version(self::VERSION, dirname(__DIR__)))->getVersion()
+        );
     }
 
-    public function doRun(InputInterface $input, OutputInterface $output): int
+    private function help(): void
     {
-        $this->disableXdebug();
+        print <<<'EOT'
+Usage:
+  phar-site-generator <configuration file>
 
-        if (!$input->hasParameterOption('--quiet')) {
-            $output->write(
-                \sprintf(
-                    "phar-site-generator %s by Sebastian Bergmann.\n\n",
-                    $this->getVersion()
+EOT;
+    }
+
+    private function copyAssets(string $target): void
+    {
+        $dir = $this->getDirectory($target . '/css');
+        copy(__DIR__ . '/../assets/css/bootstrap.min.css', $dir . '/bootstrap.min.css');
+        copy(__DIR__ . '/../assets/css/style.css', $dir . '/style.css');
+
+        $dir = $this->getDirectory($target . '/fonts');
+        copy(__DIR__ . '/../assets/fonts/glyphicons-halflings-regular.eot', $dir . '/glyphicons-halflings-regular.eot');
+        copy(__DIR__ . '/../assets/fonts/glyphicons-halflings-regular.svg', $dir . '/glyphicons-halflings-regular.svg');
+        copy(__DIR__ . '/../assets/fonts/glyphicons-halflings-regular.ttf', $dir . '/glyphicons-halflings-regular.ttf');
+        copy(__DIR__ . '/../assets/fonts/glyphicons-halflings-regular.woff', $dir . '/glyphicons-halflings-regular.woff');
+        copy(__DIR__ . '/../assets/fonts/glyphicons-halflings-regular.woff2', $dir . '/glyphicons-halflings-regular.woff2');
+
+        $dir = $this->getDirectory($target . '/js');
+        copy(__DIR__ . '/../assets/js/bootstrap.min.js', $dir . '/bootstrap.min.js');
+        copy(__DIR__ . '/../assets/js/html5shiv.min.js', $dir . '/html5shiv.min.js');
+        copy(__DIR__ . '/../assets/js/jquery.min.js', $dir . '/jquery.min.js');
+        copy(__DIR__ . '/../assets/js/popover.js', $dir . '/popover.js');
+    }
+
+    private function getDirectory(string $directory): string
+    {
+        if (!$this->createDirectory($directory)) {
+            throw new RuntimeException(
+                sprintf(
+                    'Directory "%s" does not exist.',
+                    $directory
                 )
             );
         }
 
-        if ($input->hasParameterOption('--version') ||
-            $input->hasParameterOption('-V')) {
-            exit;
-        }
-
-        if (!$input->getFirstArgument()) {
-            $input = new ArrayInput(['--help']);
-        }
-
-        return parent::doRun($input, $output);
+        return $directory;
     }
 
-    protected function getCommandName(InputInterface $input): string
+    private function createDirectory(string $directory): bool
     {
-        return 'phar-site-generator';
-    }
-
-    /**
-     * @throws \Symfony\Component\Console\Exception\LogicException
-     */
-    protected function getDefaultCommands(): array
-    {
-        $defaultCommands = parent::getDefaultCommands();
-
-        $defaultCommands[] = new Command;
-
-        return $defaultCommands;
-    }
-
-    private function disableXdebug(): void
-    {
-        if (!\extension_loaded('xdebug')) {
-            return;
-        }
-
-        \ini_set('xdebug.scream', '0');
-        \ini_set('xdebug.max_nesting_level', '8192');
-        \ini_set('xdebug.show_exception_trace', '0');
-        \ini_set('xdebug.show_error_trace', '0');
-
-        \xdebug_disable();
+        return !(!is_dir($directory) && !@mkdir($directory, 0777, true) && !is_dir($directory));
     }
 }

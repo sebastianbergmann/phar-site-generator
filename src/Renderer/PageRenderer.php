@@ -9,11 +9,18 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
+use function array_map;
+use function implode;
+use function sprintf;
+use InvalidArgumentException;
+use RuntimeException;
+use SebastianBergmann\Template\Template;
+
 final class PageRenderer extends AbstractRenderer
 {
     /**
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function render(ReleaseCollection $releases): void
     {
@@ -29,13 +36,13 @@ final class PageRenderer extends AbstractRenderer
             $allReleases .= $this->renderRelease($release);
         }
 
-        $page = new \Text_Template(__DIR__ . '/../templates/page.html');
+        $page = new Template(__DIR__ . '/../templates/page.html');
 
         $page->setVar(
             [
                 'domain'          => $this->domain(),
                 'latest_releases' => $latestReleases,
-                'all_releases'    => $allReleases
+                'all_releases'    => $allReleases,
             ]
         );
 
@@ -43,19 +50,19 @@ final class PageRenderer extends AbstractRenderer
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     private function renderRelease(Release $release, bool $latest = false): string
     {
-        $item     = new \Text_Template(__DIR__ . '/../templates/item.html');
+        $item     = new Template(__DIR__ . '/../templates/item.html');
         $manifest = '';
 
         if (!empty($release->manifest())) {
-            $manifest = \sprintf(
+            $manifest = sprintf(
                 ' class="phar" data-title="Manifest" data-content="<ul>%s</ul>" data-placement="bottom" data-html="true"',
-                \implode(
+                implode(
                     '',
-                    \array_map(
+                    array_map(
                         function ($item) {
                             return '<li>' . $item . '</li>';
                         },
@@ -75,7 +82,7 @@ final class PageRenderer extends AbstractRenderer
                 'sha256'      => $release->sha256(),
                 'strongOpen'  => $latest ? '<strong>' : '',
                 'strongClose' => $latest ? '</strong>' : '',
-                'manifest'    => $manifest
+                'manifest'    => $manifest,
             ]
         );
 

@@ -9,6 +9,7 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
+use function assert;
 use TheSeer\fDOM\fDOMDocument;
 use TheSeer\fDOM\fDOMElement;
 
@@ -35,7 +36,7 @@ final class ConfigurationLoader
         }
 
         foreach ($document->getElementsByTagName('series') as $series) {
-            /* @var fDOMElement $series */
+            assert($series instanceof fDOMElement);
 
             $configuration->addAdditionalReleaseSeries(
                 $series->getAttribute('package'),

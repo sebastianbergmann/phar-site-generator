@@ -6,4 +6,3 @@
 /vendor
 /build/phar
 /build/*.phar*
-/tools

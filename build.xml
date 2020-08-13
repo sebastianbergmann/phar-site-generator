@@ -15,7 +15,7 @@
     </target>
 
     <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed" description="Install dependencies with Composer">
-        <exec executable="composer" taskname="composer">
+        <exec executable="${basedir}/tools/composer" taskname="composer">
             <arg value="update"/>
             <arg value="--no-interaction"/>
             <arg value="--no-progress"/>
@@ -24,9 +24,14 @@
         </exec>
     </target>
 
-    <target name="install-tools" unless="tools-installed" depends="-tools-installed" description="Install tools using phive">
-        <exec executable="phive" taskname="phive">
-            <arg value="install"/>
+    <target name="update-tools">
+        <exec executable="phive">
+            <arg value="--no-progress"/>
+            <arg value="update"/>
+        </exec>
+
+        <exec executable="${basedir}/tools/composer">
+            <arg value="self-update"/>
         </exec>
     </target>
 
@@ -47,7 +52,7 @@
 
     <target name="phar"
             description="Create PHAR archive of phar-site-generator and all its dependencies"
-            depends="setup,install-tools,phar-build">
+            depends="setup,phar-build">
         <mkdir dir="${basedir}/build/phar"/>
     </target>
 
@@ -63,6 +68,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/sebastian/cli-parser/LICENSE" tofile="${basedir}/build/phar/sebastian-cli-parser/LICENSE"/>
+        <copy todir="${basedir}/build/phar/sebastian-cli-parser">
+            <fileset dir="${basedir}/vendor/sebastian/cli-parser/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/phpunit/php-text-template/LICENSE" tofile="${basedir}/build/phar/php-text-template/LICENSE"/>
         <copy todir="${basedir}/build/phar/php-text-template">
             <fileset dir="${basedir}/vendor/phpunit/php-text-template/src">
@@ -75,13 +87,6 @@
             <fileset dir="${basedir}/vendor/sebastian/version/src">
                 <include name="**/*.php" />
                 <exclude name="**/autoload.php" />
-            </fileset>
-        </copy>
-
-        <copy todir="${basedir}/build/phar/symfony">
-            <fileset dir="${basedir}/vendor/symfony">
-                <include name="**/*.php" />
-                <exclude name="**/Tests/**" />
             </fileset>
         </copy>
 
@@ -111,9 +116,5 @@
 
     <target name="-dependencies-installed">
         <available file="${basedir}/vendor" property="dependencies-installed" type="dir"/>
-    </target>
-
-    <target name="-tools-installed">
-        <available file="${basedir}/tools" property="tools-installed" type="dir"/>
     </target>
 </project>

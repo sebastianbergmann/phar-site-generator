@@ -9,8 +9,8 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
-use Throwable;
+use RuntimeException;
 
-interface Exception extends Throwable
+final class ArgumentsBuilderException extends RuntimeException implements Exception
 {
 }

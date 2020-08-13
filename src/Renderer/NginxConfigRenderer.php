@@ -9,6 +9,9 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
+use function file_put_contents;
+use function sprintf;
+
 final class NginxConfigRenderer
 {
     public function render(ReleaseCollection $releases, array $additionalReleaseSeries, string $target): void
@@ -16,14 +19,14 @@ final class NginxConfigRenderer
         $buffer = '';
 
         foreach ($releases->latestReleases() as $release) {
-            $buffer .= \sprintf(
+            $buffer .= sprintf(
                 "rewrite ^/%s.phar$ /%s-%s.phar redirect;\n",
                 $release->package(),
                 $release->package(),
                 $release->version()
             );
 
-            $buffer .= \sprintf(
+            $buffer .= sprintf(
                 "rewrite ^/%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
                 $release->package(),
                 $release->package(),
@@ -32,7 +35,7 @@ final class NginxConfigRenderer
         }
 
         foreach ($releases->latestReleasesPerPackageAndMajorVersion() as $release) {
-            $buffer .= \sprintf(
+            $buffer .= sprintf(
                 "rewrite ^/%s-%s.phar$ /%s-%s.phar redirect;\n",
                 $release->package(),
                 $release->majorVersion(),
@@ -40,7 +43,7 @@ final class NginxConfigRenderer
                 $release->version()
             );
 
-            $buffer .= \sprintf(
+            $buffer .= sprintf(
                 "rewrite ^/%s-%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
                 $release->package(),
                 $release->majorVersion(),
@@ -50,7 +53,7 @@ final class NginxConfigRenderer
         }
 
         foreach ($releases->latestReleasesPerPackageAndMinorVersion() as $release) {
-            $buffer .= \sprintf(
+            $buffer .= sprintf(
                 "rewrite ^/%s-%s.phar$ /%s-%s.phar redirect;\n",
                 $release->package(),
                 $release->minorVersion(),
@@ -58,7 +61,7 @@ final class NginxConfigRenderer
                 $release->version()
             );
 
-            $buffer .= \sprintf(
+            $buffer .= sprintf(
                 "rewrite ^/%s-%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
                 $release->package(),
                 $release->minorVersion(),
@@ -68,7 +71,7 @@ final class NginxConfigRenderer
         }
 
         foreach ($additionalReleaseSeries as $item) {
-            $buffer .= \sprintf(
+            $buffer .= sprintf(
                 "rewrite ^/%s-%s.phar$ /%s-%s.phar redirect;\n",
                 $item['package'],
                 $item['alias'],
@@ -79,7 +82,7 @@ final class NginxConfigRenderer
                 )->version()
             );
 
-            $buffer .= \sprintf(
+            $buffer .= sprintf(
                 "rewrite ^/%s-%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
                 $item['package'],
                 $item['alias'],
@@ -91,6 +94,6 @@ final class NginxConfigRenderer
             );
         }
 
-        \file_put_contents($target, $buffer);
+        file_put_contents($target, $buffer);
     }
 }

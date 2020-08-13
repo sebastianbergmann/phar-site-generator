@@ -9,15 +9,19 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
+use function sprintf;
+use DOMDocument;
+use DOMXPath;
+
 final class PharIoRenderer extends AbstractRenderer
 {
     /**
-     * @var \DOMDocument
+     * @var DOMDocument
      */
     private $repository;
 
     /**
-     * @var \DOMXPath
+     * @var DOMXPath
      */
     private $xp;
 
@@ -34,7 +38,7 @@ final class PharIoRenderer extends AbstractRenderer
 
     private function addRelease(Release $release): void
     {
-        $url = \sprintf(
+        $url = sprintf(
             'https://%s/%s-%s.phar',
             $this->domain(),
             $release->package(),
@@ -69,7 +73,7 @@ final class PharIoRenderer extends AbstractRenderer
     private function getContainer(string $package)
     {
         $result = $this->xp->query(
-            \sprintf('//phive:phar[@name="%s"]', $package)
+            sprintf('//phive:phar[@name="%s"]', $package)
         );
 
         if ($result->length > 0) {
@@ -85,9 +89,9 @@ final class PharIoRenderer extends AbstractRenderer
 
     private function initRepository(): void
     {
-        $this->repository = new \DOMDocument('1.0', 'UTF-8');
+        $this->repository = new DOMDocument('1.0', 'UTF-8');
         $this->repository->load(__DIR__ . '/../templates/phive.xml');
-        $this->xp = new \DOMXPath($this->repository);
+        $this->xp = new DOMXPath($this->repository);
         $this->xp->registerNamespace('phive', 'https://phar.io/repository');
     }
 

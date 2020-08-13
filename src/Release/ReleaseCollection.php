@@ -9,6 +9,10 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
+use function array_keys;
+use function usort;
+use function version_compare;
+
 final class ReleaseCollection
 {
     /**
@@ -40,7 +44,7 @@ final class ReleaseCollection
         if (!isset($this->latestVersion[$package])) {
             $this->latestVersion[$package] = $release;
         } else {
-            if (\version_compare($release->version(), $this->latestVersion[$package]->version(), '>=')) {
+            if (version_compare($release->version(), $this->latestVersion[$package]->version(), '>=')) {
                 $this->latestVersion[$package] = $release;
             }
         }
@@ -49,7 +53,7 @@ final class ReleaseCollection
             $this->latestMajorVersion[$package] = [$majorVersion => $release];
         } elseif (!isset($this->latestMajorVersion[$package][$majorVersion])) {
             $this->latestMajorVersion[$package][$majorVersion] = $release;
-        } elseif (\version_compare($release->version(), $this->latestMajorVersion[$package][$majorVersion]->version(), '>=')) {
+        } elseif (version_compare($release->version(), $this->latestMajorVersion[$package][$majorVersion]->version(), '>=')) {
             $this->latestMajorVersion[$package][$majorVersion] = $release;
         }
 
@@ -57,7 +61,7 @@ final class ReleaseCollection
             $this->latestMinorVersion[$package] = [$minorVersion => $release];
         } elseif (!isset($this->latestMinorVersion[$package][$minorVersion])) {
             $this->latestMinorVersion[$package][$minorVersion] = $release;
-        } elseif (\version_compare($release->version(), $this->latestMinorVersion[$package][$minorVersion]->version(), '>=')) {
+        } elseif (version_compare($release->version(), $this->latestMinorVersion[$package][$minorVersion]->version(), '>=')) {
             $this->latestMinorVersion[$package][$minorVersion] = $release;
         }
 
@@ -124,7 +128,7 @@ final class ReleaseCollection
     {
         $latest = $this->latestReleases();
 
-        \usort(
+        usort(
             $latest,
             function (Release $a, Release $b) {
                 return $a->date() <= $b->date();
@@ -141,7 +145,7 @@ final class ReleaseCollection
     {
         $latest = $this->latestReleases();
 
-        \usort(
+        usort(
             $latest,
             function (Release $a, Release $b) {
                 return $a->package() >= $b->package();
@@ -153,6 +157,6 @@ final class ReleaseCollection
 
     public function packages(): array
     {
-        return \array_keys($this->latestVersion);
+        return array_keys($this->latestVersion);
     }
 }

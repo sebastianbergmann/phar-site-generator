@@ -36,7 +36,6 @@ if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] === '--manifest') {
     exit;
 }
 
-$application = new SebastianBergmann\PharSiteGenerator\Application;
-$application->run();
+exit((new \SebastianBergmann\PharSiteGenerator\Application)->run($_SERVER['argv']));
 
 __HALT_COMPILER();

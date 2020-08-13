@@ -9,21 +9,26 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
+use function sprintf;
+use InvalidArgumentException;
+use RuntimeException;
+use SebastianBergmann\Template\Template;
+
 final class FeedRenderer extends AbstractRenderer
 {
     /**
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function render(ReleaseCollection $releases): void
     {
-        $feedTemplate     = new \Text_Template(__DIR__ . '/../templates/feed.xml');
-        $feedItemTemplate = new \Text_Template(__DIR__ . '/../templates/item.xml');
+        $feedTemplate     = new Template(__DIR__ . '/../templates/feed.xml');
+        $feedItemTemplate = new Template(__DIR__ . '/../templates/item.xml');
         $rdfList          = '';
         $rdfItems         = '';
 
         foreach ($releases->latestReleasesSortedByDate() as $release) {
-            $rdfList .= \sprintf(
+            $rdfList .= sprintf(
                 '    <rdf:li rdf:resource="%s/%s-%s.phar"/>' . "\n",
                 $this->domain(),
                 $release->package(),
@@ -36,7 +41,7 @@ final class FeedRenderer extends AbstractRenderer
                     'package' => $release->package(),
                     'version' => $release->version(),
                     'date'    => $release->date(),
-                    'content' => ''
+                    'content' => '',
                 ]
             );
 
@@ -48,7 +53,7 @@ final class FeedRenderer extends AbstractRenderer
                 'items_list' => $rdfList,
                 'items'      => $rdfItems,
                 'domain'     => $this->domain(),
-                'email'      => $this->email()
+                'email'      => $this->email(),
             ]
         );
 

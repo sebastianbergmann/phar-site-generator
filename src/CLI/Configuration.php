@@ -53,7 +53,7 @@ final class Configuration
         $this->additionalReleaseSeries[] = [
             'package' => $package,
             'series'  => $series,
-            'alias'   => $alias
+            'alias'   => $alias,
         ];
     }
 
