@@ -104,7 +104,7 @@ final class Application
     {
         printf(
             'phar-site-generator %s by Sebastian Bergmann.' . PHP_EOL,
-            (new Version(self::VERSION, dirname(__DIR__)))->getVersion()
+            (new Version(self::VERSION, dirname(__DIR__)))->asString()
         );
     }
 
