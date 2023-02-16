@@ -10,18 +10,16 @@
 namespace SebastianBergmann\PharSiteGenerator;
 
 use function assert;
-use TheSeer\fDOM\fDOMDocument;
-use TheSeer\fDOM\fDOMElement;
+use function file_get_contents;
+use DOMDocument;
+use DOMElement;
 
 final class ConfigurationLoader
 {
-    /**
-     * @throws \TheSeer\fDOM\fDOMException
-     */
     public function load(string $filename)
     {
-        $document = new fDOMDocument;
-        $document->load($filename);
+        $document = new DOMDocument;
+        $document->loadXML(file_get_contents($filename));
 
         $configuration = new Configuration(
             $document->getElementsByTagName('directory')->item(0)->textContent,
@@ -36,7 +34,7 @@ final class ConfigurationLoader
         }
 
         foreach ($document->getElementsByTagName('series') as $series) {
-            assert($series instanceof fDOMElement);
+            assert($series instanceof DOMElement);
 
             $configuration->addAdditionalReleaseSeries(
                 $series->getAttribute('package'),
