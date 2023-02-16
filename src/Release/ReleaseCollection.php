@@ -130,7 +130,8 @@ final class ReleaseCollection
 
         usort(
             $latest,
-            function (Release $a, Release $b) {
+            static function (Release $a, Release $b)
+            {
                 return $a->date() <= $b->date();
             }
         );
@@ -147,7 +148,8 @@ final class ReleaseCollection
 
         usort(
             $latest,
-            function (Release $a, Release $b) {
+            static function (Release $a, Release $b)
+            {
                 return $a->package() >= $b->package();
             }
         );

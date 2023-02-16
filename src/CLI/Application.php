@@ -12,6 +12,7 @@ namespace SebastianBergmann\PharSiteGenerator;
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function copy;
+use function dirname;
 use function is_dir;
 use function mkdir;
 use function printf;
@@ -50,7 +51,7 @@ final class Application
             $arguments->configuration()
         );
 
-        $releases  = (new ReleaseCollector)->collect($configuration->directory());
+        $releases = (new ReleaseCollector)->collect($configuration->directory());
 
         $renderer = new FeedRenderer(
             $configuration->directory() . DIRECTORY_SEPARATOR . 'releases.rss',

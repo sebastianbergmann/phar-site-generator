@@ -63,7 +63,8 @@ final class PageRenderer extends AbstractRenderer
                 implode(
                     '',
                     array_map(
-                        function ($item) {
+                        static function ($item)
+                        {
                             return '<li>' . $item . '</li>';
                         },
                         $release->manifest()
