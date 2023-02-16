@@ -21,17 +21,18 @@ final class ConfigurationLoader
         $document = new DOMDocument;
         $document->loadXML(file_get_contents($filename));
 
+        $nginxConfigurationFile = null;
+
+        if ($document->getElementsByTagName('nginx')->item(0)) {
+            $nginxConfigurationFile = $document->getElementsByTagName('nginx')->item(0)->textContent;
+        }
+
         $configuration = new Configuration(
             $document->getElementsByTagName('directory')->item(0)->textContent,
             $document->getElementsByTagName('domain')->item(0)->textContent,
-            $document->getElementsByTagName('email')->item(0)->textContent
+            $document->getElementsByTagName('email')->item(0)->textContent,
+            $nginxConfigurationFile
         );
-
-        if ($document->getElementsByTagName('nginx')->item(0)) {
-            $configuration->setNginxConfigurationFile(
-                $document->getElementsByTagName('nginx')->item(0)->textContent
-            );
-        }
 
         foreach ($document->getElementsByTagName('series') as $series) {
             assert($series instanceof DOMElement);

@@ -16,24 +16,24 @@ use function version_compare;
 final class ReleaseCollection
 {
     /**
-     * @var Release[]
+     * @psalm-var list<Release>
      */
-    private $all = [];
+    private array $all = [];
 
     /**
-     * @var array
+     * @psalm-var array<string, Release>
      */
-    private $latestVersion = [];
+    private array $latestVersion = [];
 
     /**
-     * @var array
+     * @psalm-var array<string, Release>
      */
-    private $latestMinorVersion = [];
+    private array $latestMinorVersion = [];
 
     /**
-     * @var array
+     * @psalm-var array<string, Release>
      */
-    private $latestMajorVersion = [];
+    private array $latestMajorVersion = [];
 
     public function add(Release $release): void
     {
@@ -69,7 +69,7 @@ final class ReleaseCollection
     }
 
     /**
-     * @return Release[]
+     * @psalm-return list<Release>
      */
     public function allReleases(): array
     {
@@ -77,7 +77,7 @@ final class ReleaseCollection
     }
 
     /**
-     * @return Release[]
+     * @psalm-return array<string, Release>
      */
     public function latestReleases(): array
     {
@@ -85,7 +85,7 @@ final class ReleaseCollection
     }
 
     /**
-     * @return Release[]
+     * @psalm-return list<Release>
      */
     public function latestReleasesPerPackageAndMajorVersion(): array
     {
@@ -101,7 +101,7 @@ final class ReleaseCollection
     }
 
     /**
-     * @return Release[]
+     * @psalm-return list<Release>
      */
     public function latestReleasesPerPackageAndMinorVersion(): array
     {
@@ -122,7 +122,7 @@ final class ReleaseCollection
     }
 
     /**
-     * @return Release[]
+     * @psalm-return list<Release>
      */
     public function latestReleasesSortedByDate(): array
     {
@@ -140,7 +140,7 @@ final class ReleaseCollection
     }
 
     /**
-     * @return Release[]
+     * @psalm-return list<Release>
      */
     public function latestReleasesSortedByPackageName(): array
     {
@@ -157,6 +157,9 @@ final class ReleaseCollection
         return $latest;
     }
 
+    /**
+     * @psalm-return list<string>
+     */
     public function packages(): array
     {
         return array_keys($this->latestVersion);

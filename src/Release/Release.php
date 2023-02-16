@@ -11,45 +11,18 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 final class Release
 {
-    /**
-     * @var string
-     */
-    private $package;
+    private string $package;
+    private string $version;
+    private string $majorVersion;
+    private string $minorVersion;
+    private string $date;
+    private string $size;
+    private string $sha256;
 
     /**
-     * @var string
+     * @psalm-var list<string>
      */
-    private $version;
-
-    /**
-     * @var string
-     */
-    private $majorVersion;
-
-    /**
-     * @var string
-     */
-    private $minorVersion;
-
-    /**
-     * @var string[]
-     */
-    private $manifest;
-
-    /**
-     * @var string
-     */
-    private $date;
-
-    /**
-     * @var string
-     */
-    private $size;
-
-    /**
-     * @var string
-     */
-    private $sha256;
+    private array $manifest;
 
     public function __construct(string $package, string $version, string $majorVersion, string $minorVersion, array $manifest, string $date, string $size, string $sha256)
     {

@@ -11,19 +11,13 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 use function sprintf;
 use DOMDocument;
+use DOMNode;
 use DOMXPath;
 
 final class PharIoRenderer extends AbstractRenderer
 {
-    /**
-     * @var DOMDocument
-     */
-    private $repository;
-
-    /**
-     * @var DOMXPath
-     */
-    private $xp;
+    private DOMDocument $repository;
+    private DOMXPath $xp;
 
     public function render(ReleaseCollection $releases): void
     {
@@ -70,7 +64,7 @@ final class PharIoRenderer extends AbstractRenderer
         }
     }
 
-    private function getContainer(string $package)
+    private function getContainer(string $package): DOMNode
     {
         $result = $this->xp->query(
             sprintf('//phive:phar[@name="%s"]', $package)
@@ -95,7 +89,7 @@ final class PharIoRenderer extends AbstractRenderer
         $this->xp->registerNamespace('phive', 'https://phar.io/repository');
     }
 
-    private function addElement(string $name)
+    private function addElement(string $name): DOMNode
     {
         return $this->repository->createElementNS('https://phar.io/repository', $name);
     }

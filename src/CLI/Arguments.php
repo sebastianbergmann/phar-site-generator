@@ -11,20 +11,9 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 final class Arguments
 {
-    /**
-     * @var ?string
-     */
-    private $configuration;
-
-    /**
-     * @var bool
-     */
-    private $help;
-
-    /**
-     * @var bool
-     */
-    private $version;
+    private ?string $configuration;
+    private bool $help;
+    private bool $version;
 
     public function __construct(?string $configuration, bool $help, bool $version)
     {

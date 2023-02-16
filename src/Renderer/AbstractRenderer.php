@@ -11,20 +11,9 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 abstract class AbstractRenderer
 {
-    /**
-     * @var string
-     */
-    private $target;
-
-    /**
-     * @var string
-     */
-    private $domain;
-
-    /**
-     * @var string
-     */
-    private $email;
+    private string $target;
+    private string $domain;
+    private string $email;
 
     public function __construct(string $target, string $domain, string $email)
     {

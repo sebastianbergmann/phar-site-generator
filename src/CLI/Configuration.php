@@ -11,41 +11,22 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 final class Configuration
 {
-    /**
-     * @var string
-     */
-    private $directory;
+    private string $directory;
+    private string $domain;
+    private string $email;
+    private ?string $nginxConfigurationFile;
 
     /**
-     * @var string
+     * @psalm-var list<array{package: string, series: string, alias: string}>
      */
-    private $domain;
+    private array $additionalReleaseSeries = [];
 
-    /**
-     * @var string
-     */
-    private $email;
-
-    /**
-     * @var string
-     */
-    private $nginxConfigurationFile;
-
-    /**
-     * @var array
-     */
-    private $additionalReleaseSeries = [];
-
-    public function __construct(string $directory, string $domain, string $email)
+    public function __construct(string $directory, string $domain, string $email, ?string $nginxConfigurationFile)
     {
-        $this->directory = $directory;
-        $this->domain    = $domain;
-        $this->email     = $email;
-    }
-
-    public function setNginxConfigurationFile(string $filename): void
-    {
-        $this->nginxConfigurationFile = $filename;
+        $this->directory              = $directory;
+        $this->domain                 = $domain;
+        $this->email                  = $email;
+        $this->nginxConfigurationFile = $nginxConfigurationFile;
     }
 
     public function addAdditionalReleaseSeries(string $package, string $series, string $alias): void
@@ -82,6 +63,9 @@ final class Configuration
         return $this->nginxConfigurationFile;
     }
 
+    /**
+     * @psalm-return list<array{package: string, series: string, alias: string}>
+     */
     public function additionalReleaseSeries(): array
     {
         return $this->additionalReleaseSeries;
