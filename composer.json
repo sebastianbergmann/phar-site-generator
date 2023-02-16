@@ -2,6 +2,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^8.2",
+        "ext-dom": "*",
         "phpunit/php-text-template": "^3.0",
         "sebastian/cli-parser": "^2.0",
         "sebastian/version": "^4.0"
