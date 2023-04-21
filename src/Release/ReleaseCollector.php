@@ -44,16 +44,6 @@ class ReleaseCollector
                 $majorVersion = explode('.', $version)[0];
                 $minorVersion = implode('.', array_slice(explode('.', $version), 0, 2));
                 $name         = implode('-', $parts);
-                $manifest     = [];
-
-                if (file_exists('phar://' . $file->getPathname() . '/manifest.txt')) {
-                    $manifest = file('phar://' . $file->getPathname() . '/manifest.txt');
-                } elseif (file_exists('phar://' . $file->getPathname() . '/phar/manifest.txt')) {
-                    $manifest = file('phar://' . $file->getPathname() . '/phar/manifest.txt');
-                } elseif (is_executable($file->getPathname()) &&
-                          strpos(file_get_contents($file->getPathname()), '--manifest')) {
-                    @exec($file->getPathname() . ' --manifest 2> /dev/null', $manifest);
-                }
 
                 $releases->add(
                     new Release(
@@ -61,7 +51,6 @@ class ReleaseCollector
                         $version,
                         $majorVersion,
                         $minorVersion,
-                        $manifest,
                         date(DATE_W3C, $file->getMTime()),
                         $this->humanFilesize($file->getSize()),
                         hash_file('sha256', $file->getPathname())

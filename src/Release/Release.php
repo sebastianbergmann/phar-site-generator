@@ -19,18 +19,12 @@ final class Release
     private string $size;
     private string $sha256;
 
-    /**
-     * @psalm-var list<string>
-     */
-    private array $manifest;
-
-    public function __construct(string $package, string $version, string $majorVersion, string $minorVersion, array $manifest, string $date, string $size, string $sha256)
+    public function __construct(string $package, string $version, string $majorVersion, string $minorVersion, string $date, string $size, string $sha256)
     {
         $this->package      = $package;
         $this->version      = $version;
         $this->majorVersion = $majorVersion;
         $this->minorVersion = $minorVersion;
-        $this->manifest     = $manifest;
         $this->date         = $date;
         $this->size         = $size;
         $this->sha256       = $sha256;
@@ -54,11 +48,6 @@ final class Release
     public function majorVersion(): string
     {
         return $this->majorVersion;
-    }
-
-    public function manifest(): array
-    {
-        return $this->manifest;
     }
 
     public function date(): string

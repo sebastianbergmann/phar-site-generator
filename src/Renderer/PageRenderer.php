@@ -54,24 +54,7 @@ final class PageRenderer extends AbstractRenderer
      */
     private function renderRelease(Release $release, bool $latest = false): string
     {
-        $item     = new Template(__DIR__ . '/../templates/item.html');
-        $manifest = '';
-
-        if (!empty($release->manifest())) {
-            $manifest = sprintf(
-                ' class="phar" data-title="Manifest" data-content="<ul>%s</ul>" data-placement="bottom" data-html="true"',
-                implode(
-                    '',
-                    array_map(
-                        static function ($item)
-                        {
-                            return '<li>' . $item . '</li>';
-                        },
-                        $release->manifest()
-                    )
-                )
-            );
-        }
+        $item = new Template(__DIR__ . '/../templates/item.html');
 
         $item->setVar(
             [
@@ -83,7 +66,6 @@ final class PageRenderer extends AbstractRenderer
                 'sha256'      => $release->sha256(),
                 'strongOpen'  => $latest ? '<strong>' : '',
                 'strongClose' => $latest ? '</strong>' : '',
-                'manifest'    => $manifest,
             ]
         );
 
