@@ -89,13 +89,6 @@
             </fileset>
         </copy>
 
-        <copy todir="${basedir}/build/phar/theseer">
-            <fileset dir="${basedir}/vendor/theseer">
-                <include name="**/*.php" />
-                <exclude name="**/tests/**" />
-            </fileset>
-        </copy>
-
         <exec executable="${basedir}/build/phar-manifest.php" output="${basedir}/build/phar/manifest.txt"/>
 
         <exec executable="${basedir}/tools/phpab">
