@@ -9,9 +9,6 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
-use function array_map;
-use function implode;
-use function sprintf;
 use InvalidArgumentException;
 use RuntimeException;
 use SebastianBergmann\Template\Template;
@@ -58,12 +55,12 @@ final class PageRenderer extends AbstractRenderer
 
         $item->setVar(
             [
-                'domain'      => $this->domain(),
-                'package'     => $release->package(),
-                'version'     => $release->version(),
-                'date'        => $release->date(),
-                'size'        => $release->size(),
-                'sha256'      => $release->sha256(),
+                'domain'  => $this->domain(),
+                'package' => $release->package(),
+                'version' => $release->version(),
+                'date'    => $release->date(),
+                'size'    => $release->size(),
+                'sha256'  => $release->sha256(),
             ]
         );
 

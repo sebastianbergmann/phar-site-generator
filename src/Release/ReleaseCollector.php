@@ -13,19 +13,13 @@ use const DATE_W3C;
 use function array_pop;
 use function array_slice;
 use function date;
-use function exec;
 use function explode;
-use function file;
-use function file_exists;
-use function file_get_contents;
 use function floor;
 use function hash_file;
 use function implode;
-use function is_executable;
 use function sprintf;
 use function stripos;
 use function strlen;
-use function strpos;
 use GlobIterator;
 
 class ReleaseCollector
