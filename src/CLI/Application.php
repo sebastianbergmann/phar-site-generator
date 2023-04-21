@@ -126,9 +126,6 @@ EOT;
         $dir = $this->getDirectory($target . '/fonts');
         copy(__DIR__ . '/../assets/fonts/OpenSans.ttf', $dir . '/OpenSans.ttf');
         copy(__DIR__ . '/../assets/fonts/SourceCodePro.ttf', $dir . '/SourceCodePro.ttf');
-
-        $dir = $this->getDirectory($target . '/js');
-        copy(__DIR__ . '/../assets/js/bootstrap.min.js', $dir . '/bootstrap.min.js');
     }
 
     private function getDirectory(string $directory): string
