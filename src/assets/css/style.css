@@ -16,18 +16,16 @@ body, h1, h2 {
  font-family: 'Open Sans', sans-serif;
 }
 
+body {
+ font-kerning: normal;
+ font-variant-ligatures: common-ligatures;
+ text-rendering: optimizeLegibility;
+}
+
 code, pre {
  font-family: 'Source Code Pro', monospace;
 }
 
-.container {
- width: 99%;
-}
-
 .container > hr {
  margin: 30px 0;
-}
-
-.popover {
- max-width: none;
 }
