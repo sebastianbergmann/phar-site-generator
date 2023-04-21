@@ -124,6 +124,8 @@ EOT;
         copy(__DIR__ . '/../assets/css/style.css', $dir . '/style.css');
 
         $dir = $this->getDirectory($target . '/fonts');
+        copy(__DIR__ . '/../assets/fonts/OpenSans.ttf', $dir . '/OpenSans.ttf');
+        copy(__DIR__ . '/../assets/fonts/SourceCodePro.ttf', $dir . '/SourceCodePro.ttf');
         copy(__DIR__ . '/../assets/fonts/glyphicons-halflings-regular.eot', $dir . '/glyphicons-halflings-regular.eot');
         copy(__DIR__ . '/../assets/fonts/glyphicons-halflings-regular.svg', $dir . '/glyphicons-halflings-regular.svg');
         copy(__DIR__ . '/../assets/fonts/glyphicons-halflings-regular.ttf', $dir . '/glyphicons-halflings-regular.ttf');
