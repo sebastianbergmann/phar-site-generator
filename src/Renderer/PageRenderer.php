@@ -24,7 +24,7 @@ final class PageRenderer extends AbstractRenderer
         $latestReleases = '';
 
         foreach ($releases->latestReleasesSortedByPackageName() as $release) {
-            $latestReleases .= $this->renderRelease($release, true);
+            $latestReleases .= $this->renderRelease($release);
         }
 
         $allReleases = '';
@@ -49,7 +49,7 @@ final class PageRenderer extends AbstractRenderer
     /**
      * @throws InvalidArgumentException
      */
-    private function renderRelease(Release $release, bool $latest = false): string
+    private function renderRelease(Release $release): string
     {
         $item = new Template(__DIR__ . '/../templates/item.html');
 
