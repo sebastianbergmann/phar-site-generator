@@ -30,6 +30,11 @@ final class Release
         $this->sha256       = $sha256;
     }
 
+    public function asString(): string
+    {
+        return $this->package . '-' . $this->version;
+    }
+
     public function package(): string
     {
         return $this->package;
