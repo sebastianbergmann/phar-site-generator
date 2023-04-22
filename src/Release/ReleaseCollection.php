@@ -10,6 +10,7 @@
 namespace SebastianBergmann\PharSiteGenerator;
 
 use function array_keys;
+use function strnatcmp;
 use function usort;
 use function version_compare;
 
@@ -34,6 +35,7 @@ final class ReleaseCollection
      * @psalm-var array<string, Release>
      */
     private array $latestMajorVersion = [];
+    private bool $sorted              = false;
 
     public function add(Release $release): void
     {
@@ -66,6 +68,8 @@ final class ReleaseCollection
         }
 
         $this->all[] = $release;
+
+        $this->sorted = false;
     }
 
     /**
@@ -73,6 +77,8 @@ final class ReleaseCollection
      */
     public function allReleases(): array
     {
+        $this->sort();
+
         return $this->all;
     }
 
@@ -163,5 +169,19 @@ final class ReleaseCollection
     public function packages(): array
     {
         return array_keys($this->latestVersion);
+    }
+
+    private function sort(): void
+    {
+        if ($this->sorted) {
+            return;
+        }
+
+        usort(
+            $this->all,
+            static fn (Release $a, Release $b): int => strnatcmp($a->asString(), $b->asString())
+        );
+
+        $this->sorted = true;
     }
 }
