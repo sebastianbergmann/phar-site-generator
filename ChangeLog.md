@@ -2,7 +2,7 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [4.0.1] - 2023-MM-DD
+## [4.0.1] - 2023-04-23
 
 ### Changed
 
@@ -119,7 +119,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
-[4.0.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/4.0.0...main
+[4.0.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/3.0.0...4.0.0
 [3.0.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.1.0...3.0.0
 [2.1.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.0.2...2.1.0
