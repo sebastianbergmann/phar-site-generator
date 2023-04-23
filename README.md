@@ -7,7 +7,6 @@ This tool makes the following assumptions:
 * The PHAR repository is hosted using [nginx](http://nginx.org/)
 * The PHAR repository is hosted using HTTPS
 * The PHAR repository directory contains `.phar` (PHP Archive) and `.phar.asc` (GPG signature) files
-* The output of `package-x.y.z.phar --manifest`, if that option is available, is used as the manifest information for that package's release
 
 ## Usage
 
