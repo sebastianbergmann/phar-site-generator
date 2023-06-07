@@ -6,7 +6,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ### Changed
 
-* Releases are not sorted using "natural order" algorithm
+* Releases are now sorted using "natural order" algorithm
 
 ## [4.0.0] - 2023-04-21
 
