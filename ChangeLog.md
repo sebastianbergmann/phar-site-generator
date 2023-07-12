@@ -123,6 +123,8 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 [4.0.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/3.0.0...4.0.0
 [3.0.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.1.0...3.0.0
 [2.1.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.0.2...2.1.0
+[2.0.4]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.0.3...2.0.4
+[2.0.3]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.0.2...2.0.3
 [2.0.2]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/1.5.0...2.0.0
