@@ -48,7 +48,7 @@ final class Application
         }
 
         $configuration = (new ConfigurationLoader)->load(
-            $arguments->configuration()
+            $arguments->configuration(),
         );
 
         $releases = (new ReleaseCollector)->collect($configuration->directory());
@@ -56,7 +56,7 @@ final class Application
         $renderer = new FeedRenderer(
             $configuration->directory() . DIRECTORY_SEPARATOR . 'releases.rss',
             $configuration->domain(),
-            $configuration->email()
+            $configuration->email(),
         );
 
         $renderer->render($releases);
@@ -64,7 +64,7 @@ final class Application
         $renderer = new MetaDataRenderer(
             $this->getDirectory($configuration->directory() . DIRECTORY_SEPARATOR . 'latest-version-of') . DIRECTORY_SEPARATOR,
             $configuration->domain(),
-            $configuration->email()
+            $configuration->email(),
         );
 
         $renderer->render($releases);
@@ -72,7 +72,7 @@ final class Application
         $renderer = new PageRenderer(
             $configuration->directory() . DIRECTORY_SEPARATOR . 'index.html',
             $configuration->domain(),
-            $configuration->email()
+            $configuration->email(),
         );
 
         $renderer->render($releases);
@@ -80,7 +80,7 @@ final class Application
         $renderer = new PharIoRenderer(
             $configuration->directory() . DIRECTORY_SEPARATOR . 'phive.xml',
             $configuration->domain(),
-            $configuration->email()
+            $configuration->email(),
         );
 
         $renderer->render($releases);
@@ -91,7 +91,7 @@ final class Application
             $renderer->render(
                 $releases,
                 $configuration->additionalReleaseSeries(),
-                $configuration->nginxConfigurationFile()
+                $configuration->nginxConfigurationFile(),
             );
         }
 
@@ -104,7 +104,7 @@ final class Application
     {
         printf(
             'phar-site-generator %s by Sebastian Bergmann.' . PHP_EOL,
-            (new Version(self::VERSION, dirname(__DIR__)))->asString()
+            (new Version(self::VERSION, dirname(__DIR__)))->asString(),
         );
     }
 
@@ -134,8 +134,8 @@ EOT;
             throw new RuntimeException(
                 sprintf(
                     'Directory "%s" does not exist.',
-                    $directory
-                )
+                    $directory,
+                ),
             );
         }
 
@@ -144,6 +144,6 @@ EOT;
 
     private function createDirectory(string $directory): bool
     {
-        return !(!is_dir($directory) && !@mkdir($directory, 0777, true) && !is_dir($directory));
+        return !(!is_dir($directory) && !@mkdir($directory, 0o777, true) && !is_dir($directory));
     }
 }

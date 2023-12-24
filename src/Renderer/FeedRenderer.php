@@ -32,7 +32,7 @@ final class FeedRenderer extends AbstractRenderer
                 '    <rdf:li rdf:resource="%s/%s-%s.phar"/>' . "\n",
                 $this->domain(),
                 $release->package(),
-                $release->version()
+                $release->version(),
             );
 
             $feedItemTemplate->setVar(
@@ -42,7 +42,7 @@ final class FeedRenderer extends AbstractRenderer
                     'version' => $release->version(),
                     'date'    => $release->date(),
                     'content' => '',
-                ]
+                ],
             );
 
             $rdfItems .= $feedItemTemplate->render();
@@ -54,7 +54,7 @@ final class FeedRenderer extends AbstractRenderer
                 'items'      => $rdfItems,
                 'domain'     => $this->domain(),
                 'email'      => $this->email(),
-            ]
+            ],
         );
 
         $feedTemplate->renderTo($this->target());

@@ -18,21 +18,21 @@ final class MetaDataRenderer extends AbstractRenderer
         foreach ($releases->latestReleases() as $release) {
             file_put_contents(
                 $this->target() . $release->package(),
-                $release->version()
+                $release->version(),
             );
         }
 
         foreach ($releases->latestReleasesPerPackageAndMajorVersion() as $release) {
             file_put_contents(
                 $this->target() . $release->package() . '-' . $release->majorVersion(),
-                $release->version()
+                $release->version(),
             );
         }
 
         foreach ($releases->latestReleasesPerPackageAndMinorVersion() as $release) {
             file_put_contents(
                 $this->target() . $release->package() . '-' . $release->minorVersion(),
-                $release->version()
+                $release->version(),
             );
         }
     }

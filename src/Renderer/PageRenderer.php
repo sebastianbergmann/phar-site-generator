@@ -40,7 +40,7 @@ final class PageRenderer extends AbstractRenderer
                 'domain'          => $this->domain(),
                 'latest_releases' => $latestReleases,
                 'all_releases'    => $allReleases,
-            ]
+            ],
         );
 
         $page->renderTo($this->target());
@@ -61,7 +61,7 @@ final class PageRenderer extends AbstractRenderer
                 'date'    => $release->date(),
                 'size'    => $release->size(),
                 'sha256'  => $release->sha256(),
-            ]
+            ],
         );
 
         return $item->render();

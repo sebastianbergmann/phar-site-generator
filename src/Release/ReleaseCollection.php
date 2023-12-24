@@ -139,7 +139,7 @@ final class ReleaseCollection
             static function (Release $a, Release $b)
             {
                 return $a->date() <= $b->date();
-            }
+            },
         );
 
         return $latest;
@@ -157,7 +157,7 @@ final class ReleaseCollection
             static function (Release $a, Release $b)
             {
                 return $a->package() >= $b->package();
-            }
+            },
         );
 
         return $latest;
@@ -179,7 +179,7 @@ final class ReleaseCollection
 
         usort(
             $this->all,
-            static fn (Release $a, Release $b): int => strnatcmp($a->asString(), $b->asString())
+            static fn (Release $a, Release $b): int => strnatcmp($a->asString(), $b->asString()),
         );
 
         $this->sorted = true;

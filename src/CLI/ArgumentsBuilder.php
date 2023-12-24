@@ -26,13 +26,13 @@ final class ArgumentsBuilder
                 [
                     'help',
                     'version',
-                ]
+                ],
             );
         } catch (CliParserException $e) {
             throw new ArgumentsBuilderException(
                 $e->getMessage(),
                 (int) $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -62,7 +62,7 @@ final class ArgumentsBuilder
 
         if (!$configuration && !$help && !$version) {
             throw new ArgumentsBuilderException(
-                'No configuration specified'
+                'No configuration specified',
             );
         }
 

@@ -31,7 +31,7 @@ final class ConfigurationLoader
             $document->getElementsByTagName('directory')->item(0)->textContent,
             $document->getElementsByTagName('domain')->item(0)->textContent,
             $document->getElementsByTagName('email')->item(0)->textContent,
-            $nginxConfigurationFile
+            $nginxConfigurationFile,
         );
 
         foreach ($document->getElementsByTagName('series') as $series) {
@@ -40,7 +40,7 @@ final class ConfigurationLoader
             $configuration->addAdditionalReleaseSeries(
                 $series->getAttribute('package'),
                 $series->getAttribute('series'),
-                $series->getAttribute('alias')
+                $series->getAttribute('alias'),
             );
         }
 

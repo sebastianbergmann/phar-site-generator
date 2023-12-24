@@ -36,7 +36,7 @@ final class PharIoRenderer extends AbstractRenderer
             'https://%s/%s-%s.phar',
             $this->domain(),
             $release->package(),
-            $release->version()
+            $release->version(),
         );
 
         $releaseNode = $this->addElement('release');
@@ -57,7 +57,7 @@ final class PharIoRenderer extends AbstractRenderer
         if ($container->hasChildNodes()) {
             $container->insertBefore(
                 $releaseNode,
-                $container->firstChild
+                $container->firstChild,
             );
         } else {
             $container->appendChild($releaseNode);
@@ -67,7 +67,7 @@ final class PharIoRenderer extends AbstractRenderer
     private function getContainer(string $package): DOMNode
     {
         $result = $this->xp->query(
-            sprintf('//phive:phar[@name="%s"]', $package)
+            sprintf('//phive:phar[@name="%s"]', $package),
         );
 
         if ($result->length > 0) {

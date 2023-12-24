@@ -23,14 +23,14 @@ final class NginxConfigRenderer
                 "rewrite ^/%s.phar$ /%s-%s.phar redirect;\n",
                 $release->package(),
                 $release->package(),
-                $release->version()
+                $release->version(),
             );
 
             $buffer .= sprintf(
                 "rewrite ^/%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
                 $release->package(),
                 $release->package(),
-                $release->version()
+                $release->version(),
             );
         }
 
@@ -40,7 +40,7 @@ final class NginxConfigRenderer
                 $release->package(),
                 $release->majorVersion(),
                 $release->package(),
-                $release->version()
+                $release->version(),
             );
 
             $buffer .= sprintf(
@@ -48,7 +48,7 @@ final class NginxConfigRenderer
                 $release->package(),
                 $release->majorVersion(),
                 $release->package(),
-                $release->version()
+                $release->version(),
             );
         }
 
@@ -58,7 +58,7 @@ final class NginxConfigRenderer
                 $release->package(),
                 $release->minorVersion(),
                 $release->package(),
-                $release->version()
+                $release->version(),
             );
 
             $buffer .= sprintf(
@@ -66,7 +66,7 @@ final class NginxConfigRenderer
                 $release->package(),
                 $release->minorVersion(),
                 $release->package(),
-                $release->version()
+                $release->version(),
             );
         }
 
@@ -78,8 +78,8 @@ final class NginxConfigRenderer
                 $item['package'],
                 $releases->latestReleaseOfMinorVersion(
                     $item['package'],
-                    $item['series']
-                )->version()
+                    $item['series'],
+                )->version(),
             );
 
             $buffer .= sprintf(
@@ -89,8 +89,8 @@ final class NginxConfigRenderer
                 $item['package'],
                 $releases->latestReleaseOfMinorVersion(
                     $item['package'],
-                    $item['series']
-                )->version()
+                    $item['series'],
+                )->version(),
             );
         }
 

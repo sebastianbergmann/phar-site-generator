@@ -47,8 +47,8 @@ class ReleaseCollector
                         $minorVersion,
                         date(DATE_W3C, $file->getMTime()),
                         $this->humanFilesize($file->getSize()),
-                        hash_file('sha256', $file->getPathname())
-                    )
+                        hash_file('sha256', $file->getPathname()),
+                    ),
                 );
             }
         }
