@@ -43,6 +43,7 @@ final class ApplicationTest extends TestCase
         $this->assertFileEquals(__DIR__ . '/../../src/assets/fonts/OpenSans.ttf', '/tmp/phar.example.org/public/fonts/OpenSans.ttf');
         $this->assertFileEquals(__DIR__ . '/../../src/assets/fonts/SourceCodePro.ttf', '/tmp/phar.example.org/public/fonts/SourceCodePro.ttf');
         $this->assertFileMatchesFormatFile(__DIR__ . '/../expectations/public/index.html', '/tmp/phar.example.org/public/index.html');
+        $this->assertFileEquals(__DIR__ . '/../expectations/apache-redirects.conf', '/tmp/phar.example.org/apache-redirects.conf');
         $this->assertFileEquals(__DIR__ . '/../expectations/nginx-redirects.conf', '/tmp/phar.example.org/nginx-redirects.conf');
         $this->assertFileEquals(__DIR__ . '/../expectations/public/latest-version-of/package', '/tmp/phar.example.org/public/latest-version-of/package');
         $this->assertFileEquals(__DIR__ . '/../expectations/public/latest-version-of/package-1', '/tmp/phar.example.org/public/latest-version-of/package-1');

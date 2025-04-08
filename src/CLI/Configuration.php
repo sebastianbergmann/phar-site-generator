@@ -14,14 +14,16 @@ final class Configuration
     private string $directory;
     private string $domain;
     private string $email;
+    private ?string $apacheConfigurationFile;
     private ?string $nginxConfigurationFile;
 
-    public function __construct(string $directory, string $domain, string $email, ?string $nginxConfigurationFile)
+    public function __construct(string $directory, string $domain, string $email, ?string $apacheConfigurationFile, ?string $nginxConfigurationFile)
     {
-        $this->directory              = $directory;
-        $this->domain                 = $domain;
-        $this->email                  = $email;
-        $this->nginxConfigurationFile = $nginxConfigurationFile;
+        $this->directory               = $directory;
+        $this->domain                  = $domain;
+        $this->email                   = $email;
+        $this->apacheConfigurationFile = $apacheConfigurationFile;
+        $this->nginxConfigurationFile  = $nginxConfigurationFile;
     }
 
     public function directory(): string
@@ -45,6 +47,26 @@ final class Configuration
     public function shouldGenerateNginxConfigurationFile(): bool
     {
         return $this->nginxConfigurationFile !== null;
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    public function apacheConfigurationFile(): string
+    {
+        if ($this->apacheConfigurationFile === null) {
+            throw new RuntimeException;
+        }
+
+        return $this->apacheConfigurationFile;
+    }
+
+    /**
+     * @phpstan-assert-if-true !null $this->apacheConfigurationFile
+     */
+    public function shouldGenerateApacheConfigurationFile(): bool
+    {
+        return $this->apacheConfigurationFile !== null;
     }
 
     /**

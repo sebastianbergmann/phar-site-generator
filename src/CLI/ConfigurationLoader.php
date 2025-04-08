@@ -24,6 +24,12 @@ final readonly class ConfigurationLoader
         $document = new DOMDocument;
         $document->loadXML($buffer);
 
+        $apacheConfigurationFile = null;
+
+        if ($document->getElementsByTagName('apache')->item(0) !== null) {
+            $apacheConfigurationFile = $document->getElementsByTagName('apache')->item(0)->textContent;
+        }
+
         $nginxConfigurationFile = null;
 
         if ($document->getElementsByTagName('nginx')->item(0) !== null) {
@@ -42,6 +48,7 @@ final readonly class ConfigurationLoader
             $directory->textContent,
             $domain->textContent,
             $email->textContent,
+            $apacheConfigurationFile,
             $nginxConfigurationFile,
         );
     }

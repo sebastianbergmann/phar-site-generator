@@ -3,5 +3,6 @@
     <domain>phar.example.org</domain>
     <email>phar@example.org</email>
     <directory>/tmp/phar.example.org/public</directory>
+    <apache>/tmp/phar.example.org/apache-redirects.conf</apache>
     <nginx>/tmp/phar.example.org/nginx-redirects.conf</nginx>
 </phar-site>

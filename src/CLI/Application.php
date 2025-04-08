@@ -104,6 +104,15 @@ final readonly class Application
 
         $renderer->render($releases);
 
+        if ($configuration->shouldGenerateApacheConfigurationFile()) {
+            $renderer = new ApacheConfigRenderer;
+
+            $renderer->render(
+                $releases,
+                $configuration->apacheConfigurationFile(),
+            );
+        }
+
         if ($configuration->shouldGenerateNginxConfigurationFile()) {
             $renderer = new NginxConfigRenderer;
 

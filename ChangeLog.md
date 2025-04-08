@@ -4,6 +4,10 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ## [5.0.0] - 2025-MM-DD
 
+### Added
+
+* Added support for generating redirect configuration for Apache HTTPD
+
 ### Removed
 
 * The "additional release series" feature has been removed
