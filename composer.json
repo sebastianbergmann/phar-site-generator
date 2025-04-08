@@ -1,11 +1,11 @@
 {
     "prefer-stable": true,
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-dom": "*",
-        "phpunit/php-text-template": "^3.0",
-        "sebastian/cli-parser": "^2.0",
-        "sebastian/version": "^4.0"
+        "phpunit/php-text-template": "^5.0",
+        "sebastian/cli-parser": "^4.0",
+        "sebastian/version": "^6.0"
     },
     "autoload": {
         "classmap": [
@@ -14,10 +14,14 @@
     },
     "config": {
         "platform": {
-            "php": "8.2.0"
+            "php": "8.4.0"
         },
         "optimize-autoloader": true,
         "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "5.0-dev"
+        }
     }
 }
-

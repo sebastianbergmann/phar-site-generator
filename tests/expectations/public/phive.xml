@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<repository xmlns="https://phar.io/repository" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://phar.io/repository https://phar.io/data/repository.xsd">
+  <phar name="package">
+    <release version="2.3.4" url="https://phar.example.org/package-2.3.4.phar">
+      <signature type="gpg"/>
+      <hash type="sha-256" value="a72427688cadc3d3a299cc6658839011bdcbb7337493cf903d22c14864791ab1"/>
+    </release>
+    <release version="1.2.3" url="https://phar.example.org/package-1.2.3.phar">
+      <signature type="gpg"/>
+      <hash type="sha-256" value="a72427688cadc3d3a299cc6658839011bdcbb7337493cf903d22c14864791ab1"/>
+    </release>
+  </phar>
+</repository>

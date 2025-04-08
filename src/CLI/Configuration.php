@@ -16,26 +16,12 @@ final class Configuration
     private string $email;
     private ?string $nginxConfigurationFile;
 
-    /**
-     * @psalm-var list<array{package: string, series: string, alias: string}>
-     */
-    private array $additionalReleaseSeries = [];
-
     public function __construct(string $directory, string $domain, string $email, ?string $nginxConfigurationFile)
     {
         $this->directory              = $directory;
         $this->domain                 = $domain;
         $this->email                  = $email;
         $this->nginxConfigurationFile = $nginxConfigurationFile;
-    }
-
-    public function addAdditionalReleaseSeries(string $package, string $series, string $alias): void
-    {
-        $this->additionalReleaseSeries[] = [
-            'package' => $package,
-            'series'  => $series,
-            'alias'   => $alias,
-        ];
     }
 
     public function directory(): string
@@ -53,21 +39,23 @@ final class Configuration
         return $this->email;
     }
 
+    /**
+     * @phpstan-assert-if-true !null $this->nginxConfigurationFile
+     */
     public function shouldGenerateNginxConfigurationFile(): bool
     {
         return $this->nginxConfigurationFile !== null;
     }
 
+    /**
+     * @throws RuntimeException
+     */
     public function nginxConfigurationFile(): string
     {
-        return $this->nginxConfigurationFile;
-    }
+        if ($this->nginxConfigurationFile === null) {
+            throw new RuntimeException;
+        }
 
-    /**
-     * @psalm-return list<array{package: string, series: string, alias: string}>
-     */
-    public function additionalReleaseSeries(): array
-    {
-        return $this->additionalReleaseSeries;
+        return $this->nginxConfigurationFile;
     }
 }

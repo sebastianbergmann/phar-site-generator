@@ -10,6 +10,7 @@
 namespace SebastianBergmann\PharSiteGenerator;
 
 use function array_keys;
+use function assert;
 use function strnatcmp;
 use function usort;
 use function version_compare;
@@ -22,17 +23,17 @@ final class ReleaseCollection
     private array $all = [];
 
     /**
-     * @psalm-var array<string, Release>
+     * @psalm-var array<non-empty-string, Release>
      */
     private array $latestVersion = [];
 
     /**
-     * @psalm-var array<string, Release>
+     * @psalm-var array<non-empty-string, array<non-empty-string, Release>>
      */
     private array $latestMinorVersion = [];
 
     /**
-     * @psalm-var array<string, Release>
+     * @psalm-var array<non-empty-string, array<non-empty-string, Release>>
      */
     private array $latestMajorVersion = [];
     private bool $sorted              = false;
@@ -98,6 +99,8 @@ final class ReleaseCollection
         $latest = [];
 
         foreach ($this->packages() as $package) {
+            assert(isset($this->latestMajorVersion[$package]));
+
             foreach ($this->latestMajorVersion[$package] as $release) {
                 $latest[] = $release;
             }
@@ -114,17 +117,14 @@ final class ReleaseCollection
         $latest = [];
 
         foreach ($this->packages() as $package) {
+            assert(isset($this->latestMinorVersion[$package]));
+
             foreach ($this->latestMinorVersion[$package] as $release) {
                 $latest[] = $release;
             }
         }
 
         return $latest;
-    }
-
-    public function latestReleaseOfMinorVersion(string $package, string $minorVersion): Release
-    {
-        return $this->latestMinorVersion[$package][$minorVersion];
     }
 
     /**
@@ -136,9 +136,9 @@ final class ReleaseCollection
 
         usort(
             $latest,
-            static function (Release $a, Release $b)
+            static function (Release $a, Release $b): int
             {
-                return $a->date() <= $b->date();
+                return $a->date() <=> $b->date();
             },
         );
 
@@ -154,9 +154,9 @@ final class ReleaseCollection
 
         usort(
             $latest,
-            static function (Release $a, Release $b)
+            static function (Release $a, Release $b): int
             {
-                return $a->package() >= $b->package();
+                return $a->package() <=> $b->package();
             },
         );
 

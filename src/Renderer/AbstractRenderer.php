@@ -11,9 +11,9 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 abstract class AbstractRenderer
 {
-    private string $target;
-    private string $domain;
-    private string $email;
+    private readonly string $target;
+    private readonly string $domain;
+    private readonly string $email;
 
     public function __construct(string $target, string $domain, string $email)
     {
@@ -22,7 +22,7 @@ abstract class AbstractRenderer
         $this->email  = $email;
     }
 
-    abstract public function render(ReleaseCollection $releases);
+    abstract public function render(ReleaseCollection $releases): void;
 
     protected function target(): string
     {

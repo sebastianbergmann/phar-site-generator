@@ -12,38 +12,37 @@ namespace SebastianBergmann\PharSiteGenerator;
 use function assert;
 use function file_get_contents;
 use DOMDocument;
-use DOMElement;
 
-final class ConfigurationLoader
+final readonly class ConfigurationLoader
 {
-    public function load(string $filename)
+    public function load(string $filename): Configuration
     {
+        $buffer = file_get_contents($filename);
+
+        assert($buffer !== false);
+
         $document = new DOMDocument;
-        $document->loadXML(file_get_contents($filename));
+        $document->loadXML($buffer);
 
         $nginxConfigurationFile = null;
 
-        if ($document->getElementsByTagName('nginx')->item(0)) {
+        if ($document->getElementsByTagName('nginx')->item(0) !== null) {
             $nginxConfigurationFile = $document->getElementsByTagName('nginx')->item(0)->textContent;
         }
 
-        $configuration = new Configuration(
-            $document->getElementsByTagName('directory')->item(0)->textContent,
-            $document->getElementsByTagName('domain')->item(0)->textContent,
-            $document->getElementsByTagName('email')->item(0)->textContent,
+        $directory = $document->getElementsByTagName('directory')->item(0);
+        $domain    = $document->getElementsByTagName('domain')->item(0);
+        $email     = $document->getElementsByTagName('email')->item(0);
+
+        assert($directory !== null);
+        assert($domain !== null);
+        assert($email !== null);
+
+        return new Configuration(
+            $directory->textContent,
+            $domain->textContent,
+            $email->textContent,
             $nginxConfigurationFile,
         );
-
-        foreach ($document->getElementsByTagName('series') as $series) {
-            assert($series instanceof DOMElement);
-
-            $configuration->addAdditionalReleaseSeries(
-                $series->getAttribute('package'),
-                $series->getAttribute('series'),
-                $series->getAttribute('alias'),
-            );
-        }
-
-        return $configuration;
     }
 }

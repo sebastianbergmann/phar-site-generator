@@ -1,3 +1,6 @@
+[![CI Status](https://github.com/sebastianbergmann/phar-site-generator/workflows/CI/badge.svg)](https://github.com/sebastianbergmann/phar-site-generator/actions)
+[![codecov](https://codecov.io/gh/sebastianbergmann/phar-site-generator/branch/main/graph/badge.svg)](https://codecov.io/gh/sebastianbergmann/phar-site-generator)
+
 # phar-site-generator
 
 `phar-site-generator` is a tool that generates an HTML page ([example](https://phar.phpunit.de/)), RSS feed ([example](https://phar.phpunit.de/releases.rss)), and Phive metadata ([example](https://phar.phpunit.de/phive.xml)) for a PHAR repository.

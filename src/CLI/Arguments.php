@@ -9,22 +9,40 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
-final class Arguments
+final readonly class Arguments
 {
-    private ?string $configuration;
+    /**
+     * @var ?non-empty-string
+     */
+    private ?string $configurationFile;
     private bool $help;
     private bool $version;
 
-    public function __construct(?string $configuration, bool $help, bool $version)
+    /**
+     * @param ?non-empty-string $configurationFile
+     */
+    public function __construct(?string $configurationFile, bool $help, bool $version)
     {
-        $this->configuration = $configuration;
-        $this->help          = $help;
-        $this->version       = $version;
+        $this->configurationFile = $configurationFile;
+        $this->help              = $help;
+        $this->version           = $version;
     }
 
-    public function configuration(): ?string
+    /**
+     * @phpstan-assert-if-true !null $this->configurationFile
+     */
+    public function hasConfigurationFile(): bool
     {
-        return $this->configuration;
+        return $this->configurationFile !== null;
+    }
+
+    public function configurationFile(): string
+    {
+        if ($this->configurationFile === null) {
+            throw new RuntimeException;
+        }
+
+        return $this->configurationFile;
     }
 
     public function help(): bool

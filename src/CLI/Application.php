@@ -11,6 +11,7 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
+use function assert;
 use function copy;
 use function dirname;
 use function is_dir;
@@ -19,10 +20,13 @@ use function printf;
 use function sprintf;
 use SebastianBergmann\Version;
 
-final class Application
+final readonly class Application
 {
-    private const VERSION = '4.0.1';
+    private const string VERSION = '5.0';
 
+    /**
+     * @param list<string> $argv
+     */
     public function run(array $argv): int
     {
         $this->printVersion();
@@ -47,9 +51,24 @@ final class Application
             return 0;
         }
 
+        if (!$arguments->hasConfigurationFile()) {
+            $this->help();
+
+            return 1;
+        }
+
+        $this->generate($arguments);
+
+        return 0;
+    }
+
+    public function generate(Arguments $arguments): void
+    {
         $configuration = (new ConfigurationLoader)->load(
-            $arguments->configuration(),
+            $arguments->configurationFile(),
         );
+
+        $this->createDirectory($configuration->directory());
 
         $releases = (new ReleaseCollector)->collect($configuration->directory());
 
@@ -62,7 +81,7 @@ final class Application
         $renderer->render($releases);
 
         $renderer = new MetaDataRenderer(
-            $this->getDirectory($configuration->directory() . DIRECTORY_SEPARATOR . 'latest-version-of') . DIRECTORY_SEPARATOR,
+            $this->directory($configuration->directory() . DIRECTORY_SEPARATOR . 'latest-version-of') . DIRECTORY_SEPARATOR,
             $configuration->domain(),
             $configuration->email(),
         );
@@ -90,21 +109,22 @@ final class Application
 
             $renderer->render(
                 $releases,
-                $configuration->additionalReleaseSeries(),
                 $configuration->nginxConfigurationFile(),
             );
         }
 
         $this->copyAssets($configuration->directory());
-
-        return 0;
     }
 
     private function printVersion(): void
     {
+        $path = dirname(__DIR__);
+
+        assert($path !== '');
+
         printf(
             'phar-site-generator %s by Sebastian Bergmann.' . PHP_EOL,
-            (new Version(self::VERSION, dirname(__DIR__)))->asString(),
+            new Version(self::VERSION, $path)->asString(),
         );
     }
 
@@ -119,16 +139,16 @@ EOT;
 
     private function copyAssets(string $target): void
     {
-        $dir = $this->getDirectory($target . '/css');
+        $dir = $this->directory($target . '/css');
         copy(__DIR__ . '/../assets/css/bootstrap.min.css', $dir . '/bootstrap.min.css');
         copy(__DIR__ . '/../assets/css/style.css', $dir . '/style.css');
 
-        $dir = $this->getDirectory($target . '/fonts');
+        $dir = $this->directory($target . '/fonts');
         copy(__DIR__ . '/../assets/fonts/OpenSans.ttf', $dir . '/OpenSans.ttf');
         copy(__DIR__ . '/../assets/fonts/SourceCodePro.ttf', $dir . '/SourceCodePro.ttf');
     }
 
-    private function getDirectory(string $directory): string
+    private function directory(string $directory): string
     {
         if (!$this->createDirectory($directory)) {
             throw new RuntimeException(

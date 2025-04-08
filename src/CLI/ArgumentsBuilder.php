@@ -9,12 +9,16 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
+use function is_string;
+use function trim;
 use SebastianBergmann\CliParser\Exception as CliParserException;
 use SebastianBergmann\CliParser\Parser as CliParser;
 
-final class ArgumentsBuilder
+final readonly class ArgumentsBuilder
 {
     /**
+     * @param list<string> $argv
+     *
      * @throws ArgumentsBuilderException
      */
     public function build(array $argv): Arguments
@@ -36,9 +40,9 @@ final class ArgumentsBuilder
             );
         }
 
-        $configuration = null;
-        $help          = false;
-        $version       = false;
+        $configurationFile = null;
+        $help              = false;
+        $version           = false;
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
@@ -56,18 +60,18 @@ final class ArgumentsBuilder
             }
         }
 
-        if (!empty($options[1])) {
-            $configuration = $options[1][0];
+        if (isset($options[1][0]) && is_string($options[1][0]) && trim($options[1][0]) !== '') {
+            $configurationFile = trim($options[1][0]);
         }
 
-        if (!$configuration && !$help && !$version) {
+        if ($configurationFile === null && !$help && !$version) {
             throw new ArgumentsBuilderException(
-                'No configuration specified',
+                'No configurationFile specified',
             );
         }
 
         return new Arguments(
-            $configuration,
+            $configurationFile,
             $help,
             $version,
         );

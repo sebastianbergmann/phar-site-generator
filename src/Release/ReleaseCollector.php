@@ -12,32 +12,39 @@ namespace SebastianBergmann\PharSiteGenerator;
 use const DATE_W3C;
 use function array_pop;
 use function array_slice;
+use function assert;
 use function date;
 use function explode;
 use function floor;
 use function hash_file;
 use function implode;
 use function sprintf;
-use function stripos;
 use function strlen;
 use GlobIterator;
+use SplFileInfo;
 
-class ReleaseCollector
+final readonly class ReleaseCollector
 {
     public function collect(string $directory): ReleaseCollection
     {
         $releases = new ReleaseCollection;
 
         foreach (new GlobIterator($directory . '/*.phar') as $file) {
-            if (!$file->isLink() &&
-                stripos($file->getBasename(), 'nightly') === false &&
-                stripos($file->getBasename(), 'alpha') === false &&
-                stripos($file->getBasename(), 'beta') === false) {
+            assert($file instanceof SplFileInfo);
+
+            if (!$file->isLink()) {
                 $parts        = explode('-', $file->getBasename('.phar'));
                 $version      = array_pop($parts);
                 $majorVersion = explode('.', $version)[0];
                 $minorVersion = implode('.', array_slice(explode('.', $version), 0, 2));
                 $name         = implode('-', $parts);
+                $hash         = hash_file('sha256', $file->getPathname());
+
+                assert($name !== '');
+                assert($version !== '');
+                assert($majorVersion !== '');
+                assert($minorVersion !== '');
+                assert($hash !== false);
 
                 $releases->add(
                     new Release(
@@ -46,8 +53,8 @@ class ReleaseCollector
                         $majorVersion,
                         $minorVersion,
                         date(DATE_W3C, $file->getMTime()),
-                        $this->humanFilesize($file->getSize()),
-                        hash_file('sha256', $file->getPathname()),
+                        $this->humanReadableSize($file->getSize()),
+                        $hash,
                     ),
                 );
             }
@@ -56,10 +63,13 @@ class ReleaseCollector
         return $releases;
     }
 
-    private function humanFilesize(int $bytes): string
+    /**
+     * @return non-empty-string
+     */
+    private function humanReadableSize(int $bytes): string
     {
         $sz     = 'BKMGTP';
-        $factor = floor((strlen((string) $bytes) - 1) / 3);
+        $factor = (int) floor((strlen((string) $bytes) - 1) / 3);
 
         return sprintf('%.2f', $bytes / 1024 ** $factor) . @$sz[$factor];
     }

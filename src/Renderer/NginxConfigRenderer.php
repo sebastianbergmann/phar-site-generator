@@ -14,7 +14,7 @@ use function sprintf;
 
 final class NginxConfigRenderer
 {
-    public function render(ReleaseCollection $releases, array $additionalReleaseSeries, string $target): void
+    public function render(ReleaseCollection $releases, string $target): void
     {
         $buffer = '';
 
@@ -67,30 +67,6 @@ final class NginxConfigRenderer
                 $release->minorVersion(),
                 $release->package(),
                 $release->version(),
-            );
-        }
-
-        foreach ($additionalReleaseSeries as $item) {
-            $buffer .= sprintf(
-                "rewrite ^/%s-%s.phar$ /%s-%s.phar redirect;\n",
-                $item['package'],
-                $item['alias'],
-                $item['package'],
-                $releases->latestReleaseOfMinorVersion(
-                    $item['package'],
-                    $item['series'],
-                )->version(),
-            );
-
-            $buffer .= sprintf(
-                "rewrite ^/%s-%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
-                $item['package'],
-                $item['alias'],
-                $item['package'],
-                $releases->latestReleaseOfMinorVersion(
-                    $item['package'],
-                    $item['series'],
-                )->version(),
             );
         }
 

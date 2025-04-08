@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF xmlns="http://purl.org/rss/1.0/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:content="http://purl.org/rss/1.0/modules/content/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <channel rdf:about="http://phar.example.org">
+  <link>http://phar.example.org/</link>
+  <dc:creator>phar@example.org</dc:creator>
+  <dc:publisher>phar@example.org</dc:publisher>
+  <dc:language>en-us</dc:language>
+  <items>
+   <rdf:Seq>
+    <rdf:li rdf:resource="phar.example.org/package-2.3.4.phar"/>
+   </rdf:Seq>
+  </items>
+  <title>Latest Releases on phar.example.org</title>
+  <description>The latest releases on phar.example.org.</description>
+ </channel>
+ <item rdf:about="https://phar.example.org/package-2.3.4.phar">
+  <title>package 2.3.4</title>
+  <link>https://phar.example.org/package-2.3.4.phar</link>
+  <content:encoded></content:encoded>
+  <dc:date>%s</dc:date>
+ </item>
+</rdf:RDF>
+
