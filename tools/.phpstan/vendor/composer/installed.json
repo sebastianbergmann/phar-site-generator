@@ -2,41 +2,43 @@
     "packages": [
         {
             "name": "ergebnis/phpstan-rules",
-            "version": "2.8.0",
-            "version_normalized": "2.8.0.0",
+            "version": "2.10.4",
+            "version_normalized": "2.10.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/phpstan-rules.git",
-                "reference": "30e790621fbad05573ef9cd355279fff5122e080"
+                "reference": "78c7646be7c229c6c23b02883b0015d36227150f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/phpstan-rules/zipball/30e790621fbad05573ef9cd355279fff5122e080",
-                "reference": "30e790621fbad05573ef9cd355279fff5122e080",
+                "url": "https://api.github.com/repos/ergebnis/phpstan-rules/zipball/78c7646be7c229c6c23b02883b0015d36227150f",
+                "reference": "78c7646be7c229c6c23b02883b0015d36227150f",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
-                "phpstan/phpstan": "^2.0.0"
+                "phpstan/phpstan": "^2.1.8"
             },
             "require-dev": {
+                "codeception/codeception": "^4.0.0 || ^5.0.0",
                 "doctrine/orm": "^2.20.0 || ^3.3.0",
-                "ergebnis/composer-normalize": "^2.45.0",
+                "ergebnis/composer-normalize": "^2.47.0",
                 "ergebnis/license": "^2.6.0",
-                "ergebnis/php-cs-fixer-config": "^6.43.0",
-                "ergebnis/phpunit-slow-test-detector": "^2.18.0",
+                "ergebnis/php-cs-fixer-config": "^6.46.0",
+                "ergebnis/phpunit-slow-test-detector": "^2.19.1",
+                "fakerphp/faker": "^1.24.1",
                 "nette/di": "^3.1.10",
                 "phpstan/extension-installer": "^1.4.3",
-                "phpstan/phpstan-deprecation-rules": "^2.0.1",
-                "phpstan/phpstan-phpunit": "^2.0.4",
-                "phpstan/phpstan-strict-rules": "^2.0.3",
+                "phpstan/phpstan-deprecation-rules": "^2.0.3",
+                "phpstan/phpstan-phpunit": "^2.0.6",
+                "phpstan/phpstan-strict-rules": "^2.0.4",
                 "phpunit/phpunit": "^9.6.21",
                 "psr/container": "^2.0.2",
                 "symfony/finder": "^5.4.45",
                 "symfony/process": "^5.4.47"
             },
-            "time": "2025-02-18T11:20:05+00:00",
+            "time": "2025-06-07T08:06:40+00:00",
             "type": "phpstan-extension",
             "extra": {
                 "phpstan": {
@@ -77,17 +79,17 @@
         },
         {
             "name": "nette/utils",
-            "version": "v4.0.6",
-            "version_normalized": "4.0.6.0",
+            "version": "v4.0.7",
+            "version_normalized": "4.0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "ce708655043c7050eb050df361c5e313cf708309"
+                "reference": "e67c4061eb40b9c113b218214e42cb5a0dda28f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/ce708655043c7050eb050df361c5e313cf708309",
-                "reference": "ce708655043c7050eb050df361c5e313cf708309",
+                "url": "https://api.github.com/repos/nette/utils/zipball/e67c4061eb40b9c113b218214e42cb5a0dda28f2",
+                "reference": "e67c4061eb40b9c113b218214e42cb5a0dda28f2",
                 "shasum": ""
             },
             "require": {
@@ -111,7 +113,7 @@
                 "ext-mbstring": "to use Strings::lower() etc...",
                 "ext-tokenizer": "to use Nette\\Utils\\Reflection::getUseStatements()"
             },
-            "time": "2025-03-30T21:06:30+00:00",
+            "time": "2025-06-03T04:55:08+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -160,7 +162,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/v4.0.6"
+                "source": "https://github.com/nette/utils/tree/v4.0.7"
             },
             "install-path": "../nette/utils"
         },
@@ -217,17 +219,17 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.11",
-            "version_normalized": "2.1.11.0",
+            "version": "2.1.17",
+            "version_normalized": "2.1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "8ca5f79a8f63c49b2359065832a654e1ec70ac30"
+                "reference": "89b5ef665716fa2a52ecd2633f21007a6a349053"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/8ca5f79a8f63c49b2359065832a654e1ec70ac30",
-                "reference": "8ca5f79a8f63c49b2359065832a654e1ec70ac30",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/89b5ef665716fa2a52ecd2633f21007a6a349053",
+                "reference": "89b5ef665716fa2a52ecd2633f21007a6a349053",
                 "shasum": ""
             },
             "require": {
@@ -236,7 +238,7 @@
             "conflict": {
                 "phpstan/phpstan-shim": "*"
             },
-            "time": "2025-03-24T13:45:00+00:00",
+            "time": "2025-05-21T20:55:28+00:00",
             "bin": [
                 "phpstan",
                 "phpstan.phar"
