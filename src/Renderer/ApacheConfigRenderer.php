@@ -17,7 +17,12 @@ final class ApacheConfigRenderer
 {
     public function render(ReleaseCollection $releases, string $target): void
     {
-        $buffer = '';
+        $buffer = <<<'EOT'
+AddType application/octet-stream .phar
+AddType application/pgp-signature .phar.asc
+
+
+EOT;
 
         foreach ($releases->latestReleases() as $release) {
             $buffer .= sprintf(

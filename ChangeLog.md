@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.0.1] - 2025-07-04
+
+### Fixed
+
+* Generated `.htaccess` file is missing MIME type configuration for `*.phar` and `*.phar.asc` files
+
 ## [5.0.0] - 2025-06-13
 
 ### Added
@@ -130,6 +136,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
+[5.0.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.0.0...5.0.1
 [5.0.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/4.0.1...5.0.0
 [4.0.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/3.0.0...4.0.0
