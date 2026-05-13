@@ -60,8 +60,12 @@ final readonly class ArgumentsBuilder
             }
         }
 
-        if (isset($options[1][0]) && is_string($options[1][0]) && trim($options[1][0]) !== '') {
-            $configurationFile = trim($options[1][0]);
+        if (isset($options[1][0]) && is_string($options[1][0])) {
+            $trimmed = trim($options[1][0]);
+
+            if ($trimmed !== '') {
+                $configurationFile = $trimmed;
+            }
         }
 
         if ($configurationFile === null && !$help && !$version) {

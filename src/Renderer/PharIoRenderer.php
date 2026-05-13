@@ -86,7 +86,7 @@ final class PharIoRenderer extends AbstractRenderer
         if ($result->length > 0) {
             $result = $result->item(0);
 
-            assert($result !== null);
+            assert($result instanceof DOMNode);
 
             return $result;
         }
