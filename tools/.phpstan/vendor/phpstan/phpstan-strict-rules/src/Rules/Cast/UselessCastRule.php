@@ -4,6 +4,7 @@ namespace PHPStan\Rules\Cast;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\Cast;
+use PhpParser\Node\Expr\Cast\Void_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
@@ -38,6 +39,10 @@ class UselessCastRule implements Rule
 
 	public function processNode(Node $node, Scope $scope): array
 	{
+		if ($node instanceof Void_) {
+			return [];
+		}
+
 		$castType = $scope->getType($node);
 		if ($castType instanceof ErrorType) {
 			return [];
@@ -55,12 +60,12 @@ class UselessCastRule implements Rule
 					return $ruleErrorBuilder;
 				}
 
-				$expressionTypeWithoutPhpDoc = $scope->getNativeType($node->expr);
-				if ($castType->isSuperTypeOf($expressionTypeWithoutPhpDoc)->yes()) {
+				if (!$this->treatPhpDocTypesAsCertainTip) {
 					return $ruleErrorBuilder;
 				}
 
-				if (!$this->treatPhpDocTypesAsCertainTip) {
+				$expressionTypeWithoutPhpDoc = $scope->getNativeType($node->expr);
+				if ($castType->isSuperTypeOf($expressionTypeWithoutPhpDoc)->yes()) {
 					return $ruleErrorBuilder;
 				}
 

@@ -11,35 +11,43 @@ class ComposerStaticInitf9e7218f71d5874b5632927df4f72bd7
     );
 
     public static $prefixLengthsPsr4 = array (
-        'T' => 
+        'T' =>
         array (
             'TomasVotruba\\TypeCoverage\\' => 26,
         ),
-        'P' => 
+        'P' =>
         array (
             'PHPStan\\ExtensionInstaller\\' => 27,
             'PHPStan\\' => 8,
         ),
-        'E' => 
+        'N' =>
+        array (
+            'Nette\\' => 6,
+        ),
+        'E' =>
         array (
             'Ergebnis\\PHPStan\\Rules\\' => 23,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'TomasVotruba\\TypeCoverage\\' => 
+        'TomasVotruba\\TypeCoverage\\' =>
         array (
             0 => __DIR__ . '/..' . '/tomasvotruba/type-coverage/src',
         ),
-        'PHPStan\\ExtensionInstaller\\' => 
+        'PHPStan\\ExtensionInstaller\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpstan/extension-installer/src',
         ),
-        'PHPStan\\' => 
+        'PHPStan\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpstan/phpstan-strict-rules/src',
         ),
-        'Ergebnis\\PHPStan\\Rules\\' => 
+        'Nette\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/nette/utils/src',
+        ),
+        'Ergebnis\\PHPStan\\Rules\\' =>
         array (
             0 => __DIR__ . '/..' . '/ergebnis/phpstan-rules/src',
         ),
@@ -89,6 +97,9 @@ class ComposerStaticInitf9e7218f71d5874b5632927df4f72bd7
         'Nette\\Utils\\JsonException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
         'Nette\\Utils\\ObjectHelpers' => __DIR__ . '/..' . '/nette/utils/src/Utils/ObjectHelpers.php',
         'Nette\\Utils\\Paginator' => __DIR__ . '/..' . '/nette/utils/src/Utils/Paginator.php',
+        'Nette\\Utils\\Process' => __DIR__ . '/..' . '/nette/utils/src/Utils/Process.php',
+        'Nette\\Utils\\ProcessFailedException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
+        'Nette\\Utils\\ProcessTimeoutException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
         'Nette\\Utils\\Random' => __DIR__ . '/..' . '/nette/utils/src/Utils/Random.php',
         'Nette\\Utils\\Reflection' => __DIR__ . '/..' . '/nette/utils/src/Utils/Reflection.php',
         'Nette\\Utils\\ReflectionMethod' => __DIR__ . '/..' . '/nette/utils/src/Utils/ReflectionMethod.php',

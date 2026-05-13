@@ -58,6 +58,7 @@ This package provides the following rules for use with [`phpstan/phpstan`](https
 - [`Ergebnis\PHPStan\Rules\Expressions\NoEvalRule`](https://github.com/ergebnis/phpstan-rules#expressionsnoevalrule)
 - [`Ergebnis\PHPStan\Rules\Expressions\NoIssetRule`](https://github.com/ergebnis/phpstan-rules#expressionsnoissetrule)
 - [`Ergebnis\PHPStan\Rules\Files\DeclareStrictTypesRule`](https://github.com/ergebnis/phpstan-rules#filesdeclarestricttypesrule)
+- [`Ergebnis\PHPStan\Rules\Files\NoPhpstanIgnoreRule`](https://github.com/ergebnis/phpstan-rules#filesnophpstanignorerule)
 - [`Ergebnis\PHPStan\Rules\Functions\NoNullableReturnTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#functionsnonullablereturntypedeclarationrule)
 - [`Ergebnis\PHPStan\Rules\Functions\NoParameterPassedByReferenceRule`](https://github.com/ergebnis/phpstan-rules#functionsnoparameterpassedbyreferencerule)
 - [`Ergebnis\PHPStan\Rules\Functions\NoParameterWithNullableTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#functionsnoparameterwithnullabletypedeclarationrule)
@@ -345,6 +346,21 @@ You can set the `enabled` parameter to `false` to disable this rule.
 parameters:
 	ergebnis:
 		declareStrictTypes:
+			enabled: false
+```
+
+#### `Files\NoPhpstanIgnoreRule`
+
+This rule reports an error when a `@phpstan-ignore`, `@phpstan-ignore-line`, or `@phpstan-ignore-next-line` tag is used to [ignore errors reported by `phpstan/phpstan`](https://phpstan.org/user-guide/ignoring-errors#ignoring-in-code-using-phpdocs).
+
+##### Disabling the rule
+
+You can set the `enabled` parameter to `false` to disable this rule.
+
+```neon
+parameters:
+	ergebnis:
+		noPhpstanIgnore:
 			enabled: false
 ```
 
@@ -735,7 +751,7 @@ The maintainers of this project ask contributors to follow the [code of conduct]
 
 The maintainers of this project provide limited support.
 
-You can support the maintenance of this project by [sponsoring @localheinz](https://github.com/sponsors/localheinz) or [requesting an invoice for services related to this project](mailto:am@localheinz.com?subject=ergebnis/phpstan-rules:%20Requesting%20invoice%20for%20services).
+You can support the maintenance of this project by [sponsoring @ergebnis](https://github.com/sponsors/ergebnis).
 
 ## PHP Version Support Policy
 

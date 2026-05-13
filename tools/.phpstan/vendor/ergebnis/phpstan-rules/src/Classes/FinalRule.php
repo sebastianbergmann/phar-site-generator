@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2018-2025 Andreas Möller
+ * Copyright (c) 2018-2026 Andreas Möller
  *
  * For the full copyright and license information, please view
  * the LICENSE.md file that was distributed with this source code.
@@ -93,11 +93,11 @@ final class FinalRule implements Rules\Rule
             return [];
         }
 
-        if ($this->hasWhitelistedAnnotation($node)) {
+        if (self::hasWhitelistedAnnotation($node)) {
             return [];
         }
 
-        if ($this->hasWhitelistedAttribute($node)) {
+        if (self::hasWhitelistedAttribute($node)) {
             return [];
         }
 
@@ -124,7 +124,7 @@ final class FinalRule implements Rules\Rule
      * @see https://github.com/SpacePossum
      * @see https://github.com/Slamdunk
      */
-    private function hasWhitelistedAnnotation(Node\Stmt\Class_ $node): bool
+    private static function hasWhitelistedAnnotation(Node\Stmt\Class_ $node): bool
     {
         $docComment = $node->getDocComment();
 
@@ -147,7 +147,7 @@ final class FinalRule implements Rules\Rule
         return false;
     }
 
-    private function hasWhitelistedAttribute(Node\Stmt\Class_ $node): bool
+    private static function hasWhitelistedAttribute(Node\Stmt\Class_ $node): bool
     {
         foreach ($node->attrGroups as $attributeGroup) {
             foreach ($attributeGroup->attrs as $attribute) {
