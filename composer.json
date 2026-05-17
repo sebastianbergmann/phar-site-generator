@@ -4,7 +4,7 @@
         "php": "^8.4",
         "ext-dom": "*",
         "phpunit/php-text-template": "^5.0",
-        "sebastian/cli-parser": "^4.2.0",
+        "sebastian/cli-parser": "^4.2.1",
         "sebastian/version": "^6.0"
     },
     "autoload": {
