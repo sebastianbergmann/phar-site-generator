@@ -149,7 +149,6 @@ EOT;
     private function copyAssets(string $target): void
     {
         $dir = $this->directory($target . '/css');
-        copy(__DIR__ . '/../assets/css/bootstrap.min.css', $dir . '/bootstrap.min.css');
         copy(__DIR__ . '/../assets/css/style.css', $dir . '/style.css');
 
         $dir = $this->directory($target . '/fonts');

@@ -39,12 +39,14 @@ final readonly class ReleaseCollector
                 $minorVersion = implode('.', array_slice(explode('.', $version), 0, 2));
                 $name         = implode('-', $parts);
                 $hash         = hash_file('sha256', $file->getPathname());
+                $bytes        = $file->getSize();
 
                 assert($name !== '');
                 assert($version !== '');
                 assert($majorVersion !== '');
                 assert($minorVersion !== '');
                 assert($hash !== false);
+                assert($bytes > 0);
 
                 $releases->add(
                     new Release(
@@ -53,7 +55,8 @@ final readonly class ReleaseCollector
                         $majorVersion,
                         $minorVersion,
                         date(DATE_W3C, $file->getMTime()),
-                        $this->humanReadableSize($file->getSize()),
+                        $this->humanReadableSize($bytes),
+                        $bytes,
                         $hash,
                     ),
                 );

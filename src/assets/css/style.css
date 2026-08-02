@@ -12,6 +12,10 @@
  src: local('Source Code Pro'), local('SourceCodePro-Regular'), url(../fonts/SourceCodePro.ttf) format('truetype');
 }
 
+*, *::before, *::after {
+ box-sizing: border-box;
+}
+
 body, h1, h2 {
  font-family: 'Open Sans', sans-serif;
 }
@@ -19,22 +23,72 @@ body, h1, h2 {
 body {
  background-color: #eeeeec;
  color: #2e3436;
+ font-size: 1rem;
+ line-height: 1.5;
  font-kerning: normal;
  font-variant-ligatures: common-ligatures;
  text-rendering: optimizeLegibility;
- margin-top: 1rem;
- margin-left: 1rem;
+ -webkit-text-size-adjust: 100%;
+ margin: 1rem 0 0 1rem;
+}
+
+h1, h2 {
+ font-weight: 500;
+ line-height: 1.2;
+}
+
+h1 {
+ font-size: calc(1.375rem + 1.5vw);
+ margin-top: 0;
+ margin-bottom: 0.5rem;
+}
+
+h2 {
+ font-size: calc(1.325rem + 0.9vw);
+ margin-top: 4rem;
+ margin-bottom: 2rem;
+}
+
+@media (min-width: 1200px) {
+ h1 {
+  font-size: 2.5rem;
+ }
+
+ h2 {
+  font-size: 2rem;
+ }
 }
 
 a, a:visited, a:hover {
  color: #204a87;
 }
 
-code, pre {
+code, pre, samp {
  font-family: 'Source Code Pro', monospace;
+ font-size: 1em;
 }
 
-h2 {
- margin-top: 4rem;
- margin-bottom: 2rem;
+table {
+ width: 100%;
+ margin-bottom: 1rem;
+ border-collapse: collapse;
+}
+
+caption {
+ caption-side: bottom;
+}
+
+th, td {
+ padding: 0.5rem;
+ text-align: left;
+ vertical-align: top;
+ border-bottom: 1px solid #dee2e6;
+}
+
+thead th {
+ vertical-align: bottom;
+}
+
+tbody tr:nth-of-type(odd) {
+ background-color: rgba(0, 0, 0, 0.05);
 }

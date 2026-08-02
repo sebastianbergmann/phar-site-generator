@@ -42,6 +42,11 @@ final readonly class Release
     private string $size;
 
     /**
+     * @var positive-int
+     */
+    private int $bytes;
+
+    /**
      * @var non-empty-string
      */
     private string $sha256;
@@ -53,9 +58,10 @@ final readonly class Release
      * @param non-empty-string $minorVersion
      * @param non-empty-string $date
      * @param non-empty-string $size
+     * @param positive-int     $bytes
      * @param non-empty-string $sha256
      */
-    public function __construct(string $package, string $version, string $majorVersion, string $minorVersion, string $date, string $size, string $sha256)
+    public function __construct(string $package, string $version, string $majorVersion, string $minorVersion, string $date, string $size, int $bytes, string $sha256)
     {
         $this->package      = $package;
         $this->version      = $version;
@@ -63,6 +69,7 @@ final readonly class Release
         $this->minorVersion = $minorVersion;
         $this->date         = $date;
         $this->size         = $size;
+        $this->bytes        = $bytes;
         $this->sha256       = $sha256;
     }
 
@@ -120,6 +127,14 @@ final readonly class Release
     public function size(): string
     {
         return $this->size;
+    }
+
+    /**
+     * @return positive-int
+     */
+    public function bytes(): int
+    {
+        return $this->bytes;
     }
 
     /**

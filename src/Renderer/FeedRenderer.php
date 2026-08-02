@@ -29,7 +29,7 @@ final class FeedRenderer extends AbstractRenderer
 
         foreach ($releases->latestReleasesSortedByDate() as $release) {
             $rdfList .= sprintf(
-                '    <rdf:li rdf:resource="%s/%s-%s.phar"/>' . "\n",
+                '    <rdf:li rdf:resource="https://%s/%s-%s.phar"/>' . "\n",
                 $this->domain(),
                 $release->package(),
                 $release->version(),

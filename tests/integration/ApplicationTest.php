@@ -38,7 +38,6 @@ final class ApplicationTest extends TestCase
             ),
         );
 
-        $this->assertFileEquals(__DIR__ . '/../../src/assets/css/bootstrap.min.css', '/tmp/phar.example.org/public/css/bootstrap.min.css');
         $this->assertFileEquals(__DIR__ . '/../../src/assets/css/style.css', '/tmp/phar.example.org/public/css/style.css');
         $this->assertFileEquals(__DIR__ . '/../../src/assets/fonts/OpenSans.ttf', '/tmp/phar.example.org/public/fonts/OpenSans.ttf');
         $this->assertFileEquals(__DIR__ . '/../../src/assets/fonts/SourceCodePro.ttf', '/tmp/phar.example.org/public/fonts/SourceCodePro.ttf');

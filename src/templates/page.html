@@ -3,43 +3,71 @@
  <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+  <title>{domain} &ndash; PHP Archive (PHAR) downloads</title>
+  <meta name="description" content="{description}">
+  <meta name="generator" content="phar-site-generator">
+  <link rel="canonical" href="https://{domain}/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{domain}">
+  <meta property="og:url" content="https://{domain}/">
+  <meta property="og:title" content="{domain} &ndash; PHP Archive (PHAR) downloads">
+  <meta property="og:description" content="{description}">
+  <meta name="twitter:card" content="summary">
+  <link rel="alternate" type="application/rss+xml" title="Latest releases on {domain}" href="https://{domain}/releases.rss">
+  <link rel="alternate" type="application/xml" title="Phive repository metadata for {domain}" href="https://{domain}/phive.xml">
   <link href="css/style.css" type="text/css" rel="stylesheet">
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="https://{domain}/releases.rss">
-  <title>{domain}</title>
+  <script type="application/ld+json">
+{structured_data}
+  </script>
  </head>
  <body>
   <h1>{domain}</h1>
-  <h2>Latest Releases</h2>
-  <table class="table table-striped">
+  <p>
+   This site distributes <a href="https://www.php.net/manual/en/intro.phar.php">PHP Archives (PHAR)</a>.
+   For each release, the tables below list the file size, the date the file was last modified,
+   a detached OpenPGP signature, and the SHA-256 checksum of the PHAR file.
+  </p>
+  <h2 id="latest-releases">Latest Releases</h2>
+  <table>
+   <caption>The most recent release of each PHAR distributed on {domain}</caption>
    <thead>
     <tr>
-     <th>PHAR</th>
-     <th>Size</th>
-     <th>Last Modified</th>
-     <th>GPG Signature</th>
-     <th>SHA256 Checksum</th>
+     <th scope="col">PHAR</th>
+     <th scope="col">Size</th>
+     <th scope="col">Last Modified</th>
+     <th scope="col">GPG Signature</th>
+     <th scope="col">SHA256 Checksum</th>
     </tr>
    </thead>
    <tbody>
 {latest_releases}
    </tbody>
   </table>
-  <h2>All Releases</h2>
-  <table class="table table-striped">
+  <h2 id="all-releases">All Releases</h2>
+  <table>
+   <caption>Every release of every PHAR distributed on {domain}</caption>
    <thead>
     <tr>
-     <th>PHAR</th>
-     <th>Size</th>
-     <th>Last Modified</th>
-     <th>GPG Signature</th>
-     <th>SHA256 Checksum</th>
+     <th scope="col">PHAR</th>
+     <th scope="col">Size</th>
+     <th scope="col">Last Modified</th>
+     <th scope="col">GPG Signature</th>
+     <th scope="col">SHA256 Checksum</th>
     </tr>
    </thead>
    <tbody>
 {all_releases}
    </tbody>
   </table>
+  <h2 id="verifying-a-download">Verifying a Download</h2>
+  <p>
+   Compare the SHA-256 checksum listed above with the checksum of the file you downloaded:
+  </p>
+  <pre><code>sha256sum &lt;file&gt;.phar</code></pre>
+  <p>
+   The <code>.asc</code> file that accompanies each PHAR file is a detached OpenPGP signature.
+   After importing the signing key, verify the signature like this:
+  </p>
+  <pre><code>gpg --verify &lt;file&gt;.phar.asc &lt;file&gt;.phar</code></pre>
  </body>
 </html>
-
