@@ -2,7 +2,7 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [5.0.1] - 2025-07-04
+## [5.1.0] - 2026-08-02
 
 ### Fixed
 
@@ -136,6 +136,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
+[5.1.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.0.1...5.1.0
 [5.0.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.0.0...5.0.1
 [5.0.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/4.0.1...5.0.0
 [4.0.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/4.0.0...4.0.1
