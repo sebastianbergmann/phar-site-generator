@@ -4,6 +4,20 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ## [5.1.0] - 2026-08-02
 
+### Added
+
+* The generated page now has metadata and structured data
+
+### Changed
+
+* The generated HTML no longer uses Bootstrap
+
+### Fixed
+
+* Scheme and item URIs in generated RSS feed
+
+## [5.0.1] - 2025-07-04
+
 ### Fixed
 
 * Generated `.htaccess` file is missing MIME type configuration for `*.phar` and `*.phar.asc` files
