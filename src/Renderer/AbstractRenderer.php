@@ -11,10 +11,16 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 abstract class AbstractRenderer
 {
+    /**
+     * @var non-empty-string
+     */
     private readonly string $target;
     private readonly string $domain;
     private readonly string $email;
 
+    /**
+     * @param non-empty-string $target
+     */
     public function __construct(string $target, string $domain, string $email)
     {
         $this->target = $target;
@@ -24,6 +30,9 @@ abstract class AbstractRenderer
 
     abstract public function render(ReleaseCollection $releases): void;
 
+    /**
+     * @return non-empty-string
+     */
     protected function target(): string
     {
         return $this->target;

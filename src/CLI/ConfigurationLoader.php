@@ -11,15 +11,26 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 use function assert;
 use function file_get_contents;
+use function sprintf;
 use DOMDocument;
 
 final readonly class ConfigurationLoader
 {
+    /**
+     * @throws RuntimeException
+     */
     public function load(string $filename): Configuration
     {
         $buffer = file_get_contents($filename);
 
-        assert($buffer !== false);
+        if ($buffer === false || $buffer === '') {
+            throw new RuntimeException(
+                sprintf(
+                    'Configuration file "%s" could not be read or is empty',
+                    $filename,
+                ),
+            );
+        }
 
         $document = new DOMDocument;
         $document->loadXML($buffer);
