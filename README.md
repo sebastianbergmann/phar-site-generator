@@ -7,7 +7,7 @@
 
 This tool makes the following assumptions:
 
-* The PHAR repository is hosted using [nginx](http://nginx.org/)
+* The PHAR repository is hosted using [Apache HTTPD](https://httpd.apache.org/) or [nginx](http://nginx.org/)
 * The PHAR repository is hosted using HTTPS
 * The PHAR repository directory contains `.phar` (PHP Archive) and `.phar.asc` (GPG signature) files
 * A `.phar` file may be accompanied by a `.phar.cdx.xml` file (Software Bill of Materials in [CycloneDX](https://cyclonedx.org/) format) and its `.phar.cdx.xml.asc` (GPG signature) file
@@ -31,4 +31,20 @@ wget https://phar.phpunit.de/phar-site-generator.phar
     <nginx>/webspace/phpunit.de/phar/redirects.conf</nginx>
 </phar-site>
 ```
+
+The `<nginx>` element configures the file that the redirect configuration for nginx is written to.
+
+When the PHAR repository is hosted using Apache HTTPD, use the `<apache>` element instead. It configures the file, for instance an `.htaccess` file in the PHAR repository directory, that the redirect configuration (as well as the MIME type configuration for `.phar` and `.phar.asc` files) for Apache HTTPD is written to:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phar-site>
+    <domain>phar.phpunit.de</domain>
+    <email>sebastian@phpunit.de</email>
+    <directory>/webspace/phar.phpunit.de/html</directory>
+    <apache>/webspace/phar.phpunit.de/html/.htaccess</apache>
+</phar-site>
+```
+
+Both the `<apache>` and the `<nginx>` element are optional and can be used together.
 
