@@ -63,6 +63,9 @@
    This site distributes <a href="https://www.php.net/manual/en/intro.phar.php">PHP Archives (PHAR)</a>.
    For each release, the tables below list the file size, the date the file was last modified,
    a detached OpenPGP signature, and the SHA-256 checksum of the PHAR file.
+   Where available, they also link to a Software Bill of Materials (SBOM) in
+   <a href="https://cyclonedx.org/">CycloneDX</a> format that describes the PHAR file and the components it contains,
+   together with a detached OpenPGP signature of the SBOM.
   </p>
   <h2 id="latest-releases">Latest Releases</h2>
   <table>
@@ -74,6 +77,7 @@
      <th scope="col">Last Modified</th>
      <th scope="col">GPG Signature</th>
      <th scope="col">SHA256 Checksum</th>
+     <th scope="col">SBOM</th>
     </tr>
    </thead>
    <tbody>
@@ -83,6 +87,7 @@
       <td><time datetime="%s">%s</time></td>
       <td><a href="https://phar.example.org/package-2.3.4.phar.asc">package-2.3.4.phar.asc</a></td>
       <td><samp>a72427688cadc3d3a299cc6658839011bdcbb7337493cf903d22c14864791ab1</samp></td>
+      <td><a href="https://phar.example.org/package-2.3.4.phar.cdx.xml">package-2.3.4.phar.cdx.xml</a> (<a href="https://phar.example.org/package-2.3.4.phar.cdx.xml.asc">signature</a>)</td>
      </tr>
 
    </tbody>
@@ -97,6 +102,7 @@
      <th scope="col">Last Modified</th>
      <th scope="col">GPG Signature</th>
      <th scope="col">SHA256 Checksum</th>
+     <th scope="col">SBOM</th>
     </tr>
    </thead>
    <tbody>
@@ -106,6 +112,7 @@
       <td><time datetime="%s">%s</time></td>
       <td><a href="https://phar.example.org/package-1.2.3.phar.asc">package-1.2.3.phar.asc</a></td>
       <td><samp>a72427688cadc3d3a299cc6658839011bdcbb7337493cf903d22c14864791ab1</samp></td>
+      <td></td>
      </tr>
      <tr>
       <td><a href="https://phar.example.org/package-2.3.4.phar">package-2.3.4.phar</a></td>
@@ -113,6 +120,7 @@
       <td><time datetime="%s">%s</time></td>
       <td><a href="https://phar.example.org/package-2.3.4.phar.asc">package-2.3.4.phar.asc</a></td>
       <td><samp>a72427688cadc3d3a299cc6658839011bdcbb7337493cf903d22c14864791ab1</samp></td>
+      <td><a href="https://phar.example.org/package-2.3.4.phar.cdx.xml">package-2.3.4.phar.cdx.xml</a> (<a href="https://phar.example.org/package-2.3.4.phar.cdx.xml.asc">signature</a>)</td>
      </tr>
 
    </tbody>
@@ -127,5 +135,9 @@
    After importing the signing key, verify the signature like this:
   </p>
   <pre><code>gpg --verify &lt;file&gt;.phar.asc &lt;file&gt;.phar</code></pre>
+  <p>
+   An SBOM is signed the same way:
+  </p>
+  <pre><code>gpg --verify &lt;file&gt;.phar.cdx.xml.asc &lt;file&gt;.phar.cdx.xml</code></pre>
  </body>
 </html>

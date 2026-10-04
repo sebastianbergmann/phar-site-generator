@@ -15,6 +15,7 @@ use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
 use function assert;
 use function json_encode;
+use function rtrim;
 use function sprintf;
 use InvalidArgumentException;
 use RuntimeException;
@@ -146,9 +147,32 @@ final class PageRenderer extends AbstractRenderer
                 'date'    => $release->date(),
                 'size'    => $release->size(),
                 'sha256'  => $release->sha256(),
+                'sbom'    => $this->renderSbom($release),
             ],
         );
 
         return $item->render();
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function renderSbom(Release $release): string
+    {
+        if (!$release->hasSbom()) {
+            return '';
+        }
+
+        $sbom = new Template(__DIR__ . '/../templates/sbom.html');
+
+        $sbom->setVar(
+            [
+                'domain'  => $this->domain(),
+                'package' => $release->package(),
+                'version' => $release->version(),
+            ],
+        );
+
+        return rtrim($sbom->render());
     }
 }

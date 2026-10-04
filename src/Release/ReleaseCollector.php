@@ -18,6 +18,7 @@ use function explode;
 use function floor;
 use function hash_file;
 use function implode;
+use function is_file;
 use function sprintf;
 use function strlen;
 use GlobIterator;
@@ -58,6 +59,7 @@ final readonly class ReleaseCollector
                         $this->humanReadableSize($bytes),
                         $bytes,
                         $hash,
+                        is_file($file->getPathname() . '.cdx.xml'),
                     ),
                 );
             }

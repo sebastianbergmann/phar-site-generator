@@ -50,6 +50,7 @@ final readonly class Release
      * @var non-empty-string
      */
     private string $sha256;
+    private bool $hasSbom;
 
     /**
      * @param non-empty-string $package
@@ -61,7 +62,7 @@ final readonly class Release
      * @param positive-int     $bytes
      * @param non-empty-string $sha256
      */
-    public function __construct(string $package, string $version, string $majorVersion, string $minorVersion, string $date, string $size, int $bytes, string $sha256)
+    public function __construct(string $package, string $version, string $majorVersion, string $minorVersion, string $date, string $size, int $bytes, string $sha256, bool $hasSbom)
     {
         $this->package      = $package;
         $this->version      = $version;
@@ -71,6 +72,7 @@ final readonly class Release
         $this->size         = $size;
         $this->bytes        = $bytes;
         $this->sha256       = $sha256;
+        $this->hasSbom      = $hasSbom;
     }
 
     /**
@@ -143,5 +145,14 @@ final readonly class Release
     public function sha256(): string
     {
         return $this->sha256;
+    }
+
+    /**
+     * Whether a Software Bill of Materials (SBOM) in CycloneDX format,
+     * <package>-<version>.phar.cdx.xml, is distributed next to the PHAR.
+     */
+    public function hasSbom(): bool
+    {
+        return $this->hasSbom;
     }
 }

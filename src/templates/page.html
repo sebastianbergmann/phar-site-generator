@@ -26,6 +26,9 @@
    This site distributes <a href="https://www.php.net/manual/en/intro.phar.php">PHP Archives (PHAR)</a>.
    For each release, the tables below list the file size, the date the file was last modified,
    a detached OpenPGP signature, and the SHA-256 checksum of the PHAR file.
+   Where available, they also link to a Software Bill of Materials (SBOM) in
+   <a href="https://cyclonedx.org/">CycloneDX</a> format that describes the PHAR file and the components it contains,
+   together with a detached OpenPGP signature of the SBOM.
   </p>
   <h2 id="latest-releases">Latest Releases</h2>
   <table>
@@ -37,6 +40,7 @@
      <th scope="col">Last Modified</th>
      <th scope="col">GPG Signature</th>
      <th scope="col">SHA256 Checksum</th>
+     <th scope="col">SBOM</th>
     </tr>
    </thead>
    <tbody>
@@ -53,6 +57,7 @@
      <th scope="col">Last Modified</th>
      <th scope="col">GPG Signature</th>
      <th scope="col">SHA256 Checksum</th>
+     <th scope="col">SBOM</th>
     </tr>
    </thead>
    <tbody>
@@ -69,5 +74,9 @@
    After importing the signing key, verify the signature like this:
   </p>
   <pre><code>gpg --verify &lt;file&gt;.phar.asc &lt;file&gt;.phar</code></pre>
+  <p>
+   An SBOM is signed the same way:
+  </p>
+  <pre><code>gpg --verify &lt;file&gt;.phar.cdx.xml.asc &lt;file&gt;.phar.cdx.xml</code></pre>
  </body>
 </html>

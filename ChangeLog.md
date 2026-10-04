@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.2.0] - 2026-MM-DD
+
+### Added
+
+* When a Software Bill of Materials (SBOM) in CycloneDX format (`<file>.phar.cdx.xml`) and its detached OpenPGP signature (`<file>.phar.cdx.xml.asc`) are present next to a PHAR, the generated page links to both
+
 ## [5.1.0] - 2026-08-02
 
 ### Added
@@ -150,6 +156,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
+[5.2.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.1.0...main
 [5.1.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.0.1...5.1.0
 [5.0.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.0.0...5.0.1
 [5.0.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/4.0.1...5.0.0

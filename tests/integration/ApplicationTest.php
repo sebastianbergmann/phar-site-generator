@@ -69,6 +69,8 @@ final class ApplicationTest extends TestCase
         copy(__DIR__ . '/../fixture/package-1.2.3.phar.asc', '/tmp/phar.example.org/public/package-1.2.3.phar.asc');
         copy(__DIR__ . '/../fixture/package-2.3.4.phar', '/tmp/phar.example.org/public/package-2.3.4.phar');
         copy(__DIR__ . '/../fixture/package-2.3.4.phar.asc', '/tmp/phar.example.org/public/package-2.3.4.phar.asc');
+        copy(__DIR__ . '/../fixture/package-2.3.4.phar.cdx.xml', '/tmp/phar.example.org/public/package-2.3.4.phar.cdx.xml');
+        copy(__DIR__ . '/../fixture/package-2.3.4.phar.cdx.xml.asc', '/tmp/phar.example.org/public/package-2.3.4.phar.cdx.xml.asc');
     }
 
     /**
