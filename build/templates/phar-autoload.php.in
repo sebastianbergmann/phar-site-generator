@@ -31,8 +31,18 @@ spl_autoload_register(
 
 Phar::mapPhar('___PHAR___');
 
+if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] === '--composer-lock') {
+    print file_get_contents(__PHARSITEGENERATOR_PHAR_ROOT__ . '/composer.lock');
+    exit;
+}
+
 if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] === '--manifest') {
     print file_get_contents(__PHARSITEGENERATOR_PHAR_ROOT__ . '/manifest.txt');
+    exit;
+}
+
+if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] === '--sbom') {
+    print file_get_contents(__PHARSITEGENERATOR_PHAR_ROOT__ . '/sbom.xml');
     exit;
 }
 

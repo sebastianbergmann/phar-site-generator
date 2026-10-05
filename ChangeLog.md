@@ -4,6 +4,10 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ## [5.3.0] - 2026-MM-DD
 
+### Added
+
+* The PHAR now embeds `composer.lock` and a Software Bill of Materials (SBOM) in CycloneDX 1.7 format that provides the NTIA minimum elements as well as the data fields that BSI TR-03183-2 (version 2.1.0) requires (`--composer-lock` and `--sbom` print them)
+
 ### Changed
 
 * The PHAR is built reproducibly: the timestamps of its files are derived from `SOURCE_DATE_EPOCH` or from the release tag

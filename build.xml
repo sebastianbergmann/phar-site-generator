@@ -76,6 +76,8 @@
         <mkdir dir="${basedir}/build/artifacts"/>
         <mkdir dir="${basedir}/build/tmp/phar"/>
 
+        <copy file="${basedir}/composer.lock" tofile="${basedir}/build/tmp/phar/composer.lock"/>
+
         <copy file="${basedir}/vendor/sebastian/cli-parser/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-cli-parser/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/sebastian-cli-parser">
             <fileset dir="${basedir}/vendor/sebastian/cli-parser/src">
@@ -110,7 +112,12 @@
             <equals arg1="${type}" arg2="release"/>
         </condition>
 
-        <exec executable="${basedir}/build/scripts/phar-manifest.php" output="${basedir}/build/tmp/phar/manifest.txt"/>
+        <exec executable="${basedir}/build/scripts/phar-manifest.php" taskname="phar-manifest" failonerror="true">
+            <arg path="${basedir}/build/tmp/phar/composer.lock"/>
+            <arg path="${basedir}/build/tmp/phar/manifest.txt"/>
+            <arg path="${basedir}/build/tmp/phar/sbom.xml"/>
+            <arg value="${type}"/>
+        </exec>
 
         <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
             <arg value="--all" />
