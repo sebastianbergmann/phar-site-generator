@@ -4,6 +4,10 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ## [5.5.0] - 2026-MM-DD
 
+### Added
+
+* A summary line reports how many releases were processed and, when the cache is configured, for how many PHAR files the hash was taken from the cache (cache hits) and how many PHAR files had to be hashed (cache misses)
+
 ### Changed
 
 * Errors that occur while the site is generated, for instance when the configuration file cannot be read, are now reported with a message and exit code `1` instead of an uncaught exception

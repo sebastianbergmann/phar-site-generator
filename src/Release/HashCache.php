@@ -49,6 +49,8 @@ final class HashCache
      * @var array<string, array{bytes: int, mtime: int, sha256: non-empty-string}>
      */
     private array $used = [];
+    private int $hits   = 0;
+    private int $misses = 0;
 
     /**
      * A cache file that does not exist, cannot be read, or is malformed
@@ -114,10 +116,14 @@ final class HashCache
             $this->cached[$key]['bytes'] === $bytes &&
             $this->cached[$key]['mtime'] === $mtime) {
             $sha256 = $this->cached[$key]['sha256'];
+
+            $this->hits++;
         } else {
             $sha256 = hash_file('sha256', $pathname);
 
             assert($sha256 !== false);
+
+            $this->misses++;
         }
 
         $this->used[$key] = [
@@ -127,6 +133,16 @@ final class HashCache
         ];
 
         return $sha256;
+    }
+
+    public function hits(): int
+    {
+        return $this->hits;
+    }
+
+    public function misses(): int
+    {
+        return $this->misses;
     }
 
     /**

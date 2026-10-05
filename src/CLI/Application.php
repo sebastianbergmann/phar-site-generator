@@ -13,6 +13,7 @@ use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function assert;
 use function copy;
+use function count;
 use function dirname;
 use function is_dir;
 use function mkdir;
@@ -58,17 +59,22 @@ final readonly class Application
         }
 
         try {
-            $this->generate($arguments);
+            $summary = $this->generate($arguments);
         } catch (Exception $e) {
             print $e->getMessage() . PHP_EOL;
 
             return 1;
         }
 
+        print $summary . PHP_EOL;
+
         return 0;
     }
 
-    public function generate(Arguments $arguments): void
+    /**
+     * @return non-empty-string Summary of the releases that were processed
+     */
+    public function generate(Arguments $arguments): string
     {
         $configuration = (new ConfigurationLoader)->load(
             $arguments->configurationFile(),
@@ -139,6 +145,15 @@ final readonly class Application
         }
 
         $this->copyAssets($configuration->directory());
+
+        $summary = $this->quantity(count($releases->allReleases()), 'release', 'releases') . ' processed';
+
+        if ($configuration->hasCacheFile()) {
+            $summary .= ', ' . $this->quantity($hashCache->hits(), 'cache hit', 'cache hits');
+            $summary .= ', ' . $this->quantity($hashCache->misses(), 'cache miss', 'cache misses');
+        }
+
+        return $summary;
     }
 
     private function printVersion(): void
@@ -160,6 +175,14 @@ Usage:
   phar-site-generator <configuration file>
 
 EOT;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function quantity(int $count, string $singular, string $plural): string
+    {
+        return $count . ' ' . ($count === 1 ? $singular : $plural);
     }
 
     private function copyAssets(string $target): void

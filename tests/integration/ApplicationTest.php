@@ -38,7 +38,7 @@ final class ApplicationTest extends TestCase
 
     public function testGeneratesSite(): void
     {
-        $this->generate();
+        $this->assertSame('2 releases processed, 0 cache hits, 2 cache misses', $this->generate());
 
         $this->assertFileEquals(__DIR__ . '/../../src/assets/css/style.css', '/tmp/phar.example.org/public/css/style.css');
         $this->assertFileEquals(__DIR__ . '/../../src/assets/fonts/OpenSans.ttf', '/tmp/phar.example.org/public/fonts/OpenSans.ttf');
@@ -53,6 +53,26 @@ final class ApplicationTest extends TestCase
         $this->assertFileEquals(__DIR__ . '/../expectations/public/latest-version-of/package-2.3', '/tmp/phar.example.org/public/latest-version-of/package-2.3');
         $this->assertFileEquals(__DIR__ . '/../expectations/public/phive.xml', '/tmp/phar.example.org/public/phive.xml');
         $this->assertFileMatchesFormatFile(__DIR__ . '/../expectations/public/releases.rss', '/tmp/phar.example.org/public/releases.rss');
+    }
+
+    public function testPrintsSummary(): void
+    {
+        $this->expectOutputRegex('/^2 releases processed, 0 cache hits, 2 cache misses$/m');
+
+        $this->assertSame(0, (new Application)->run(['phar-site-generator', __DIR__ . '/../fixture/configuration.xml']));
+    }
+
+    public function testDoesNotReportCacheHitsAndMissesWhenHashCacheIsNotConfigured(): void
+    {
+        $this->assertSame('2 releases processed', $this->generate(__DIR__ . '/../fixture/configuration-without-cache.xml'));
+        $this->assertFileDoesNotExist('/tmp/phar.example.org/cache.json');
+    }
+
+    public function testReportsOnlyCacheHitsWhenNoPharFileWasAdded(): void
+    {
+        $this->generate();
+
+        $this->assertSame('2 releases processed, 2 cache hits, 0 cache misses', $this->generate());
     }
 
     public function testWritesHashCache(): void
@@ -90,7 +110,7 @@ final class ApplicationTest extends TestCase
             ],
         );
 
-        $this->generate();
+        $this->assertSame('2 releases processed, 1 cache hit, 1 cache miss', $this->generate());
 
         $phive = file_get_contents('/tmp/phar.example.org/public/phive.xml');
 
@@ -203,11 +223,14 @@ final class ApplicationTest extends TestCase
         copy(__DIR__ . '/../fixture/package-2.3.4.phar.cdx.xml.asc', '/tmp/phar.example.org/public/package-2.3.4.phar.cdx.xml.asc');
     }
 
-    private function generate(): void
+    /**
+     * @param non-empty-string $configurationFile
+     */
+    private function generate(string $configurationFile = __DIR__ . '/../fixture/configuration.xml'): string
     {
-        (new Application)->generate(
+        return (new Application)->generate(
             new Arguments(
-                __DIR__ . '/../fixture/configuration.xml',
+                $configurationFile,
                 false,
                 false,
             ),
