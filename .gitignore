@@ -4,5 +4,5 @@
 /.phpunit.cache
 /composer.lock
 /vendor
-/build/phar
-/build/*.phar*
+/build/artifacts
+/build/tmp

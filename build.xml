@@ -3,15 +3,10 @@
     <target name="setup" depends="clean,install-dependencies"/>
 
     <target name="clean" description="Cleanup build artifacts">
-        <delete dir="${basedir}/build/phar"/>
+        <delete dir="${basedir}/build/artifacts"/>
+        <delete dir="${basedir}/build/tmp"/>
         <delete dir="${basedir}/vendor"/>
         <delete file="${basedir}/composer.lock"/>
-        <delete>
-            <fileset dir="${basedir}/build">
-                <include name="**/phar-site-generator*.phar"/>
-                <include name="**/phar-site-generator*.phar.asc"/>
-            </fileset>
-        </delete>
     </target>
 
     <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed" description="Install dependencies with Composer">
@@ -55,77 +50,90 @@
         </exec>
     </target>
 
-    <target name="signed-phar"
-            description="Create signed PHAR archive of phar-site-generator and all its dependencies (release)"
-            depends="phar">
-        <exec executable="bash" outputproperty="version">
-            <arg value="-c" />
-            <arg value="${basedir}/phar-site-generator --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
-        </exec>
-
+    <target name="signed-phar" depends="phar" description="Create signed PHAR archive of phar-site-generator and all its dependencies">
         <exec executable="gpg" failonerror="true">
-            <arg value="--armor" />
-            <arg value="--detach-sign" />
-            <arg path="${basedir}/build/phar-site-generator-${version}.phar" />
+            <arg value="--armor"/>
+            <arg value="--detach-sign"/>
+            <arg path="${basedir}/build/artifacts/phar-site-generator-${version}.phar"/>
         </exec>
     </target>
 
-    <target name="phar"
-            description="Create PHAR archive of phar-site-generator and all its dependencies"
-            depends="setup,phar-build">
-        <mkdir dir="${basedir}/build/phar"/>
+    <target name="phar" depends="-phar-prepare,-phar-determine-version" description="Create PHAR archive of phar-site-generator and all its dependencies">
+        <antcall target="-phar-build">
+            <param name="type" value="release"/>
+        </antcall>
     </target>
 
-    <target name="phar-build">
-        <exec executable="bash" outputproperty="version">
-            <arg value="-c" />
-            <arg value="${basedir}/phar-site-generator --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
-        </exec>
+    <target name="phar-snapshot" depends="-phar-prepare" description="Create PHAR archive of phar-site-generator and all its dependencies (snapshot)">
+        <antcall target="-phar-build">
+            <param name="type" value="snapshot"/>
+        </antcall>
+    </target>
 
-        <copy todir="${basedir}/build/phar/src">
-            <fileset dir="${basedir}/src">
-                <include name="**/*" />
-            </fileset>
-        </copy>
+    <target name="-phar-prepare" depends="clean,install-dependencies">
+        <mkdir dir="${basedir}/build/artifacts"/>
+        <mkdir dir="${basedir}/build/tmp/phar"/>
 
-        <copy file="${basedir}/vendor/sebastian/cli-parser/LICENSE" tofile="${basedir}/build/phar/sebastian-cli-parser/LICENSE"/>
-        <copy todir="${basedir}/build/phar/sebastian-cli-parser">
+        <copy file="${basedir}/vendor/sebastian/cli-parser/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-cli-parser/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/sebastian-cli-parser">
             <fileset dir="${basedir}/vendor/sebastian/cli-parser/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>
 
-        <copy file="${basedir}/vendor/phpunit/php-text-template/LICENSE" tofile="${basedir}/build/phar/php-text-template/LICENSE"/>
-        <copy todir="${basedir}/build/phar/php-text-template">
+        <copy file="${basedir}/vendor/phpunit/php-text-template/LICENSE" tofile="${basedir}/build/tmp/phar/php-text-template/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/php-text-template">
             <fileset dir="${basedir}/vendor/phpunit/php-text-template/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>
 
-        <copy file="${basedir}/vendor/sebastian/version/LICENSE" tofile="${basedir}/build/phar/sebastian-version/LICENSE"/>
-        <copy todir="${basedir}/build/phar/sebastian-version">
+        <copy file="${basedir}/vendor/sebastian/version/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-version/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/sebastian-version">
             <fileset dir="${basedir}/vendor/sebastian/version/src">
                 <include name="**/*.php" />
                 <exclude name="**/autoload.php" />
             </fileset>
         </copy>
+    </target>
 
-        <exec executable="${basedir}/build/phar-manifest.php" output="${basedir}/build/phar/manifest.txt"/>
+    <target name="-phar-build" depends="-phar-determine-version">
+        <copy todir="${basedir}/build/tmp/phar/src">
+            <fileset dir="${basedir}/src">
+                <include name="**/*" />
+            </fileset>
+        </copy>
 
-        <exec executable="${basedir}/tools/phpab">
+        <condition property="_version" value="${version}" else="snapshot">
+            <equals arg1="${type}" arg2="release"/>
+        </condition>
+
+        <exec executable="${basedir}/build/scripts/phar-manifest.php" output="${basedir}/build/tmp/phar/manifest.txt"/>
+
+        <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
             <arg value="--all" />
             <arg value="--phar" />
             <arg value="--output" />
-            <arg path="${basedir}/build/phar-site-generator-${version}.phar" />
+            <arg path="${basedir}/build/artifacts/phar-site-generator-${_version}.phar" />
             <arg value="--template" />
-            <arg path="${basedir}/build/phar-autoload.php.in" />
+            <arg path="${basedir}/build/templates/phar-autoload.php.in" />
             <arg value="--indent" />
             <arg value="            " />
-            <arg path="${basedir}/build/phar" />
+            <arg path="${basedir}/build/tmp/phar" />
         </exec>
 
-        <chmod file="${basedir}/build/phar-site-generator-${version}.phar" perm="ugo+rx"/>
+        <chmod file="${basedir}/build/artifacts/phar-site-generator-${_version}.phar" perm="ugo+rx"/>
+
+        <delete dir="${basedir}/build/tmp"/>
     </target>
+
+    <target name="-phar-determine-version">
+        <exec executable="bash" outputproperty="version" failonerror="true">
+            <arg value="-c" />
+            <arg value="${basedir}/phar-site-generator --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+        </exec>
+    </target>
+
 
     <target name="-dependencies-installed">
         <available file="${basedir}/vendor" property="dependencies-installed" type="dir"/>
