@@ -57,7 +57,13 @@ final readonly class Application
             return 1;
         }
 
-        $this->generate($arguments);
+        try {
+            $this->generate($arguments);
+        } catch (Exception $e) {
+            print $e->getMessage() . PHP_EOL;
+
+            return 1;
+        }
 
         return 0;
     }

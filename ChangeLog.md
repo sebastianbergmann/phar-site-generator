@@ -4,6 +4,10 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ## [5.5.0] - 2026-MM-DD
 
+### Changed
+
+* Errors that occur while the site is generated, for instance when the configuration file cannot be read, are now reported with a message and exit code `1` instead of an uncaught exception
+
 ### Fixed
 
 * A leading `~` in a path in the XML configuration file, for instance `<cache>~/cache.json</cache>`, is not expanded to the home directory of the user
