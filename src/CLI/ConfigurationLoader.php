@@ -24,7 +24,7 @@ final readonly class ConfigurationLoader
      */
     public function load(string $filename): Configuration
     {
-        $buffer = file_get_contents($filename);
+        $buffer = @file_get_contents($filename);
 
         if ($buffer === false || $buffer === '') {
             throw new RuntimeException(

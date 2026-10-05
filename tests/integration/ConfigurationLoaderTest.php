@@ -33,6 +33,14 @@ final class ConfigurationLoaderTest extends TestCase
         $this->assertSame('/tmp/phar.example.org/cache.json', $configuration->cacheFile());
     }
 
+    public function testCannotLoadConfigurationFileThatDoesNotExist(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Configuration file "/does/not/exist.xml" could not be read or is empty');
+
+        (new ConfigurationLoader)->load('/does/not/exist.xml');
+    }
+
     public function testExpandsLeadingTildeInPathsToHomeDirectory(): void
     {
         putenv('HOME=/home/example');
