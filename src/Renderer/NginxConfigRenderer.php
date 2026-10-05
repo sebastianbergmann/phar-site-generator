@@ -19,57 +19,46 @@ final class NginxConfigRenderer
         $buffer = '';
 
         foreach ($releases->latestReleases() as $release) {
-            $buffer .= sprintf(
-                "rewrite ^/%s.phar$ /%s-%s.phar redirect;\n",
-                $release->package(),
-                $release->package(),
-                $release->version(),
-            );
-
-            $buffer .= sprintf(
-                "rewrite ^/%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
-                $release->package(),
-                $release->package(),
-                $release->version(),
-            );
+            $buffer .= $this->redirects($release->package(), $release);
         }
 
         foreach ($releases->latestReleasesPerPackageAndMajorVersion() as $release) {
-            $buffer .= sprintf(
-                "rewrite ^/%s-%s.phar$ /%s-%s.phar redirect;\n",
-                $release->package(),
-                $release->majorVersion(),
-                $release->package(),
-                $release->version(),
-            );
-
-            $buffer .= sprintf(
-                "rewrite ^/%s-%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
-                $release->package(),
-                $release->majorVersion(),
-                $release->package(),
-                $release->version(),
-            );
+            $buffer .= $this->redirects($release->package() . '-' . $release->majorVersion(), $release);
         }
 
         foreach ($releases->latestReleasesPerPackageAndMinorVersion() as $release) {
-            $buffer .= sprintf(
-                "rewrite ^/%s-%s.phar$ /%s-%s.phar redirect;\n",
-                $release->package(),
-                $release->minorVersion(),
-                $release->package(),
-                $release->version(),
-            );
-
-            $buffer .= sprintf(
-                "rewrite ^/%s-%s.phar.asc$ /%s-%s.phar.asc redirect;\n",
-                $release->package(),
-                $release->minorVersion(),
-                $release->package(),
-                $release->version(),
-            );
+            $buffer .= $this->redirects($release->package() . '-' . $release->minorVersion(), $release);
         }
 
         file_put_contents($target, $buffer);
+    }
+
+    private function redirects(string $alias, Release $release): string
+    {
+        $buffer = '';
+
+        foreach ($this->suffixes($release) as $suffix) {
+            $buffer .= sprintf(
+                "rewrite ^/%s%s$ /%s%s redirect;\n",
+                $alias,
+                $suffix,
+                $release->asString(),
+                $suffix,
+            );
+        }
+
+        return $buffer;
+    }
+
+    /**
+     * @return non-empty-list<non-empty-string>
+     */
+    private function suffixes(Release $release): array
+    {
+        if ($release->hasSbom()) {
+            return ['.phar', '.phar.asc', '.phar.cdx.xml', '.phar.cdx.xml.asc'];
+        }
+
+        return ['.phar', '.phar.asc'];
     }
 }

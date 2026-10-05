@@ -25,57 +25,46 @@ AddType application/pgp-signature .phar.asc
 EOT;
 
         foreach ($releases->latestReleases() as $release) {
-            $buffer .= sprintf(
-                'Redirect "/%s.phar" "/%s-%s.phar"' . PHP_EOL,
-                $release->package(),
-                $release->package(),
-                $release->version(),
-            );
-
-            $buffer .= sprintf(
-                'Redirect "/%s.phar.asc" "/%s-%s.phar.asc"' . PHP_EOL,
-                $release->package(),
-                $release->package(),
-                $release->version(),
-            );
+            $buffer .= $this->redirects($release->package(), $release);
         }
 
         foreach ($releases->latestReleasesPerPackageAndMajorVersion() as $release) {
-            $buffer .= sprintf(
-                'Redirect "/%s-%s.phar" "/%s-%s.phar"' . PHP_EOL,
-                $release->package(),
-                $release->majorVersion(),
-                $release->package(),
-                $release->version(),
-            );
-
-            $buffer .= sprintf(
-                'Redirect "/%s-%s.phar.asc" "/%s-%s.phar.asc"' . PHP_EOL,
-                $release->package(),
-                $release->majorVersion(),
-                $release->package(),
-                $release->version(),
-            );
+            $buffer .= $this->redirects($release->package() . '-' . $release->majorVersion(), $release);
         }
 
         foreach ($releases->latestReleasesPerPackageAndMinorVersion() as $release) {
-            $buffer .= sprintf(
-                'Redirect "/%s-%s.phar" "/%s-%s.phar"' . PHP_EOL,
-                $release->package(),
-                $release->minorVersion(),
-                $release->package(),
-                $release->version(),
-            );
-
-            $buffer .= sprintf(
-                'Redirect "/%s-%s.phar.asc" "/%s-%s.phar.asc"' . PHP_EOL,
-                $release->package(),
-                $release->minorVersion(),
-                $release->package(),
-                $release->version(),
-            );
+            $buffer .= $this->redirects($release->package() . '-' . $release->minorVersion(), $release);
         }
 
         file_put_contents($target, $buffer);
+    }
+
+    private function redirects(string $alias, Release $release): string
+    {
+        $buffer = '';
+
+        foreach ($this->suffixes($release) as $suffix) {
+            $buffer .= sprintf(
+                'Redirect "/%s%s" "/%s%s"' . PHP_EOL,
+                $alias,
+                $suffix,
+                $release->asString(),
+                $suffix,
+            );
+        }
+
+        return $buffer;
+    }
+
+    /**
+     * @return non-empty-list<non-empty-string>
+     */
+    private function suffixes(Release $release): array
+    {
+        if ($release->hasSbom()) {
+            return ['.phar', '.phar.asc', '.phar.cdx.xml', '.phar.cdx.xml.asc'];
+        }
+
+        return ['.phar', '.phar.asc'];
     }
 }
