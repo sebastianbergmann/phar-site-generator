@@ -22,7 +22,7 @@ use SebastianBergmann\Version;
 
 final readonly class Application
 {
-    private const string VERSION = '5.2.0';
+    private const string VERSION = '5.3';
 
     /**
      * @param list<string> $argv
