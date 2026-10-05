@@ -16,14 +16,16 @@ final class Configuration
     private string $email;
     private ?string $apacheConfigurationFile;
     private ?string $nginxConfigurationFile;
+    private ?string $cacheFile;
 
-    public function __construct(string $directory, string $domain, string $email, ?string $apacheConfigurationFile, ?string $nginxConfigurationFile)
+    public function __construct(string $directory, string $domain, string $email, ?string $apacheConfigurationFile, ?string $nginxConfigurationFile, ?string $cacheFile)
     {
         $this->directory               = $directory;
         $this->domain                  = $domain;
         $this->email                   = $email;
         $this->apacheConfigurationFile = $apacheConfigurationFile;
         $this->nginxConfigurationFile  = $nginxConfigurationFile;
+        $this->cacheFile               = $cacheFile;
     }
 
     public function directory(): string
@@ -79,5 +81,25 @@ final class Configuration
         }
 
         return $this->nginxConfigurationFile;
+    }
+
+    /**
+     * @phpstan-assert-if-true !null $this->cacheFile
+     */
+    public function hasCacheFile(): bool
+    {
+        return $this->cacheFile !== null;
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    public function cacheFile(): string
+    {
+        if ($this->cacheFile === null) {
+            throw new RuntimeException;
+        }
+
+        return $this->cacheFile;
     }
 }

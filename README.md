@@ -48,3 +48,17 @@ When the PHAR repository is hosted using Apache HTTPD, use the `<apache>` elemen
 
 Both the `<apache>` and the `<nginx>` element are optional and can be used together.
 
+The optional `<cache>` element configures a file in which the SHA-256 hashes of the `.phar` files are cached between runs:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phar-site>
+    <domain>phar.phpunit.de</domain>
+    <email>sebastian@phpunit.de</email>
+    <directory>/webspace/phar.phpunit.de/html</directory>
+    <nginx>/webspace/phpunit.de/phar/redirects.conf</nginx>
+    <cache>/webspace/phpunit.de/phar/cache.json</cache>
+</phar-site>
+```
+
+Without a cache, every `.phar` file is read and hashed on every run. With a cache, only `.phar` files that were not seen before, or whose size or modification time changed, are hashed. The cache file should not be located in the PHAR repository directory and should not be shared between configurations.

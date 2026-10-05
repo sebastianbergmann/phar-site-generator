@@ -16,7 +16,6 @@ use function assert;
 use function date;
 use function explode;
 use function floor;
-use function hash_file;
 use function implode;
 use function is_file;
 use function sprintf;
@@ -26,6 +25,13 @@ use SplFileInfo;
 
 final readonly class ReleaseCollector
 {
+    private HashCache $hashCache;
+
+    public function __construct(HashCache $hashCache)
+    {
+        $this->hashCache = $hashCache;
+    }
+
     public function collect(string $directory): ReleaseCollection
     {
         $releases = new ReleaseCollection;
@@ -39,14 +45,14 @@ final readonly class ReleaseCollector
                 $majorVersion = explode('.', $version)[0];
                 $minorVersion = implode('.', array_slice(explode('.', $version), 0, 2));
                 $name         = implode('-', $parts);
-                $hash         = hash_file('sha256', $file->getPathname());
                 $bytes        = $file->getSize();
+                $mtime        = $file->getMTime();
+                $hash         = $this->hashCache->sha256($file->getPathname(), $bytes, $mtime);
 
                 assert($name !== '');
                 assert($version !== '');
                 assert($majorVersion !== '');
                 assert($minorVersion !== '');
-                assert($hash !== false);
                 assert($bytes > 0);
 
                 $releases->add(
@@ -55,7 +61,7 @@ final readonly class ReleaseCollector
                         $version,
                         $majorVersion,
                         $minorVersion,
-                        date(DATE_W3C, $file->getMTime()),
+                        date(DATE_W3C, $mtime),
                         $this->humanReadableSize($bytes),
                         $bytes,
                         $hash,

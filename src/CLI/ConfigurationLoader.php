@@ -47,6 +47,12 @@ final readonly class ConfigurationLoader
             $nginxConfigurationFile = $document->getElementsByTagName('nginx')->item(0)->textContent;
         }
 
+        $cacheFile = null;
+
+        if ($document->getElementsByTagName('cache')->item(0) !== null) {
+            $cacheFile = $document->getElementsByTagName('cache')->item(0)->textContent;
+        }
+
         $directory = $document->getElementsByTagName('directory')->item(0);
         $domain    = $document->getElementsByTagName('domain')->item(0);
         $email     = $document->getElementsByTagName('email')->item(0);
@@ -61,6 +67,7 @@ final readonly class ConfigurationLoader
             $email->textContent,
             $apacheConfigurationFile,
             $nginxConfigurationFile,
+            $cacheFile,
         );
     }
 }

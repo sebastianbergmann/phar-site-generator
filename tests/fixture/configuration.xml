@@ -5,4 +5,5 @@
     <directory>/tmp/phar.example.org/public</directory>
     <apache>/tmp/phar.example.org/apache-redirects.conf</apache>
     <nginx>/tmp/phar.example.org/nginx-redirects.conf</nginx>
+    <cache>/tmp/phar.example.org/cache.json</cache>
 </phar-site>

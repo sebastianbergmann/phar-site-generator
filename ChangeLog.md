@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.4.0] - 2026-MM-DD
+
+### Added
+
+* The optional `<cache>` configuration element configures a file in which the SHA-256 hashes of PHAR files are cached between runs so that only new (or changed) PHAR files need to be hashed
+
 ## [5.3.1] - 2026-10-05
 
 ### Fixed
@@ -173,6 +179,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
+[5.4.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.3.1...main
 [5.3.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.3.0...5.3.1
 [5.3.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.2.0...5.3.0
 [5.2.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.1.0...5.2.0

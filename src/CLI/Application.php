@@ -22,7 +22,7 @@ use SebastianBergmann\Version;
 
 final readonly class Application
 {
-    private const string VERSION = '5.3.1';
+    private const string VERSION = '5.4';
 
     /**
      * @param list<string> $argv
@@ -70,7 +70,17 @@ final readonly class Application
 
         $this->createDirectory($configuration->directory());
 
-        $releases = (new ReleaseCollector)->collect($configuration->directory());
+        $hashCache = new HashCache;
+
+        if ($configuration->hasCacheFile()) {
+            $hashCache = HashCache::fromFile($configuration->cacheFile());
+        }
+
+        $releases = (new ReleaseCollector($hashCache))->collect($configuration->directory());
+
+        if ($configuration->hasCacheFile()) {
+            $hashCache->save($configuration->cacheFile());
+        }
 
         $renderer = new FeedRenderer(
             $configuration->directory() . DIRECTORY_SEPARATOR . 'releases.rss',
