@@ -4,6 +4,10 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ## [5.3.0] - 2026-MM-DD
 
+### Changed
+
+* The PHAR is built reproducibly: the timestamps of its files are derived from `SOURCE_DATE_EPOCH` or from the release tag
+
 ## [5.2.0] - 2026-10-04
 
 ### Added

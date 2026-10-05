@@ -115,6 +115,8 @@
         <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
             <arg value="--all" />
             <arg value="--phar" />
+            <arg value="--hash" />
+            <arg value="SHA-512" />
             <arg value="--output" />
             <arg path="${basedir}/build/artifacts/phar-site-generator-${_version}.phar" />
             <arg value="--template" />
@@ -122,6 +124,11 @@
             <arg value="--indent" />
             <arg value="            " />
             <arg path="${basedir}/build/tmp/phar" />
+        </exec>
+
+        <exec executable="${basedir}/build/scripts/phar-set-timestamps/run.php" taskname="phar-set-timestamps" failonerror="true">
+            <arg path="${basedir}/build/artifacts/phar-site-generator-${_version}.phar" />
+            <arg value="${type}" />
         </exec>
 
         <chmod file="${basedir}/build/artifacts/phar-site-generator-${_version}.phar" perm="ugo+rx"/>
