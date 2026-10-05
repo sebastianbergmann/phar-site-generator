@@ -163,6 +163,26 @@ final class ApplicationTest extends TestCase
         $this->assertSame(self::SHA256, $this->cachedHash('package-2.3.4.phar'));
     }
 
+    public function testFailsWhenHashCacheCannotBeWritten(): void
+    {
+        $this->createDirectory('/tmp/phar.example.org/cache.json.tmp');
+
+        $this->expectOutputRegex('#Cache file "/tmp/phar\.example\.org/cache\.json" could not be written: Failed to open stream: Is a directory#');
+
+        $this->assertSame(1, (new Application)->run(['phar-site-generator', __DIR__ . '/../fixture/configuration.xml']));
+        $this->assertFileDoesNotExist('/tmp/phar.example.org/public/index.html');
+    }
+
+    public function testFailsWhenHashCacheCannotBeReplaced(): void
+    {
+        $this->createDirectory('/tmp/phar.example.org/cache.json');
+
+        $this->expectOutputRegex('#Cache file "/tmp/phar\.example\.org/cache\.json" could not be written: Is a directory#');
+
+        $this->assertSame(1, (new Application)->run(['phar-site-generator', __DIR__ . '/../fixture/configuration.xml']));
+        $this->assertFileDoesNotExist('/tmp/phar.example.org/cache.json.tmp');
+    }
+
     #[Before(2)]
     #[After]
     protected function cleanUp(): void

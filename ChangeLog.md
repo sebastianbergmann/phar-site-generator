@@ -11,6 +11,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 ### Fixed
 
 * A leading `~` in a path in the XML configuration file, for instance `<cache>~/cache.json</cache>`, is not expanded to the home directory of the user
+* No error is reported when the cache file cannot be written
 
 ## [5.4.0] - 2026-10-05
 

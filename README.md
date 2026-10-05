@@ -63,4 +63,4 @@ The optional `<cache>` element configures a file in which the SHA-256 hashes of 
 </phar-site>
 ```
 
-Without a cache, every `.phar` file is read and hashed on every run. With a cache, only `.phar` files that were not seen before, or whose size or modification time changed, are hashed. The cache file should not be located in the PHAR repository directory and should not be shared between configurations.
+Without a cache, every `.phar` file is read and hashed on every run. With a cache, only `.phar` files that were not seen before, or whose size or modification time changed, are hashed. The cache file should not be located in the PHAR repository directory and should not be shared between configurations. When the cache file cannot be written, `phar-site-generator` reports an error and exits with exit code `1`.

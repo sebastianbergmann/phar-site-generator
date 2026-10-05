@@ -14,6 +14,8 @@ use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
 use function assert;
 use function basename;
+use function error_clear_last;
+use function error_get_last;
 use function file_get_contents;
 use function file_put_contents;
 use function hash_file;
@@ -24,7 +26,10 @@ use function is_string;
 use function json_decode;
 use function json_encode;
 use function preg_match;
+use function preg_replace;
 use function rename;
+use function sprintf;
+use function unlink;
 
 /**
  * Remembers the SHA-256 hashes of PHAR files between runs so that only
@@ -127,15 +132,32 @@ final class HashCache
     /**
      * Only the hashes of PHAR files that were seen in this run are written,
      * hashes of PHAR files that no longer exist are dropped from the cache.
+     *
+     * @throws RuntimeException
      */
     public function save(string $filename): void
     {
-        $buffer = json_encode($this->used, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n";
+        $buffer        = json_encode($this->used, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n";
+        $temporaryFile = $filename . '.tmp';
+
+        error_clear_last();
 
         // Write to a temporary file first so that an interrupted run cannot
         // leave a truncated cache file behind
-        if (file_put_contents($filename . '.tmp', $buffer) !== false) {
-            rename($filename . '.tmp', $filename);
+        if (@file_put_contents($temporaryFile, $buffer) !== false && @rename($temporaryFile, $filename)) {
+            return;
         }
+
+        $error = error_get_last();
+
+        @unlink($temporaryFile);
+
+        throw new RuntimeException(
+            sprintf(
+                'Cache file "%s" could not be written: %s',
+                $filename,
+                $error !== null ? preg_replace('/^\w+\(.*?\): /', '', $error['message']) : 'unknown error',
+            ),
+        );
     }
 }
