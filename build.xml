@@ -52,6 +52,8 @@
 
     <target name="signed-phar" depends="phar" description="Create signed PHAR archive of phar-site-generator and all its dependencies">
         <exec executable="gpg" failonerror="true">
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
             <arg value="--armor"/>
             <arg value="--detach-sign"/>
             <arg path="${basedir}/build/artifacts/phar-site-generator-${version}.phar"/>
