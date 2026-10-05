@@ -48,6 +48,8 @@ When the PHAR repository is hosted using Apache HTTPD, use the `<apache>` elemen
 
 Both the `<apache>` and the `<nginx>` element are optional and can be used together.
 
+A leading `~` in any of the configured paths is expanded to the home directory of the user that runs `phar-site-generator`.
+
 The optional `<cache>` element configures a file in which the SHA-256 hashes of the `.phar` files are cached between runs:
 
 ```xml

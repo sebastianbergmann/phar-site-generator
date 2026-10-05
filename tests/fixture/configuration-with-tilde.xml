@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phar-site>
+    <domain>phar.example.org</domain>
+    <email>phar@example.org</email>
+    <directory>~/public</directory>
+    <apache>~/apache-redirects.conf</apache>
+    <nginx>~/nginx-redirects.conf</nginx>
+    <cache>~/cache.json</cache>
+</phar-site>

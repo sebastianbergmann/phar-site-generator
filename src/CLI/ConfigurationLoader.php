@@ -11,7 +11,10 @@ namespace SebastianBergmann\PharSiteGenerator;
 
 use function assert;
 use function file_get_contents;
+use function getenv;
 use function sprintf;
+use function str_starts_with;
+use function substr;
 use DOMDocument;
 
 final readonly class ConfigurationLoader
@@ -38,19 +41,19 @@ final readonly class ConfigurationLoader
         $apacheConfigurationFile = null;
 
         if ($document->getElementsByTagName('apache')->item(0) !== null) {
-            $apacheConfigurationFile = $document->getElementsByTagName('apache')->item(0)->textContent;
+            $apacheConfigurationFile = $this->expandHomeDirectory($document->getElementsByTagName('apache')->item(0)->textContent);
         }
 
         $nginxConfigurationFile = null;
 
         if ($document->getElementsByTagName('nginx')->item(0) !== null) {
-            $nginxConfigurationFile = $document->getElementsByTagName('nginx')->item(0)->textContent;
+            $nginxConfigurationFile = $this->expandHomeDirectory($document->getElementsByTagName('nginx')->item(0)->textContent);
         }
 
         $cacheFile = null;
 
         if ($document->getElementsByTagName('cache')->item(0) !== null) {
-            $cacheFile = $document->getElementsByTagName('cache')->item(0)->textContent;
+            $cacheFile = $this->expandHomeDirectory($document->getElementsByTagName('cache')->item(0)->textContent);
         }
 
         $directory = $document->getElementsByTagName('directory')->item(0);
@@ -62,12 +65,38 @@ final readonly class ConfigurationLoader
         assert($email !== null);
 
         return new Configuration(
-            $directory->textContent,
+            $this->expandHomeDirectory($directory->textContent),
             $domain->textContent,
             $email->textContent,
             $apacheConfigurationFile,
             $nginxConfigurationFile,
             $cacheFile,
         );
+    }
+
+    /**
+     * Expands a leading "~" to the home directory of the current user,
+     * as a shell would do, because PHP's filesystem functions do not.
+     *
+     * @throws RuntimeException
+     */
+    private function expandHomeDirectory(string $path): string
+    {
+        if ($path !== '~' && !str_starts_with($path, '~/')) {
+            return $path;
+        }
+
+        $home = getenv('HOME');
+
+        if ($home === false || $home === '') {
+            throw new RuntimeException(
+                sprintf(
+                    'Path "%s" cannot be expanded because the HOME environment variable is not set',
+                    $path,
+                ),
+            );
+        }
+
+        return $home . substr($path, 1);
     }
 }
