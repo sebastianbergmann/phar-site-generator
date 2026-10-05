@@ -1,4 +1,18 @@
 {
+    "name": "sebastian/phar-site-generator",
+    "description": "Tool that generates an HTML page, RSS feed, and Phive metadata for a PHAR repository",
+    "homepage": "https://github.com/sebastianbergmann/phar-site-generator",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Sebastian Bergmann",
+            "email": "sebastian@phpunit.de",
+            "role": "lead"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/sebastianbergmann/phar-site-generator/issues"
+    },
     "prefer-stable": true,
     "require": {
         "php": "^8.4",
