@@ -114,6 +114,7 @@ final readonly class Application
             $configuration->directory() . DIRECTORY_SEPARATOR . 'index.html',
             $configuration->domain(),
             $configuration->email(),
+            $configuration->packagesIgnoredInLatestReleases(),
         );
 
         $renderer->render($releases);

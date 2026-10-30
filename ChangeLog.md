@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.6.0] - 2026-MM-DD
+
+### Added
+
+* The optional `<latest-releases>` configuration element configures packages, using `<ignore>` child elements, that are not listed in the "Latest Releases" section of the HTML page
+
 ## [5.5.0] - 2026-10-05
 
 ### Added
@@ -194,6 +200,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
+[5.6.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.5.0...main
 [5.5.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.4.0...5.5.0
 [5.4.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.3.1...5.4.0
 [5.3.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.3.0...5.3.1

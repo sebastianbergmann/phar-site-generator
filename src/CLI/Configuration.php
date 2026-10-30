@@ -18,14 +18,23 @@ final class Configuration
     private ?string $nginxConfigurationFile;
     private ?string $cacheFile;
 
-    public function __construct(string $directory, string $domain, string $email, ?string $apacheConfigurationFile, ?string $nginxConfigurationFile, ?string $cacheFile)
+    /**
+     * @var list<non-empty-string>
+     */
+    private array $packagesIgnoredInLatestReleases;
+
+    /**
+     * @param list<non-empty-string> $packagesIgnoredInLatestReleases
+     */
+    public function __construct(string $directory, string $domain, string $email, ?string $apacheConfigurationFile, ?string $nginxConfigurationFile, ?string $cacheFile, array $packagesIgnoredInLatestReleases)
     {
-        $this->directory               = $directory;
-        $this->domain                  = $domain;
-        $this->email                   = $email;
-        $this->apacheConfigurationFile = $apacheConfigurationFile;
-        $this->nginxConfigurationFile  = $nginxConfigurationFile;
-        $this->cacheFile               = $cacheFile;
+        $this->directory                       = $directory;
+        $this->domain                          = $domain;
+        $this->email                           = $email;
+        $this->apacheConfigurationFile         = $apacheConfigurationFile;
+        $this->nginxConfigurationFile          = $nginxConfigurationFile;
+        $this->cacheFile                       = $cacheFile;
+        $this->packagesIgnoredInLatestReleases = $packagesIgnoredInLatestReleases;
     }
 
     public function directory(): string
@@ -101,5 +110,13 @@ final class Configuration
         }
 
         return $this->cacheFile;
+    }
+
+    /**
+     * @return list<non-empty-string>
+     */
+    public function packagesIgnoredInLatestReleases(): array
+    {
+        return $this->packagesIgnoredInLatestReleases;
     }
 }

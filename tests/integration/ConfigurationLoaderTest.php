@@ -31,6 +31,14 @@ final class ConfigurationLoaderTest extends TestCase
         $this->assertSame('/tmp/phar.example.org/apache-redirects.conf', $configuration->apacheConfigurationFile());
         $this->assertSame('/tmp/phar.example.org/nginx-redirects.conf', $configuration->nginxConfigurationFile());
         $this->assertSame('/tmp/phar.example.org/cache.json', $configuration->cacheFile());
+        $this->assertSame([], $configuration->packagesIgnoredInLatestReleases());
+    }
+
+    public function testLoadsPackagesIgnoredInLatestReleases(): void
+    {
+        $configuration = (new ConfigurationLoader)->load(__DIR__ . '/../fixture/configuration-with-ignored-package.xml');
+
+        $this->assertSame(['package', 'other-package'], $configuration->packagesIgnoredInLatestReleases());
     }
 
     public function testCannotLoadConfigurationFileThatDoesNotExist(): void

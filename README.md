@@ -64,3 +64,23 @@ The optional `<cache>` element configures a file in which the SHA-256 hashes of 
 ```
 
 Without a cache, every `.phar` file is read and hashed on every run. With a cache, only `.phar` files that were not seen before, or whose size or modification time changed, are hashed. The cache file should not be located in the PHAR repository directory and should not be shared between configurations. When the cache file cannot be written, `phar-site-generator` reports an error and exits with exit code `1`.
+
+The optional `<latest-releases>` element configures packages, by name, that are not listed in the "Latest Releases" section of the generated HTML page:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phar-site>
+    <domain>phar.phpunit.de</domain>
+    <email>sebastian@phpunit.de</email>
+    <directory>/webspace/phar.phpunit.de/html</directory>
+    <nginx>/webspace/phpunit.de/phar/redirects.conf</nginx>
+    <latest-releases>
+        <ignore>foal</ignore>
+        <ignore>phpcpd</ignore>
+        <ignore>phploc</ignore>
+        <ignore>phpunit-library</ignore>
+    </latest-releases>
+</phar-site>
+```
+
+The releases of an ignored package are still listed in the "All Releases" section of the HTML page, and they are still included in the RSS feed, the Phive metadata, and the redirect configuration.

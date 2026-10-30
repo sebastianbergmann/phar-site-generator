@@ -13,7 +13,10 @@ use const JSON_HEX_TAG;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
+use function array_filter;
+use function array_values;
 use function assert;
+use function in_array;
 use function json_encode;
 use function rtrim;
 use function sprintf;
@@ -24,6 +27,22 @@ use SebastianBergmann\Template\Template;
 final class PageRenderer extends AbstractRenderer
 {
     /**
+     * @var list<non-empty-string>
+     */
+    private readonly array $packagesIgnoredInLatestReleases;
+
+    /**
+     * @param non-empty-string       $target
+     * @param list<non-empty-string> $packagesIgnoredInLatestReleases
+     */
+    public function __construct(string $target, string $domain, string $email, array $packagesIgnoredInLatestReleases)
+    {
+        parent::__construct($target, $domain, $email);
+
+        $this->packagesIgnoredInLatestReleases = $packagesIgnoredInLatestReleases;
+    }
+
+    /**
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
@@ -31,7 +50,7 @@ final class PageRenderer extends AbstractRenderer
     {
         $latestReleases = '';
 
-        foreach ($releases->latestReleasesSortedByPackageName() as $release) {
+        foreach ($this->latestReleases($releases) as $release) {
             $latestReleases .= $this->renderRelease($release);
         }
 
@@ -56,6 +75,19 @@ final class PageRenderer extends AbstractRenderer
         $page->renderTo($this->target());
     }
 
+    /**
+     * @return list<Release>
+     */
+    private function latestReleases(ReleaseCollection $releases): array
+    {
+        return array_values(
+            array_filter(
+                $releases->latestReleasesSortedByPackageName(),
+                fn (Release $release): bool => !in_array($release->package(), $this->packagesIgnoredInLatestReleases, true),
+            ),
+        );
+    }
+
     private function description(): string
     {
         return sprintf(
@@ -74,7 +106,7 @@ final class PageRenderer extends AbstractRenderer
         $items    = [];
         $position = 0;
 
-        foreach ($releases->latestReleasesSortedByPackageName() as $release) {
+        foreach ($this->latestReleases($releases) as $release) {
             $url = sprintf(
                 'https://%s/%s-%s.phar',
                 $this->domain(),

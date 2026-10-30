@@ -68,6 +68,16 @@ final class ApplicationTest extends TestCase
         $this->assertFileDoesNotExist('/tmp/phar.example.org/cache.json');
     }
 
+    public function testDoesNotListIgnoredPackagesInLatestReleases(): void
+    {
+        $this->assertSame('2 releases processed', $this->generate(__DIR__ . '/../fixture/configuration-with-ignored-package.xml'));
+
+        $this->assertFileMatchesFormatFile(__DIR__ . '/../expectations/index-with-ignored-package.html', '/tmp/phar.example.org/public/index.html');
+        $this->assertFileEquals(__DIR__ . '/../expectations/public/latest-version-of/package', '/tmp/phar.example.org/public/latest-version-of/package');
+        $this->assertFileEquals(__DIR__ . '/../expectations/public/phive.xml', '/tmp/phar.example.org/public/phive.xml');
+        $this->assertFileMatchesFormatFile(__DIR__ . '/../expectations/public/releases.rss', '/tmp/phar.example.org/public/releases.rss');
+    }
+
     public function testReportsOnlyCacheHitsWhenNoPharFileWasAdded(): void
     {
         $this->generate();

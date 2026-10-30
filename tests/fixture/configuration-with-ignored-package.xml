@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phar-site>
+    <domain>phar.example.org</domain>
+    <email>phar@example.org</email>
+    <directory>/tmp/phar.example.org/public</directory>
+    <latest-releases>
+        <ignore>package</ignore>
+        <ignore>other-package</ignore>
+    </latest-releases>
+</phar-site>

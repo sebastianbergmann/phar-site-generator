@@ -15,6 +15,7 @@ use function getenv;
 use function sprintf;
 use function str_starts_with;
 use function substr;
+use function trim;
 use DOMDocument;
 
 final readonly class ConfigurationLoader
@@ -56,6 +57,18 @@ final readonly class ConfigurationLoader
             $cacheFile = $this->expandHomeDirectory($document->getElementsByTagName('cache')->item(0)->textContent);
         }
 
+        $packagesIgnoredInLatestReleases = [];
+
+        if ($document->getElementsByTagName('latest-releases')->item(0) !== null) {
+            foreach ($document->getElementsByTagName('latest-releases')->item(0)->getElementsByTagName('ignore') as $ignore) {
+                $package = trim($ignore->textContent);
+
+                if ($package !== '') {
+                    $packagesIgnoredInLatestReleases[] = $package;
+                }
+            }
+        }
+
         $directory = $document->getElementsByTagName('directory')->item(0);
         $domain    = $document->getElementsByTagName('domain')->item(0);
         $email     = $document->getElementsByTagName('email')->item(0);
@@ -71,6 +84,7 @@ final readonly class ConfigurationLoader
             $apacheConfigurationFile,
             $nginxConfigurationFile,
             $cacheFile,
+            $packagesIgnoredInLatestReleases,
         );
     }
 
