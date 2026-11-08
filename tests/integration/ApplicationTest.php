@@ -12,10 +12,13 @@ namespace SebastianBergmann\PharSiteGenerator;
 use const JSON_THROW_ON_ERROR;
 use function array_keys;
 use function assert;
+use function chmod;
+use function clearstatcache;
 use function copy;
 use function file_get_contents;
 use function file_put_contents;
 use function filemtime;
+use function fileperms;
 use function glob;
 use function is_dir;
 use function is_file;
@@ -351,6 +354,49 @@ final class ApplicationTest extends TestCase
 
         $this->assertSame(1, (new Application)->run(['phar-site-generator', __DIR__ . '/../fixture/configuration.xml']));
         $this->assertFileDoesNotExist('/tmp/phar.example.org/cache.json.tmp');
+    }
+
+    public function testReplacesApacheConfigurationFileWithoutLeavingTemporaryFileBehind(): void
+    {
+        file_put_contents('/tmp/phar.example.org/apache-redirects.conf', 'outdated');
+
+        $this->generate();
+
+        $this->assertFileEquals(__DIR__ . '/../expectations/apache-redirects.conf', '/tmp/phar.example.org/apache-redirects.conf');
+        $this->assertFileDoesNotExist('/tmp/phar.example.org/apache-redirects.conf.tmp');
+    }
+
+    public function testPreservesPermissionsOfApacheConfigurationFile(): void
+    {
+        file_put_contents('/tmp/phar.example.org/apache-redirects.conf', 'outdated');
+        chmod('/tmp/phar.example.org/apache-redirects.conf', 0o640);
+
+        $this->generate();
+
+        clearstatcache();
+
+        $this->assertSame(0o640, fileperms('/tmp/phar.example.org/apache-redirects.conf') & 0o777);
+    }
+
+    public function testFailsWithoutChangingApacheConfigurationFileWhenItCannotBeWritten(): void
+    {
+        file_put_contents('/tmp/phar.example.org/apache-redirects.conf', 'outdated');
+        $this->createDirectory('/tmp/phar.example.org/apache-redirects.conf.tmp');
+
+        $this->expectOutputRegex('#Apache HTTPD configuration file "/tmp/phar\.example\.org/apache-redirects\.conf" could not be written: Failed to open stream: Is a directory#');
+
+        $this->assertSame(1, (new Application)->run(['phar-site-generator', __DIR__ . '/../fixture/configuration.xml']));
+        $this->assertStringEqualsFile('/tmp/phar.example.org/apache-redirects.conf', 'outdated');
+    }
+
+    public function testFailsWhenApacheConfigurationFileCannotBeReplaced(): void
+    {
+        $this->createDirectory('/tmp/phar.example.org/apache-redirects.conf');
+
+        $this->expectOutputRegex('#Apache HTTPD configuration file "/tmp/phar\.example\.org/apache-redirects\.conf" could not be written: Is a directory#');
+
+        $this->assertSame(1, (new Application)->run(['phar-site-generator', __DIR__ . '/../fixture/configuration.xml']));
+        $this->assertFileDoesNotExist('/tmp/phar.example.org/apache-redirects.conf.tmp');
     }
 
     #[Before(2)]

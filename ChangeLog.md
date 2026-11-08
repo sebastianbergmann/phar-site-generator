@@ -8,6 +8,10 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * The optional `template` attribute of the `<apache>` configuration element configures a template file for the Apache HTTPD configuration, for instance for configuration that an `.htaccess` file must contain in addition to the generated configuration; the `{configuration}` placeholder in the template file is replaced with the generated configuration
 
+### Changed
+
+* The Apache HTTPD configuration is written to a temporary file that then replaces the configured file, so that Apache HTTPD never reads a partially written `.htaccess` file; the configured file keeps its permissions, and an error is reported when it cannot be written
+
 ### Fixed
 
 * The memory limit is exhausted when the dependencies that are bundled in PHARs are read from hundreds of PHARs, for instance when a cache file written by an earlier version is ignored, because the phar extension keeps every PHAR that it opened in memory until the process ends; the `manifest.txt` file is now read from the PHAR without using the phar extension

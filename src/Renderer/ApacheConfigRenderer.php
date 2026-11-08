@@ -10,11 +10,19 @@
 namespace SebastianBergmann\PharSiteGenerator;
 
 use const PHP_EOL;
+use function chmod;
+use function error_clear_last;
+use function error_get_last;
 use function file_get_contents;
 use function file_put_contents;
+use function fileperms;
+use function is_file;
+use function preg_replace;
+use function rename;
 use function sprintf;
 use function str_contains;
 use function str_replace;
+use function unlink;
 
 final readonly class ApacheConfigRenderer
 {
@@ -62,12 +70,50 @@ final readonly class ApacheConfigRenderer
         $this->template = $template;
     }
 
+    /**
+     * The configuration is written to a temporary file that is then renamed,
+     * so that the web server never reads a partially written file, which
+     * matters when the target is an .htaccess file. The temporary file gets
+     * the permissions of the file that it replaces so that the web server can
+     * still read it.
+     *
+     * @throws RuntimeException
+     */
     public function render(ReleaseCollection $releases, string $target): void
     {
-        file_put_contents(
-            $target,
-            str_replace(self::PLACEHOLDER, $this->configuration($releases), $this->template),
+        $buffer        = str_replace(self::PLACEHOLDER, $this->configuration($releases), $this->template);
+        $temporaryFile = $target . '.tmp';
+
+        error_clear_last();
+
+        if (@file_put_contents($temporaryFile, $buffer) !== false &&
+            $this->copyPermissions($target, $temporaryFile) &&
+            @rename($temporaryFile, $target)) {
+            return;
+        }
+
+        $error = error_get_last();
+
+        @unlink($temporaryFile);
+
+        throw new RuntimeException(
+            sprintf(
+                'Apache HTTPD configuration file "%s" could not be written: %s',
+                $target,
+                $error !== null ? preg_replace('/^\w+\(.*?\): /', '', $error['message']) : 'unknown error',
+            ),
         );
+    }
+
+    private function copyPermissions(string $from, string $to): bool
+    {
+        if (!is_file($from)) {
+            return true;
+        }
+
+        $permissions = @fileperms($from);
+
+        return $permissions !== false && @chmod($to, $permissions & 0o7777);
     }
 
     private function configuration(ReleaseCollection $releases): string

@@ -63,6 +63,8 @@ The optional `template` attribute of the `<apache>` element configures a templat
 
 When the template file cannot be read or does not contain the `{configuration}` placeholder, `phar-site-generator` reports an error and exits with exit code `1` before any file is written.
 
+The Apache HTTPD configuration is first written to a temporary file next to the configured file, with the suffix `.tmp`, that then replaces the configured file. This way, Apache HTTPD never reads a partially written `.htaccess` file. The configured file keeps its permissions. When the file cannot be written, `phar-site-generator` reports an error and exits with exit code `1`.
+
 Both the `<apache>` and the `<nginx>` element are optional and can be used together.
 
 A leading `~` in any of the configured paths is expanded to the home directory of the user that runs `phar-site-generator`.
