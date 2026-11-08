@@ -82,6 +82,12 @@ final readonly class Application
 
         $this->createDirectory($configuration->directory());
 
+        $apacheConfigRenderer = new ApacheConfigRenderer;
+
+        if ($configuration->hasApacheConfigurationTemplateFile()) {
+            $apacheConfigRenderer = ApacheConfigRenderer::fromTemplateFile($configuration->apacheConfigurationTemplateFile());
+        }
+
         $cache = new Cache;
 
         if ($configuration->hasCacheFile()) {
@@ -128,9 +134,7 @@ final readonly class Application
         $renderer->render($releases);
 
         if ($configuration->shouldGenerateApacheConfigurationFile()) {
-            $renderer = new ApacheConfigRenderer;
-
-            $renderer->render(
+            $apacheConfigRenderer->render(
                 $releases,
                 $configuration->apacheConfigurationFile(),
             );

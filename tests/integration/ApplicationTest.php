@@ -97,6 +97,35 @@ final class ApplicationTest extends TestCase
         );
     }
 
+    public function testRendersApacheConfigurationUsingTemplate(): void
+    {
+        copy(__DIR__ . '/../fixture/apache.template', '/tmp/phar.example.org/apache.template');
+
+        $this->generate(__DIR__ . '/../fixture/configuration-with-apache-template.xml');
+
+        $this->assertFileEquals(__DIR__ . '/../expectations/apache-redirects-with-template.conf', '/tmp/phar.example.org/apache-redirects.conf');
+    }
+
+    public function testFailsBeforeWritingFilesWhenApacheConfigurationTemplateCannotBeRead(): void
+    {
+        $this->expectOutputRegex('#Template file "/tmp/phar\.example\.org/apache\.template" for the Apache HTTPD configuration could not be read#');
+
+        $this->assertSame(1, (new Application)->run(['phar-site-generator', __DIR__ . '/../fixture/configuration-with-apache-template.xml']));
+        $this->assertFileDoesNotExist('/tmp/phar.example.org/public/index.html');
+        $this->assertFileDoesNotExist('/tmp/phar.example.org/apache-redirects.conf');
+    }
+
+    public function testFailsBeforeWritingFilesWhenApacheConfigurationTemplateDoesNotContainPlaceholder(): void
+    {
+        file_put_contents('/tmp/phar.example.org/apache.template', "Options -Indexes\n");
+
+        $this->expectOutputRegex('#Template file "/tmp/phar\.example\.org/apache\.template" for the Apache HTTPD configuration does not contain the \{configuration\} placeholder#');
+
+        $this->assertSame(1, (new Application)->run(['phar-site-generator', __DIR__ . '/../fixture/configuration-with-apache-template.xml']));
+        $this->assertFileDoesNotExist('/tmp/phar.example.org/public/index.html');
+        $this->assertFileDoesNotExist('/tmp/phar.example.org/apache-redirects.conf');
+    }
+
     public function testReportsOnlyCacheHitsWhenNoPharFileWasAdded(): void
     {
         $this->generate();

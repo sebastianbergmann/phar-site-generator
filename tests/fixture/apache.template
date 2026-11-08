@@ -1,0 +1,7 @@
+# Static configuration that precedes the generated configuration
+<FilesMatch "\.phar$">
+    SetHandler none
+</FilesMatch>
+
+{configuration}
+# Static configuration that follows the generated configuration

@@ -39,10 +39,16 @@ final readonly class ConfigurationLoader
         $document = new DOMDocument;
         $document->loadXML($buffer);
 
-        $apacheConfigurationFile = null;
+        $apacheConfigurationFile         = null;
+        $apacheConfigurationTemplateFile = null;
+        $apache                          = $document->getElementsByTagName('apache')->item(0);
 
-        if ($document->getElementsByTagName('apache')->item(0) !== null) {
-            $apacheConfigurationFile = $this->expandHomeDirectory($document->getElementsByTagName('apache')->item(0)->textContent);
+        if ($apache !== null) {
+            $apacheConfigurationFile = $this->expandHomeDirectory($apache->textContent);
+
+            if ($apache->hasAttribute('template')) {
+                $apacheConfigurationTemplateFile = $this->expandHomeDirectory($apache->getAttribute('template'));
+            }
         }
 
         $nginxConfigurationFile = null;
@@ -82,6 +88,7 @@ final readonly class ConfigurationLoader
             $domain->textContent,
             $email->textContent,
             $apacheConfigurationFile,
+            $apacheConfigurationTemplateFile,
             $nginxConfigurationFile,
             $cacheFile,
             $packagesIgnoredInLatestReleases,

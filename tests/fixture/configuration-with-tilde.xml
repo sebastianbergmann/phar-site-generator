@@ -3,7 +3,7 @@
     <domain>phar.example.org</domain>
     <email>phar@example.org</email>
     <directory>~/public</directory>
-    <apache>~/apache-redirects.conf</apache>
+    <apache template="~/apache.template">~/apache-redirects.conf</apache>
     <nginx>~/nginx-redirects.conf</nginx>
     <cache>~/cache.json</cache>
 </phar-site>

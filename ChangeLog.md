@@ -2,7 +2,11 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [5.7.1] - 2026-MM-DD
+## [5.8.0] - 2026-MM-DD
+
+### Added
+
+* The optional `template` attribute of the `<apache>` configuration element configures a template file for the Apache HTTPD configuration, for instance for configuration that an `.htaccess` file must contain in addition to the generated configuration; the `{configuration}` placeholder in the template file is replaced with the generated configuration
 
 ### Fixed
 
@@ -219,7 +223,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
-[5.7.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.7.0...main
+[5.8.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.7.0...main
 [5.7.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.6.0...5.7.0
 [5.6.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.5.0...5.6.0
 [5.5.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.4.0...5.5.0

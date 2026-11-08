@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phar-site>
+    <domain>phar.example.org</domain>
+    <email>phar@example.org</email>
+    <directory>/tmp/phar.example.org/public</directory>
+    <apache template="/tmp/phar.example.org/apache.template">/tmp/phar.example.org/apache-redirects.conf</apache>
+</phar-site>

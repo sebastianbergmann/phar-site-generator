@@ -32,6 +32,15 @@ final class ConfigurationLoaderTest extends TestCase
         $this->assertSame('/tmp/phar.example.org/nginx-redirects.conf', $configuration->nginxConfigurationFile());
         $this->assertSame('/tmp/phar.example.org/cache.json', $configuration->cacheFile());
         $this->assertSame([], $configuration->packagesIgnoredInLatestReleases());
+        $this->assertFalse($configuration->hasApacheConfigurationTemplateFile());
+    }
+
+    public function testLoadsApacheConfigurationTemplateFile(): void
+    {
+        $configuration = (new ConfigurationLoader)->load(__DIR__ . '/../fixture/configuration-with-apache-template.xml');
+
+        $this->assertTrue($configuration->hasApacheConfigurationTemplateFile());
+        $this->assertSame('/tmp/phar.example.org/apache.template', $configuration->apacheConfigurationTemplateFile());
     }
 
     public function testLoadsPackagesIgnoredInLatestReleases(): void
@@ -57,6 +66,7 @@ final class ConfigurationLoaderTest extends TestCase
 
         $this->assertSame('/home/example/public', $configuration->directory());
         $this->assertSame('/home/example/apache-redirects.conf', $configuration->apacheConfigurationFile());
+        $this->assertSame('/home/example/apache.template', $configuration->apacheConfigurationTemplateFile());
         $this->assertSame('/home/example/nginx-redirects.conf', $configuration->nginxConfigurationFile());
         $this->assertSame('/home/example/cache.json', $configuration->cacheFile());
     }

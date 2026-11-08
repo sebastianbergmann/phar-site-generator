@@ -15,6 +15,7 @@ final class Configuration
     private string $domain;
     private string $email;
     private ?string $apacheConfigurationFile;
+    private ?string $apacheConfigurationTemplateFile;
     private ?string $nginxConfigurationFile;
     private ?string $cacheFile;
 
@@ -26,12 +27,13 @@ final class Configuration
     /**
      * @param list<non-empty-string> $packagesIgnoredInLatestReleases
      */
-    public function __construct(string $directory, string $domain, string $email, ?string $apacheConfigurationFile, ?string $nginxConfigurationFile, ?string $cacheFile, array $packagesIgnoredInLatestReleases)
+    public function __construct(string $directory, string $domain, string $email, ?string $apacheConfigurationFile, ?string $apacheConfigurationTemplateFile, ?string $nginxConfigurationFile, ?string $cacheFile, array $packagesIgnoredInLatestReleases)
     {
         $this->directory                       = $directory;
         $this->domain                          = $domain;
         $this->email                           = $email;
         $this->apacheConfigurationFile         = $apacheConfigurationFile;
+        $this->apacheConfigurationTemplateFile = $apacheConfigurationTemplateFile;
         $this->nginxConfigurationFile          = $nginxConfigurationFile;
         $this->cacheFile                       = $cacheFile;
         $this->packagesIgnoredInLatestReleases = $packagesIgnoredInLatestReleases;
@@ -78,6 +80,26 @@ final class Configuration
     public function shouldGenerateApacheConfigurationFile(): bool
     {
         return $this->apacheConfigurationFile !== null;
+    }
+
+    /**
+     * @phpstan-assert-if-true !null $this->apacheConfigurationTemplateFile
+     */
+    public function hasApacheConfigurationTemplateFile(): bool
+    {
+        return $this->apacheConfigurationTemplateFile !== null;
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    public function apacheConfigurationTemplateFile(): string
+    {
+        if ($this->apacheConfigurationTemplateFile === null) {
+            throw new RuntimeException;
+        }
+
+        return $this->apacheConfigurationTemplateFile;
     }
 
     /**

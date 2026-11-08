@@ -10,12 +10,67 @@
 namespace SebastianBergmann\PharSiteGenerator;
 
 use const PHP_EOL;
+use function file_get_contents;
 use function file_put_contents;
 use function sprintf;
+use function str_contains;
+use function str_replace;
 
-final class ApacheConfigRenderer
+final readonly class ApacheConfigRenderer
 {
+    /**
+     * Placeholder in the template that is replaced with the generated
+     * MIME type and redirect configuration.
+     */
+    private const string PLACEHOLDER = '{configuration}';
+    private string $template;
+
+    /**
+     * The template file is read when the renderer is created so that a
+     * missing or broken template is reported before any file is written.
+     *
+     * @throws RuntimeException
+     */
+    public static function fromTemplateFile(string $templateFile): self
+    {
+        $template = @file_get_contents($templateFile);
+
+        if ($template === false) {
+            throw new RuntimeException(
+                sprintf(
+                    'Template file "%s" for the Apache HTTPD configuration could not be read',
+                    $templateFile,
+                ),
+            );
+        }
+
+        if (!str_contains($template, self::PLACEHOLDER)) {
+            throw new RuntimeException(
+                sprintf(
+                    'Template file "%s" for the Apache HTTPD configuration does not contain the %s placeholder',
+                    $templateFile,
+                    self::PLACEHOLDER,
+                ),
+            );
+        }
+
+        return new self($template);
+    }
+
+    public function __construct(string $template = self::PLACEHOLDER)
+    {
+        $this->template = $template;
+    }
+
     public function render(ReleaseCollection $releases, string $target): void
+    {
+        file_put_contents(
+            $target,
+            str_replace(self::PLACEHOLDER, $this->configuration($releases), $this->template),
+        );
+    }
+
+    private function configuration(ReleaseCollection $releases): string
     {
         $buffer = <<<'EOT'
 AddType application/octet-stream .phar
@@ -36,7 +91,7 @@ EOT;
             $buffer .= $this->redirects($release->package() . '-' . $release->minorVersion(), $release);
         }
 
-        file_put_contents($target, $buffer);
+        return $buffer;
     }
 
     private function redirects(string $alias, Release $release): string

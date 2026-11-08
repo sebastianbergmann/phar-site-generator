@@ -49,6 +49,20 @@ When the PHAR repository is hosted using Apache HTTPD, use the `<apache>` elemen
 </phar-site>
 ```
 
+The optional `template` attribute of the `<apache>` element configures a template file for the Apache HTTPD configuration. Use it when the file must contain configuration in addition to the generated configuration, which is often the case for an `.htaccess` file. The configured file is written with the content of the template file, in which the `{configuration}` placeholder is replaced with the generated configuration:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phar-site>
+    <domain>phar.phpunit.de</domain>
+    <email>sebastian@phpunit.de</email>
+    <directory>/webspace/phar.phpunit.de/html</directory>
+    <apache template="/webspace/phar.phpunit.de/htaccess.template">/webspace/phar.phpunit.de/html/.htaccess</apache>
+</phar-site>
+```
+
+When the template file cannot be read or does not contain the `{configuration}` placeholder, `phar-site-generator` reports an error and exits with exit code `1` before any file is written.
+
 Both the `<apache>` and the `<nginx>` element are optional and can be used together.
 
 A leading `~` in any of the configured paths is expanded to the home directory of the user that runs `phar-site-generator`.
