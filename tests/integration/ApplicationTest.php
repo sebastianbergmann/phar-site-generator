@@ -29,6 +29,7 @@ use function unlink;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\Large;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\TestCase;
 
 #[Large]
@@ -247,6 +248,23 @@ final class ApplicationTest extends TestCase
         $this->assertIsString($page);
         $this->assertStringContainsString('<li>example/dependency: 0.1.0</li>', $page);
         $this->assertSame(['example/dependency' => '0.1.0'], $this->cachedDependencies('legacy-1.0.0.phar'));
+    }
+
+    public function testReadsBundledDependenciesFromGzipCompressedManifest(): void
+    {
+        copy(__DIR__ . '/../fixture/gzip-1.0.0.phar', '/tmp/phar.example.org/public/gzip-1.0.0.phar');
+
+        $this->assertSame('3 releases processed, 0 cache hits, 3 cache misses', $this->generate());
+        $this->assertSame(['example/gzip-dependency' => '0.1.0'], $this->cachedDependencies('gzip-1.0.0.phar'));
+    }
+
+    #[RequiresPhpExtension('bz2')]
+    public function testReadsBundledDependenciesFromBzip2CompressedManifest(): void
+    {
+        copy(__DIR__ . '/../fixture/bzip2-1.0.0.phar', '/tmp/phar.example.org/public/bzip2-1.0.0.phar');
+
+        $this->assertSame('3 releases processed, 0 cache hits, 3 cache misses', $this->generate());
+        $this->assertSame(['example/bzip2-dependency' => '0.1.0'], $this->cachedDependencies('bzip2-1.0.0.phar'));
     }
 
     public function testEscapesBundledDependencies(): void

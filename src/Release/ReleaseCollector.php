@@ -17,7 +17,7 @@ use function date;
 use function explode;
 use function file_get_contents;
 use function floor;
-use function hash_file;
+use function hash;
 use function implode;
 use function is_file;
 use function preg_match;
@@ -68,10 +68,12 @@ final readonly class ReleaseCollector
                     $sha256       = $cached['sha256'];
                     $dependencies = $cached['dependencies'];
                 } else {
-                    $sha256       = hash_file('sha256', $pathname);
-                    $dependencies = $this->bundledDependencies($pathname);
+                    $phar = file_get_contents($pathname);
 
-                    assert($sha256 !== false);
+                    assert($phar !== false);
+
+                    $sha256       = hash('sha256', $phar);
+                    $dependencies = $this->bundledDependencies($phar);
                 }
 
                 $this->cache->store($pathname, $bytes, $mtime, $sha256, $dependencies);
@@ -105,7 +107,7 @@ final readonly class ReleaseCollector
     /**
      * Reads the dependencies that are bundled in a PHAR from the manifest that
      * is printed by its --manifest option. The manifest file is read from the
-     * PHAR using the phar:// stream wrapper, the PHAR is not executed.
+     * PHAR using PharReader, the PHAR is not executed.
      *
      * The first line of the manifest names the package of the PHAR itself,
      * each following line names a bundled dependency: "vendor/package: version".
@@ -113,11 +115,13 @@ final readonly class ReleaseCollector
      * An empty array is returned for files that are not PHARs, cannot be
      * read, or do not contain a manifest.
      *
+     * @param string $phar Contents of the PHAR
+     *
      * @return array<non-empty-string, non-empty-string>
      */
-    private function bundledDependencies(string $pathname): array
+    private function bundledDependencies(string $phar): array
     {
-        $manifest = $this->manifest($pathname);
+        $manifest = $this->manifest($phar);
 
         if ($manifest === null) {
             return [];
@@ -134,12 +138,14 @@ final readonly class ReleaseCollector
         return $dependencies;
     }
 
-    private function manifest(string $pathname): ?string
+    private function manifest(string $phar): ?string
     {
-        foreach (self::MANIFEST_FILES as $manifestFile) {
-            $manifest = @file_get_contents('phar://' . $pathname . '/' . $manifestFile);
+        $reader = new PharReader;
 
-            if ($manifest !== false) {
+        foreach (self::MANIFEST_FILES as $manifestFile) {
+            $manifest = $reader->read($phar, $manifestFile);
+
+            if ($manifest !== null) {
                 return $manifest;
             }
         }

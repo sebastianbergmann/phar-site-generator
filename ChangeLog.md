@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.7.1] - 2026-MM-DD
+
+### Fixed
+
+* The memory limit is exhausted when the dependencies that are bundled in PHARs are read from hundreds of PHARs, for instance when a cache file written by an earlier version is ignored, because the phar extension keeps every PHAR that it opened in memory until the process ends; the `manifest.txt` file is now read from the PHAR without using the phar extension
+
 ## [5.7.0] - 2026-11-08
 
 ### Added
@@ -212,6 +218,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
+[5.7.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.7.0...main
 [5.7.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.6.0...5.7.0
 [5.6.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.5.0...5.6.0
 [5.5.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.4.0...5.5.0
