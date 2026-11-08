@@ -12,83 +12,136 @@
  src: local('Source Code Pro'), local('SourceCodePro-Regular'), url(../fonts/SourceCodePro.ttf) format('truetype');
 }
 
+:root {
+ color-scheme: light dark;
+ --text: #2e3436;
+ --muted: #555753;
+ --background: #ffffff;
+ --surface: #f2f2f0;
+ --border: #d3d7cf;
+ --link: #204a87;
+}
+
+@media (prefers-color-scheme: dark) {
+ :root {
+  --text: #eeeeec;
+  --muted: #babdb6;
+  --background: #1c1f20;
+  --surface: #2a2e30;
+  --border: #3e4447;
+  --link: #8cb4e3;
+ }
+}
+
 *, *::before, *::after {
  box-sizing: border-box;
 }
 
-body, h1, h2 {
- font-family: 'Open Sans', sans-serif;
+html {
+ font-size: 112.5%;
 }
 
 body {
- background-color: #eeeeec;
- color: #2e3436;
+ max-width: 80rem;
+ margin: 0 auto;
+ padding: 2rem 1rem 4rem;
+ background-color: var(--background);
+ color: var(--text);
+ font-family: 'Open Sans', sans-serif;
  font-size: 1rem;
- line-height: 1.5;
+ line-height: 1.6;
  font-kerning: normal;
  font-variant-ligatures: common-ligatures;
  text-rendering: optimizeLegibility;
  -webkit-text-size-adjust: 100%;
- margin: 1rem 0 0 1rem;
 }
 
 h1, h2 {
- font-weight: 500;
+ font-weight: 400;
  line-height: 1.2;
 }
 
 h1 {
- font-size: calc(1.375rem + 1.5vw);
- margin-top: 0;
- margin-bottom: 0.5rem;
+ margin: 0 0 1rem;
+ font-size: 2rem;
 }
 
 h2 {
- font-size: calc(1.325rem + 0.9vw);
- margin-top: 4rem;
- margin-bottom: 2rem;
+ margin: 3rem 0 1rem;
+ font-size: 1.5rem;
 }
 
-@media (min-width: 1200px) {
- h1 {
-  font-size: 2.5rem;
- }
-
- h2 {
-  font-size: 2rem;
- }
-}
-
-a, a:visited, a:hover {
- color: #204a87;
+a {
+ color: var(--link);
+ text-underline-offset: 0.15em;
 }
 
 code, pre, samp {
  font-family: 'Source Code Pro', monospace;
+}
+
+code, samp {
+ font-size: 0.9em;
+}
+
+pre {
+ padding: 0.75rem 1rem;
+ overflow-x: auto;
+ background-color: var(--surface);
+ border-radius: 0.25rem;
+ font-size: 0.9rem;
+}
+
+pre code {
  font-size: 1em;
+}
+
+.scroll {
+ overflow-x: auto;
 }
 
 table {
  width: 100%;
- margin-bottom: 1rem;
  border-collapse: collapse;
 }
 
 caption {
  caption-side: bottom;
+ padding-top: 0.5rem;
+ color: var(--muted);
+ font-size: 0.9rem;
+ text-align: left;
 }
 
 th, td {
- padding: 0.5rem;
+ padding: 0.625rem 0.75rem;
+ border-bottom: 1px solid var(--border);
  text-align: left;
  vertical-align: top;
- border-bottom: 1px solid #dee2e6;
 }
 
-thead th {
- vertical-align: bottom;
+th {
+ color: var(--muted);
+ font-weight: 400;
+ white-space: nowrap;
+ border-bottom-width: 2px;
 }
 
-tbody tr:nth-of-type(odd) {
- background-color: rgba(0, 0, 0, 0.05);
+tbody tr:hover {
+ background-color: var(--surface);
+}
+
+td time {
+ white-space: nowrap;
+}
+
+td samp {
+ white-space: nowrap;
+}
+
+@media (max-width: 80rem) {
+ td samp {
+  white-space: normal;
+  overflow-wrap: anywhere;
+ }
 }

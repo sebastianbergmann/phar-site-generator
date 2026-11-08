@@ -20,6 +20,7 @@ use function in_array;
 use function json_encode;
 use function rtrim;
 use function sprintf;
+use function substr;
 use InvalidArgumentException;
 use RuntimeException;
 use SebastianBergmann\Template\Template;
@@ -177,6 +178,7 @@ final class PageRenderer extends AbstractRenderer
                 'package' => $release->package(),
                 'version' => $release->version(),
                 'date'    => $release->date(),
+                'day'     => substr($release->date(), 0, 10),
                 'size'    => $release->size(),
                 'sha256'  => $release->sha256(),
                 'sbom'    => $this->renderSbom($release),

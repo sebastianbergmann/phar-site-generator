@@ -10,6 +10,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ### Changed
 
+* The layout of the HTML page has been refreshed: the font size is larger, the OpenPGP signature of a PHAR is linked next to it instead of in a separate column, only the date of the last modification is shown, the tables fit narrower screens, and a dark color scheme is used when the browser prefers one
 * Cache files written by earlier versions do not contain the dependencies that are bundled in a PHAR and are ignored, every PHAR file is read and hashed again once
 
 ## [5.6.0] - 2026-10-30
