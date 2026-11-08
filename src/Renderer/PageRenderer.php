@@ -9,6 +9,8 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
+use const ENT_HTML5;
+use const ENT_QUOTES;
 use const JSON_HEX_TAG;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
@@ -16,6 +18,8 @@ use const JSON_UNESCAPED_UNICODE;
 use function array_filter;
 use function array_values;
 use function assert;
+use function count;
+use function htmlspecialchars;
 use function in_array;
 use function json_encode;
 use function rtrim;
@@ -174,14 +178,15 @@ final class PageRenderer extends AbstractRenderer
 
         $item->setVar(
             [
-                'domain'  => $this->domain(),
-                'package' => $release->package(),
-                'version' => $release->version(),
-                'date'    => $release->date(),
-                'day'     => substr($release->date(), 0, 10),
-                'size'    => $release->size(),
-                'sha256'  => $release->sha256(),
-                'sbom'    => $this->renderSbom($release),
+                'domain'               => $this->domain(),
+                'package'              => $release->package(),
+                'version'              => $release->version(),
+                'date'                 => $release->date(),
+                'day'                  => substr($release->date(), 0, 10),
+                'size'                 => $release->size(),
+                'sha256'               => $release->sha256(),
+                'sbom'                 => $this->renderSbom($release),
+                'bundled_dependencies' => $this->renderBundledDependencies($release),
             ],
         );
 
@@ -208,5 +213,41 @@ final class PageRenderer extends AbstractRenderer
         );
 
         return rtrim($sbom->render());
+    }
+
+    /**
+     * The dependencies bundled in a PHAR are read from the PHAR file, they
+     * are escaped because they are not under the control of this tool.
+     *
+     * @throws InvalidArgumentException
+     */
+    private function renderBundledDependencies(Release $release): string
+    {
+        $dependencies = $release->bundledDependencies();
+
+        if ($dependencies === []) {
+            return '';
+        }
+
+        $items = '';
+
+        foreach ($dependencies as $name => $version) {
+            $items .= sprintf(
+                '         <li>%s: %s</li>' . "\n",
+                htmlspecialchars($name, ENT_QUOTES | ENT_HTML5),
+                htmlspecialchars($version, ENT_QUOTES | ENT_HTML5),
+            );
+        }
+
+        $template = new Template(__DIR__ . '/../templates/bundled-dependencies.html');
+
+        $template->setVar(
+            [
+                'summary' => count($dependencies) === 1 ? '1 bundled dependency' : count($dependencies) . ' bundled dependencies',
+                'items'   => rtrim($items),
+            ],
+        );
+
+        return $template->render();
     }
 }

@@ -66,6 +66,9 @@
    For each release, the tables below list the file size, the date the file was last modified, a detached OpenPGP signature, and the SHA-256 checksum of the PHAR file.
    Where available, they also link to a Software Bill of Materials (SBOM) in <a href="https://cyclonedx.org/">CycloneDX</a> format that describes the PHAR file and the components it contains, together with a detached OpenPGP signature of the SBOM.
   </p>
+  <p>
+   For PHAR files that list them using their <code>--manifest</code> option, the tables also show the dependencies that are bundled in the PHAR file together with their versions.
+  </p>
   <h2 id="latest-releases">Latest Releases</h2>
   <div class="scroll">
    <table>
@@ -84,6 +87,13 @@
       <td>
        <a href="https://phar.example.org/package-2.3.4.phar">package-2.3.4.phar</a>
        (<a href="https://phar.example.org/package-2.3.4.phar.asc">signature</a>)
+       <details>
+        <summary>2 bundled dependencies</summary>
+        <ul>
+         <li>example/dependency: 1.0.0</li>
+         <li>example/another-dependency: 2.0.0@3d8e0fbe5b2fb2e4d36c4d5be6e7ad0b6c3fd2d1</li>
+        </ul>
+       </details>
       </td>
       <td>545.00B</td>
       <td><time datetime="%s" title="%s">%s</time></td>
@@ -122,6 +132,13 @@
       <td>
        <a href="https://phar.example.org/package-2.3.4.phar">package-2.3.4.phar</a>
        (<a href="https://phar.example.org/package-2.3.4.phar.asc">signature</a>)
+       <details>
+        <summary>2 bundled dependencies</summary>
+        <ul>
+         <li>example/dependency: 1.0.0</li>
+         <li>example/another-dependency: 2.0.0@3d8e0fbe5b2fb2e4d36c4d5be6e7ad0b6c3fd2d1</li>
+        </ul>
+       </details>
       </td>
       <td>545.00B</td>
       <td><time datetime="%s" title="%s">%s</time></td>

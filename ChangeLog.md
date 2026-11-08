@@ -6,6 +6,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ### Added
 
+* The HTML page lists the dependencies that are bundled in a PHAR, as printed by its `--manifest` option, in a section that is collapsed by default; the `manifest.txt` file is read from the PHAR without executing the PHAR
 * The dependencies that are bundled in a PHAR are cached together with its SHA-256 hash
 
 ### Changed

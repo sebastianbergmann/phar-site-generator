@@ -131,10 +131,14 @@ final class ApplicationTest extends TestCase
         $this->assertSame('2 releases processed, 1 cache hit, 1 cache miss', $this->generate());
 
         $phive = file_get_contents('/tmp/phar.example.org/public/phive.xml');
+        $page  = file_get_contents('/tmp/phar.example.org/public/index.html');
 
         $this->assertIsString($phive);
         $this->assertStringContainsString('value="' . $cached . '"', $phive);
         $this->assertStringContainsString('value="' . self::SHA256_OF_PACKAGE_1_2_3 . '"', $phive);
+        $this->assertIsString($page);
+        $this->assertStringContainsString('<li>example/cached-dependency: 3.0.0</li>', $page);
+        $this->assertStringNotContainsString('example/dependency', $page);
         $this->assertSame($cached, $this->cachedHash('package-2.3.4.phar'));
         $this->assertSame(['example/cached-dependency' => '3.0.0'], $this->cachedDependencies('package-2.3.4.phar'));
     }
@@ -237,7 +241,33 @@ final class ApplicationTest extends TestCase
         copy(__DIR__ . '/../fixture/legacy-1.0.0.phar', '/tmp/phar.example.org/public/legacy-1.0.0.phar');
 
         $this->assertSame('3 releases processed, 0 cache hits, 3 cache misses', $this->generate());
+
+        $page = file_get_contents('/tmp/phar.example.org/public/index.html');
+
+        $this->assertIsString($page);
+        $this->assertStringContainsString('<li>example/dependency: 0.1.0</li>', $page);
         $this->assertSame(['example/dependency' => '0.1.0'], $this->cachedDependencies('legacy-1.0.0.phar'));
+    }
+
+    public function testEscapesBundledDependencies(): void
+    {
+        $this->writeCache(
+            [
+                'package-2.3.4.phar' => [
+                    'bytes'        => self::BYTES_OF_PACKAGE_2_3_4,
+                    'mtime'        => $this->mtime('package-2.3.4.phar'),
+                    'sha256'       => self::SHA256_OF_PACKAGE_2_3_4,
+                    'dependencies' => ['example/<dependency>' => '1.0.0&"dev"'],
+                ],
+            ],
+        );
+
+        $this->generate();
+
+        $page = file_get_contents('/tmp/phar.example.org/public/index.html');
+
+        $this->assertIsString($page);
+        $this->assertStringContainsString('<li>example/&lt;dependency&gt;: 1.0.0&amp;&quot;dev&quot;</li>', $page);
     }
 
     public function testFailsWhenCacheCannotBeWritten(): void

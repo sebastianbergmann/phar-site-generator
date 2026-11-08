@@ -11,6 +11,9 @@ This tool makes the following assumptions:
 * The PHAR repository is hosted using HTTPS
 * The PHAR repository directory contains `.phar` (PHP Archive) and `.phar.asc` (GPG signature) files
 * A `.phar` file may be accompanied by a `.phar.cdx.xml` file (Software Bill of Materials in [CycloneDX](https://cyclonedx.org/) format) and its `.phar.cdx.xml.asc` (GPG signature) file
+* A `.phar` file may contain a `manifest.txt` (or `phar/manifest.txt`) file that lists the package of the PHAR on its first line and the dependencies bundled in the PHAR on the following lines, one `vendor/package: version` per line, as printed by the `--manifest` option of the PHARs of PHPUnit, for instance
+
+The dependencies bundled in a PHAR are listed in the generated HTML page, collapsed by default. The `manifest.txt` file is read from the PHAR without executing the PHAR.
 
 ## Usage
 

@@ -145,3 +145,23 @@ td samp {
   overflow-wrap: anywhere;
  }
 }
+
+details {
+ margin-top: 0.25rem;
+ font-size: 0.9rem;
+}
+
+summary {
+ width: fit-content;
+ color: var(--muted);
+ cursor: pointer;
+}
+
+details ul {
+ margin: 0.25rem 0 0;
+ padding-left: 1.25rem;
+}
+
+details li {
+ overflow-wrap: anywhere;
+}
