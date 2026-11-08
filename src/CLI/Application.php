@@ -82,16 +82,16 @@ final readonly class Application
 
         $this->createDirectory($configuration->directory());
 
-        $hashCache = new HashCache;
+        $cache = new Cache;
 
         if ($configuration->hasCacheFile()) {
-            $hashCache = HashCache::fromFile($configuration->cacheFile());
+            $cache = Cache::fromFile($configuration->cacheFile());
         }
 
-        $releases = (new ReleaseCollector($hashCache))->collect($configuration->directory());
+        $releases = (new ReleaseCollector($cache))->collect($configuration->directory());
 
         if ($configuration->hasCacheFile()) {
-            $hashCache->save($configuration->cacheFile());
+            $cache->save($configuration->cacheFile());
         }
 
         $renderer = new FeedRenderer(
@@ -150,8 +150,8 @@ final readonly class Application
         $summary = $this->quantity(count($releases->allReleases()), 'release', 'releases') . ' processed';
 
         if ($configuration->hasCacheFile()) {
-            $summary .= ', ' . $this->quantity($hashCache->hits(), 'cache hit', 'cache hits');
-            $summary .= ', ' . $this->quantity($hashCache->misses(), 'cache miss', 'cache misses');
+            $summary .= ', ' . $this->quantity($cache->hits(), 'cache hit', 'cache hits');
+            $summary .= ', ' . $this->quantity($cache->misses(), 'cache miss', 'cache misses');
         }
 
         return $summary;

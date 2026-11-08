@@ -12,13 +12,11 @@ namespace SebastianBergmann\PharSiteGenerator;
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
-use function assert;
 use function basename;
 use function error_clear_last;
 use function error_get_last;
 use function file_get_contents;
 use function file_put_contents;
-use function hash_file;
 use function is_array;
 use function is_file;
 use function is_int;
@@ -38,7 +36,7 @@ use function unlink;
  * A cached hash is only used when the size and modification time of the
  * PHAR file still match the values that were recorded together with it.
  */
-final class HashCache
+final class Cache
 {
     /**
      * @var array<string, array{bytes: int, mtime: int, sha256: non-empty-string}>
@@ -106,33 +104,40 @@ final class HashCache
     }
 
     /**
-     * @return non-empty-string
+     * Returns the cached SHA-256 hash of a PHAR file, or null when there is
+     * no cached hash for it or the cached hash is outdated.
+     *
+     * @return ?non-empty-string
      */
-    public function sha256(string $pathname, int $bytes, int $mtime): string
+    public function lookup(string $pathname, int $bytes, int $mtime): ?string
     {
         $key = basename($pathname);
 
-        if (isset($this->cached[$key]) &&
-            $this->cached[$key]['bytes'] === $bytes &&
-            $this->cached[$key]['mtime'] === $mtime) {
-            $sha256 = $this->cached[$key]['sha256'];
-
-            $this->hits++;
-        } else {
-            $sha256 = hash_file('sha256', $pathname);
-
-            assert($sha256 !== false);
-
+        if (!isset($this->cached[$key]) ||
+            $this->cached[$key]['bytes'] !== $bytes ||
+            $this->cached[$key]['mtime'] !== $mtime) {
             $this->misses++;
+
+            return null;
         }
 
-        $this->used[$key] = [
+        $this->hits++;
+
+        return $this->cached[$key]['sha256'];
+    }
+
+    /**
+     * Records the SHA-256 hash of a PHAR file that was seen in this run.
+     *
+     * @param non-empty-string $sha256
+     */
+    public function store(string $pathname, int $bytes, int $mtime, string $sha256): void
+    {
+        $this->used[basename($pathname)] = [
             'bytes'  => $bytes,
             'mtime'  => $mtime,
             'sha256' => $sha256,
         ];
-
-        return $sha256;
     }
 
     public function hits(): int

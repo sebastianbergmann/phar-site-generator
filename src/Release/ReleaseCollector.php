@@ -16,6 +16,7 @@ use function assert;
 use function date;
 use function explode;
 use function floor;
+use function hash_file;
 use function implode;
 use function is_file;
 use function sprintf;
@@ -25,11 +26,11 @@ use SplFileInfo;
 
 final readonly class ReleaseCollector
 {
-    private HashCache $hashCache;
+    private Cache $cache;
 
-    public function __construct(HashCache $hashCache)
+    public function __construct(Cache $cache)
     {
-        $this->hashCache = $hashCache;
+        $this->cache = $cache;
     }
 
     public function collect(string $directory): ReleaseCollection
@@ -45,9 +46,18 @@ final readonly class ReleaseCollector
                 $majorVersion = explode('.', $version)[0];
                 $minorVersion = implode('.', array_slice(explode('.', $version), 0, 2));
                 $name         = implode('-', $parts);
+                $pathname     = $file->getPathname();
                 $bytes        = $file->getSize();
                 $mtime        = $file->getMTime();
-                $hash         = $this->hashCache->sha256($file->getPathname(), $bytes, $mtime);
+                $sha256       = $this->cache->lookup($pathname, $bytes, $mtime);
+
+                if ($sha256 === null) {
+                    $sha256 = hash_file('sha256', $pathname);
+
+                    assert($sha256 !== false);
+                }
+
+                $this->cache->store($pathname, $bytes, $mtime, $sha256);
 
                 assert($name !== '');
                 assert($version !== '');
@@ -64,8 +74,8 @@ final readonly class ReleaseCollector
                         date(DATE_W3C, $mtime),
                         $this->humanReadableSize($bytes),
                         $bytes,
-                        $hash,
-                        is_file($file->getPathname() . '.cdx.xml'),
+                        $sha256,
+                        is_file($pathname . '.cdx.xml'),
                     ),
                 );
             }
