@@ -2,6 +2,16 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.7.0] - 2026-MM-DD
+
+### Added
+
+* The dependencies that are bundled in a PHAR are cached together with its SHA-256 hash
+
+### Changed
+
+* Cache files written by earlier versions do not contain the dependencies that are bundled in a PHAR and are ignored, every PHAR file is read and hashed again once
+
 ## [5.6.0] - 2026-10-30
 
 ### Added
@@ -200,6 +210,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
+[5.7.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.6.0...main
 [5.6.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.5.0...5.6.0
 [5.5.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.4.0...5.5.0
 [5.4.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.3.1...5.4.0

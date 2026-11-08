@@ -34,7 +34,9 @@ use PHPUnit\Framework\TestCase;
 #[Large]
 final class ApplicationTest extends TestCase
 {
-    private const string SHA256 = 'a72427688cadc3d3a299cc6658839011bdcbb7337493cf903d22c14864791ab1';
+    private const string SHA256_OF_PACKAGE_1_2_3 = 'a72427688cadc3d3a299cc6658839011bdcbb7337493cf903d22c14864791ab1';
+    private const string SHA256_OF_PACKAGE_2_3_4 = '6362706920bb68f57582e33d0718284aeb659be8dc7e02d026836529c8fe25d1';
+    private const int BYTES_OF_PACKAGE_2_3_4     = 545;
 
     public function testGeneratesSite(): void
     {
@@ -62,7 +64,7 @@ final class ApplicationTest extends TestCase
         $this->assertSame(0, (new Application)->run(['phar-site-generator', __DIR__ . '/../fixture/configuration.xml']));
     }
 
-    public function testDoesNotReportCacheHitsAndMissesWhenHashCacheIsNotConfigured(): void
+    public function testDoesNotReportCacheHitsAndMissesWhenCacheIsNotConfigured(): void
     {
         $this->assertSame('2 releases processed', $this->generate(__DIR__ . '/../fixture/configuration-without-cache.xml'));
         $this->assertFileDoesNotExist('/tmp/phar.example.org/cache.json');
@@ -85,37 +87,43 @@ final class ApplicationTest extends TestCase
         $this->assertSame('2 releases processed, 2 cache hits, 0 cache misses', $this->generate());
     }
 
-    public function testWritesHashCache(): void
+    public function testWritesCache(): void
     {
         $this->generate();
 
         $this->assertSame(
             [
                 'package-1.2.3.phar' => [
-                    'bytes'  => 3300,
-                    'mtime'  => $this->mtime('package-1.2.3.phar'),
-                    'sha256' => self::SHA256,
+                    'bytes'        => 3300,
+                    'mtime'        => $this->mtime('package-1.2.3.phar'),
+                    'sha256'       => self::SHA256_OF_PACKAGE_1_2_3,
+                    'dependencies' => [],
                 ],
                 'package-2.3.4.phar' => [
-                    'bytes'  => 3300,
-                    'mtime'  => $this->mtime('package-2.3.4.phar'),
-                    'sha256' => self::SHA256,
+                    'bytes'        => self::BYTES_OF_PACKAGE_2_3_4,
+                    'mtime'        => $this->mtime('package-2.3.4.phar'),
+                    'sha256'       => self::SHA256_OF_PACKAGE_2_3_4,
+                    'dependencies' => [
+                        'example/dependency'         => '1.0.0',
+                        'example/another-dependency' => '2.0.0@3d8e0fbe5b2fb2e4d36c4d5be6e7ad0b6c3fd2d1',
+                    ],
                 ],
             ],
-            $this->readHashCache(),
+            $this->readCache(),
         );
     }
 
-    public function testUsesCachedHash(): void
+    public function testUsesCachedInformation(): void
     {
         $cached = str_repeat('0', 64);
 
-        $this->writeHashCache(
+        $this->writeCache(
             [
                 'package-2.3.4.phar' => [
-                    'bytes'  => 3300,
-                    'mtime'  => $this->mtime('package-2.3.4.phar'),
-                    'sha256' => $cached,
+                    'bytes'        => self::BYTES_OF_PACKAGE_2_3_4,
+                    'mtime'        => $this->mtime('package-2.3.4.phar'),
+                    'sha256'       => $cached,
+                    'dependencies' => ['example/cached-dependency' => '3.0.0'],
                 ],
             ],
         );
@@ -126,18 +134,20 @@ final class ApplicationTest extends TestCase
 
         $this->assertIsString($phive);
         $this->assertStringContainsString('value="' . $cached . '"', $phive);
-        $this->assertStringContainsString('value="' . self::SHA256 . '"', $phive);
+        $this->assertStringContainsString('value="' . self::SHA256_OF_PACKAGE_1_2_3 . '"', $phive);
         $this->assertSame($cached, $this->cachedHash('package-2.3.4.phar'));
+        $this->assertSame(['example/cached-dependency' => '3.0.0'], $this->cachedDependencies('package-2.3.4.phar'));
     }
 
-    public function testDoesNotUseCachedHashWhenModificationTimeDiffers(): void
+    public function testDoesNotUseCachedInformationWhenModificationTimeDiffers(): void
     {
-        $this->writeHashCache(
+        $this->writeCache(
             [
                 'package-2.3.4.phar' => [
-                    'bytes'  => 3300,
-                    'mtime'  => $this->mtime('package-2.3.4.phar') - 1,
-                    'sha256' => str_repeat('0', 64),
+                    'bytes'        => self::BYTES_OF_PACKAGE_2_3_4,
+                    'mtime'        => $this->mtime('package-2.3.4.phar') - 1,
+                    'sha256'       => str_repeat('0', 64),
+                    'dependencies' => [],
                 ],
             ],
         );
@@ -145,55 +155,92 @@ final class ApplicationTest extends TestCase
         $this->generate();
 
         $this->assertFileEquals(__DIR__ . '/../expectations/public/phive.xml', '/tmp/phar.example.org/public/phive.xml');
-        $this->assertSame(self::SHA256, $this->cachedHash('package-2.3.4.phar'));
+        $this->assertSame(self::SHA256_OF_PACKAGE_2_3_4, $this->cachedHash('package-2.3.4.phar'));
+        $this->assertCount(2, $this->cachedDependencies('package-2.3.4.phar'));
     }
 
-    public function testDoesNotUseCachedHashWhenSizeDiffers(): void
+    public function testDoesNotUseCachedInformationWhenSizeDiffers(): void
     {
-        $this->writeHashCache(
+        $this->writeCache(
             [
                 'package-2.3.4.phar' => [
-                    'bytes'  => 3301,
+                    'bytes'        => self::BYTES_OF_PACKAGE_2_3_4 + 1,
+                    'mtime'        => $this->mtime('package-2.3.4.phar'),
+                    'sha256'       => str_repeat('0', 64),
+                    'dependencies' => [],
+                ],
+            ],
+        );
+
+        $this->generate();
+
+        $this->assertFileEquals(__DIR__ . '/../expectations/public/phive.xml', '/tmp/phar.example.org/public/phive.xml');
+        $this->assertSame(self::SHA256_OF_PACKAGE_2_3_4, $this->cachedHash('package-2.3.4.phar'));
+        $this->assertCount(2, $this->cachedDependencies('package-2.3.4.phar'));
+    }
+
+    /**
+     * Cache files written by phar-site-generator 5.4 to 5.6 only contain the
+     * SHA-256 hash of each PHAR file, but not the dependencies bundled in it.
+     */
+    public function testDoesNotUseCachedInformationWithoutBundledDependencies(): void
+    {
+        $this->writeCache(
+            [
+                'package-2.3.4.phar' => [
+                    'bytes'  => self::BYTES_OF_PACKAGE_2_3_4,
                     'mtime'  => $this->mtime('package-2.3.4.phar'),
                     'sha256' => str_repeat('0', 64),
                 ],
             ],
         );
 
-        $this->generate();
-
+        $this->assertSame('2 releases processed, 0 cache hits, 2 cache misses', $this->generate());
         $this->assertFileEquals(__DIR__ . '/../expectations/public/phive.xml', '/tmp/phar.example.org/public/phive.xml');
-        $this->assertSame(self::SHA256, $this->cachedHash('package-2.3.4.phar'));
+        $this->assertSame(self::SHA256_OF_PACKAGE_2_3_4, $this->cachedHash('package-2.3.4.phar'));
+        $this->assertCount(2, $this->cachedDependencies('package-2.3.4.phar'));
     }
 
-    public function testRemovesHashesOfPharFilesThatNoLongerExistFromCache(): void
+    public function testRemovesPharFilesThatNoLongerExistFromCache(): void
     {
-        $this->writeHashCache(
+        $this->writeCache(
             [
                 'package-0.1.0.phar' => [
-                    'bytes'  => 3300,
-                    'mtime'  => 0,
-                    'sha256' => str_repeat('0', 64),
+                    'bytes'        => 3300,
+                    'mtime'        => 0,
+                    'sha256'       => str_repeat('0', 64),
+                    'dependencies' => [],
                 ],
             ],
         );
 
         $this->generate();
 
-        $this->assertSame(['package-1.2.3.phar', 'package-2.3.4.phar'], array_keys($this->readHashCache()));
+        $this->assertSame(['package-1.2.3.phar', 'package-2.3.4.phar'], array_keys($this->readCache()));
     }
 
-    public function testIgnoresMalformedHashCache(): void
+    public function testIgnoresMalformedCache(): void
     {
         file_put_contents('/tmp/phar.example.org/cache.json', '{"package-2.3.4.phar": ');
 
         $this->generate();
 
         $this->assertFileEquals(__DIR__ . '/../expectations/public/phive.xml', '/tmp/phar.example.org/public/phive.xml');
-        $this->assertSame(self::SHA256, $this->cachedHash('package-2.3.4.phar'));
+        $this->assertSame(self::SHA256_OF_PACKAGE_2_3_4, $this->cachedHash('package-2.3.4.phar'));
     }
 
-    public function testFailsWhenHashCacheCannotBeWritten(): void
+    /**
+     * Older PHARs, phpcov 2.0 for instance, have their manifest in a phar/ directory.
+     */
+    public function testReadsBundledDependenciesFromManifestInPharDirectory(): void
+    {
+        copy(__DIR__ . '/../fixture/legacy-1.0.0.phar', '/tmp/phar.example.org/public/legacy-1.0.0.phar');
+
+        $this->assertSame('3 releases processed, 0 cache hits, 3 cache misses', $this->generate());
+        $this->assertSame(['example/dependency' => '0.1.0'], $this->cachedDependencies('legacy-1.0.0.phar'));
+    }
+
+    public function testFailsWhenCacheCannotBeWritten(): void
     {
         $this->createDirectory('/tmp/phar.example.org/cache.json.tmp');
 
@@ -203,7 +250,7 @@ final class ApplicationTest extends TestCase
         $this->assertFileDoesNotExist('/tmp/phar.example.org/public/index.html');
     }
 
-    public function testFailsWhenHashCacheCannotBeReplaced(): void
+    public function testFailsWhenCacheCannotBeReplaced(): void
     {
         $this->createDirectory('/tmp/phar.example.org/cache.json');
 
@@ -257,34 +304,47 @@ final class ApplicationTest extends TestCase
     }
 
     /**
-     * @param array<string, array{bytes: int, mtime: int, sha256: string}> $entries
+     * @param array<string, array<string, mixed>> $entries
      */
-    private function writeHashCache(array $entries): void
+    private function writeCache(array $entries): void
     {
         file_put_contents('/tmp/phar.example.org/cache.json', json_encode($entries, JSON_THROW_ON_ERROR));
     }
 
     /**
-     * @return array<string, array{bytes: int, mtime: int, sha256: string}>
+     * @return array<string, array{bytes: int, mtime: int, sha256: string, dependencies: array<string, string>}>
      */
-    private function readHashCache(): array
+    private function readCache(): array
     {
         $buffer = file_get_contents('/tmp/phar.example.org/cache.json');
 
         assert($buffer !== false);
 
-        /** @var array<string, array{bytes: int, mtime: int, sha256: string}> */
+        /** @var array<string, array{bytes: int, mtime: int, sha256: string, dependencies: array<string, string>}> */
         return json_decode($buffer, true, flags: JSON_THROW_ON_ERROR);
     }
 
     private function cachedHash(string $file): string
     {
-        $cache = $this->readHashCache();
+        $cache = $this->readCache();
 
         $this->assertArrayHasKey($file, $cache);
         assert(isset($cache[$file]));
 
         return $cache[$file]['sha256'];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function cachedDependencies(string $file): array
+    {
+        $cache = $this->readCache();
+
+        $this->assertArrayHasKey($file, $cache);
+        assert(isset($cache[$file]));
+
+        return $cache[$file]['dependencies'];
     }
 
     /**

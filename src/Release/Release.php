@@ -53,26 +53,33 @@ final readonly class Release
     private bool $hasSbom;
 
     /**
-     * @param non-empty-string $package
-     * @param non-empty-string $version
-     * @param non-empty-string $majorVersion
-     * @param non-empty-string $minorVersion
-     * @param non-empty-string $date
-     * @param non-empty-string $size
-     * @param positive-int     $bytes
-     * @param non-empty-string $sha256
+     * @var array<non-empty-string, non-empty-string>
      */
-    public function __construct(string $package, string $version, string $majorVersion, string $minorVersion, string $date, string $size, int $bytes, string $sha256, bool $hasSbom)
+    private array $bundledDependencies;
+
+    /**
+     * @param non-empty-string                          $package
+     * @param non-empty-string                          $version
+     * @param non-empty-string                          $majorVersion
+     * @param non-empty-string                          $minorVersion
+     * @param non-empty-string                          $date
+     * @param non-empty-string                          $size
+     * @param positive-int                              $bytes
+     * @param non-empty-string                          $sha256
+     * @param array<non-empty-string, non-empty-string> $bundledDependencies
+     */
+    public function __construct(string $package, string $version, string $majorVersion, string $minorVersion, string $date, string $size, int $bytes, string $sha256, bool $hasSbom, array $bundledDependencies)
     {
-        $this->package      = $package;
-        $this->version      = $version;
-        $this->majorVersion = $majorVersion;
-        $this->minorVersion = $minorVersion;
-        $this->date         = $date;
-        $this->size         = $size;
-        $this->bytes        = $bytes;
-        $this->sha256       = $sha256;
-        $this->hasSbom      = $hasSbom;
+        $this->package             = $package;
+        $this->version             = $version;
+        $this->majorVersion        = $majorVersion;
+        $this->minorVersion        = $minorVersion;
+        $this->date                = $date;
+        $this->size                = $size;
+        $this->bytes               = $bytes;
+        $this->sha256              = $sha256;
+        $this->hasSbom             = $hasSbom;
+        $this->bundledDependencies = $bundledDependencies;
     }
 
     /**
@@ -154,5 +161,16 @@ final readonly class Release
     public function hasSbom(): bool
     {
         return $this->hasSbom;
+    }
+
+    /**
+     * The dependencies that are bundled in the PHAR, as listed by its --manifest
+     * option, mapped from package name to version.
+     *
+     * @return array<non-empty-string, non-empty-string>
+     */
+    public function bundledDependencies(): array
+    {
+        return $this->bundledDependencies;
     }
 }

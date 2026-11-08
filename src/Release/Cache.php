@@ -30,21 +30,22 @@ use function sprintf;
 use function unlink;
 
 /**
- * Remembers the SHA-256 hashes of PHAR files between runs so that only
- * PHAR files that have not been seen before need to be read and hashed.
+ * Remembers information about PHAR files, their SHA-256 hash and the
+ * dependencies that are bundled in them, between runs so that only PHAR
+ * files that have not been seen before need to be read.
  *
- * A cached hash is only used when the size and modification time of the
- * PHAR file still match the values that were recorded together with it.
+ * Cached information is only used when the size and modification time of
+ * the PHAR file still match the values that were recorded together with it.
  */
 final class Cache
 {
     /**
-     * @var array<string, array{bytes: int, mtime: int, sha256: non-empty-string}>
+     * @var array<string, array{bytes: int, mtime: int, sha256: non-empty-string, dependencies: array<non-empty-string, non-empty-string>}>
      */
     private array $cached;
 
     /**
-     * @var array<string, array{bytes: int, mtime: int, sha256: non-empty-string}>
+     * @var array<string, array{bytes: int, mtime: int, sha256: non-empty-string, dependencies: array<non-empty-string, non-empty-string>}>
      */
     private array $used = [];
     private int $hits   = 0;
@@ -52,7 +53,7 @@ final class Cache
 
     /**
      * A cache file that does not exist, cannot be read, or is malformed
-     * results in an empty cache: every PHAR file is hashed (again).
+     * results in an empty cache: every PHAR file is read (again).
      */
     public static function fromFile(string $filename): self
     {
@@ -77,18 +78,30 @@ final class Cache
         foreach ($data as $key => $entry) {
             if (!is_string($key) ||
                 !is_array($entry) ||
-                !isset($entry['bytes'], $entry['mtime'], $entry['sha256']) ||
+                !isset($entry['bytes'], $entry['mtime'], $entry['sha256'], $entry['dependencies']) ||
                 !is_int($entry['bytes']) ||
                 !is_int($entry['mtime']) ||
                 !is_string($entry['sha256']) ||
-                preg_match('/^[0-9a-f]{64}$/', $entry['sha256']) !== 1) {
+                preg_match('/^[0-9a-f]{64}$/', $entry['sha256']) !== 1 ||
+                !is_array($entry['dependencies'])) {
                 continue;
             }
 
+            $dependencies = [];
+
+            foreach ($entry['dependencies'] as $name => $version) {
+                if (!is_string($name) || $name === '' || !is_string($version) || $version === '') {
+                    continue 2;
+                }
+
+                $dependencies[$name] = $version;
+            }
+
             $cached[$key] = [
-                'bytes'  => $entry['bytes'],
-                'mtime'  => $entry['mtime'],
-                'sha256' => $entry['sha256'],
+                'bytes'        => $entry['bytes'],
+                'mtime'        => $entry['mtime'],
+                'sha256'       => $entry['sha256'],
+                'dependencies' => $dependencies,
             ];
         }
 
@@ -96,7 +109,7 @@ final class Cache
     }
 
     /**
-     * @param array<string, array{bytes: int, mtime: int, sha256: non-empty-string}> $cached
+     * @param array<string, array{bytes: int, mtime: int, sha256: non-empty-string, dependencies: array<non-empty-string, non-empty-string>}> $cached
      */
     public function __construct(array $cached = [])
     {
@@ -104,12 +117,12 @@ final class Cache
     }
 
     /**
-     * Returns the cached SHA-256 hash of a PHAR file, or null when there is
-     * no cached hash for it or the cached hash is outdated.
+     * Returns the cached information about a PHAR file, or null when there is
+     * no cached information for it or the cached information is outdated.
      *
-     * @return ?non-empty-string
+     * @return ?array{sha256: non-empty-string, dependencies: array<non-empty-string, non-empty-string>}
      */
-    public function lookup(string $pathname, int $bytes, int $mtime): ?string
+    public function lookup(string $pathname, int $bytes, int $mtime): ?array
     {
         $key = basename($pathname);
 
@@ -123,20 +136,25 @@ final class Cache
 
         $this->hits++;
 
-        return $this->cached[$key]['sha256'];
+        return [
+            'sha256'       => $this->cached[$key]['sha256'],
+            'dependencies' => $this->cached[$key]['dependencies'],
+        ];
     }
 
     /**
-     * Records the SHA-256 hash of a PHAR file that was seen in this run.
+     * Records the information about a PHAR file that was seen in this run.
      *
-     * @param non-empty-string $sha256
+     * @param non-empty-string                          $sha256
+     * @param array<non-empty-string, non-empty-string> $dependencies
      */
-    public function store(string $pathname, int $bytes, int $mtime, string $sha256): void
+    public function store(string $pathname, int $bytes, int $mtime, string $sha256, array $dependencies): void
     {
         $this->used[basename($pathname)] = [
-            'bytes'  => $bytes,
-            'mtime'  => $mtime,
-            'sha256' => $sha256,
+            'bytes'        => $bytes,
+            'mtime'        => $mtime,
+            'sha256'       => $sha256,
+            'dependencies' => $dependencies,
         ];
     }
 
@@ -151,8 +169,9 @@ final class Cache
     }
 
     /**
-     * Only the hashes of PHAR files that were seen in this run are written,
-     * hashes of PHAR files that no longer exist are dropped from the cache.
+     * Only the information about PHAR files that were seen in this run is
+     * written, information about PHAR files that no longer exist is dropped
+     * from the cache.
      *
      * @throws RuntimeException
      */

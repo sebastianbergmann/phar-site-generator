@@ -50,7 +50,7 @@ Both the `<apache>` and the `<nginx>` element are optional and can be used toget
 
 A leading `~` in any of the configured paths is expanded to the home directory of the user that runs `phar-site-generator`.
 
-The optional `<cache>` element configures a file in which the SHA-256 hashes of the `.phar` files are cached between runs:
+The optional `<cache>` element configures a file in which information about the `.phar` files, their SHA-256 hash and the dependencies bundled in them, is cached between runs:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -63,7 +63,7 @@ The optional `<cache>` element configures a file in which the SHA-256 hashes of 
 </phar-site>
 ```
 
-Without a cache, every `.phar` file is read and hashed on every run. With a cache, only `.phar` files that were not seen before, or whose size or modification time changed, are hashed. The cache file should not be located in the PHAR repository directory and should not be shared between configurations. When the cache file cannot be written, `phar-site-generator` reports an error and exits with exit code `1`.
+Without a cache, every `.phar` file is read and hashed on every run. With a cache, only `.phar` files that were not seen before, or whose size or modification time changed, are read and hashed. The cache file should not be located in the PHAR repository directory and should not be shared between configurations. When the cache file cannot be written, `phar-site-generator` reports an error and exits with exit code `1`.
 
 The optional `<latest-releases>` element configures packages, by name, that are not listed in the "Latest Releases" section of the generated HTML page:
 

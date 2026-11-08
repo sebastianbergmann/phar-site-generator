@@ -15,17 +15,30 @@ use function array_slice;
 use function assert;
 use function date;
 use function explode;
+use function file_get_contents;
 use function floor;
 use function hash_file;
 use function implode;
 use function is_file;
+use function preg_match;
 use function sprintf;
 use function strlen;
+use function trim;
 use GlobIterator;
 use SplFileInfo;
 
 final readonly class ReleaseCollector
 {
+    /**
+     * Locations, relative to the root of the PHAR, of the file that is printed
+     * by the --manifest option of PHARs that were built for this site.
+     *
+     * @var list<non-empty-string>
+     */
+    private const array MANIFEST_FILES = [
+        'manifest.txt',
+        'phar/manifest.txt',
+    ];
     private Cache $cache;
 
     public function __construct(Cache $cache)
@@ -49,15 +62,19 @@ final readonly class ReleaseCollector
                 $pathname     = $file->getPathname();
                 $bytes        = $file->getSize();
                 $mtime        = $file->getMTime();
-                $sha256       = $this->cache->lookup($pathname, $bytes, $mtime);
+                $cached       = $this->cache->lookup($pathname, $bytes, $mtime);
 
-                if ($sha256 === null) {
-                    $sha256 = hash_file('sha256', $pathname);
+                if ($cached !== null) {
+                    $sha256       = $cached['sha256'];
+                    $dependencies = $cached['dependencies'];
+                } else {
+                    $sha256       = hash_file('sha256', $pathname);
+                    $dependencies = $this->bundledDependencies($pathname);
 
                     assert($sha256 !== false);
                 }
 
-                $this->cache->store($pathname, $bytes, $mtime, $sha256);
+                $this->cache->store($pathname, $bytes, $mtime, $sha256, $dependencies);
 
                 assert($name !== '');
                 assert($version !== '');
@@ -76,12 +93,58 @@ final readonly class ReleaseCollector
                         $bytes,
                         $sha256,
                         is_file($pathname . '.cdx.xml'),
+                        $dependencies,
                     ),
                 );
             }
         }
 
         return $releases;
+    }
+
+    /**
+     * Reads the dependencies that are bundled in a PHAR from the manifest that
+     * is printed by its --manifest option. The manifest file is read from the
+     * PHAR using the phar:// stream wrapper, the PHAR is not executed.
+     *
+     * The first line of the manifest names the package of the PHAR itself,
+     * each following line names a bundled dependency: "vendor/package: version".
+     *
+     * An empty array is returned for files that are not PHARs, cannot be
+     * read, or do not contain a manifest.
+     *
+     * @return array<non-empty-string, non-empty-string>
+     */
+    private function bundledDependencies(string $pathname): array
+    {
+        $manifest = $this->manifest($pathname);
+
+        if ($manifest === null) {
+            return [];
+        }
+
+        $dependencies = [];
+
+        foreach (array_slice(explode("\n", $manifest), 1) as $line) {
+            if (preg_match('#^(?<name>[^\s:]+/[^\s:]+): (?<version>\S+)$#', trim($line), $matches) === 1) {
+                $dependencies[$matches['name']] = $matches['version'];
+            }
+        }
+
+        return $dependencies;
+    }
+
+    private function manifest(string $pathname): ?string
+    {
+        foreach (self::MANIFEST_FILES as $manifestFile) {
+            $manifest = @file_get_contents('phar://' . $pathname . '/' . $manifestFile);
+
+            if ($manifest !== false) {
+                return $manifest;
+            }
+        }
+
+        return null;
     }
 
     /**
