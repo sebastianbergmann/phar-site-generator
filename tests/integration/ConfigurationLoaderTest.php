@@ -44,7 +44,7 @@ final class ConfigurationLoaderTest extends TestCase
     public function testCannotLoadConfigurationFileThatDoesNotExist(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Configuration file "/does/not/exist.xml" could not be read or is empty');
+        $this->expectExceptionMessageIs('Configuration file "/does/not/exist.xml" could not be read or is empty');
 
         (new ConfigurationLoader)->load('/does/not/exist.xml');
     }
@@ -66,7 +66,7 @@ final class ConfigurationLoaderTest extends TestCase
         putenv('HOME');
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('cannot be expanded because the HOME environment variable is not set');
+        $this->expectExceptionMessageIs('Path "~/apache-redirects.conf" cannot be expanded because the HOME environment variable is not set');
 
         (new ConfigurationLoader)->load(__DIR__ . '/../fixture/configuration-with-tilde.xml');
     }
