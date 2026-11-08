@@ -7,6 +7,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 ### Fixed
 
 * The memory limit is exhausted when the dependencies that are bundled in PHARs are read from hundreds of PHARs, for instance when a cache file written by an earlier version is ignored, because the phar extension keeps every PHAR that it opened in memory until the process ends; the `manifest.txt` file is now read from the PHAR without using the phar extension
+* The caption of the "Latest Releases" table on the HTML page claims that the table lists the most recent release of each PHAR even when packages are ignored using the `<latest-releases>` configuration element; the caption now names the ignored packages
 
 ## [5.7.0] - 2026-11-08
 

@@ -81,6 +81,22 @@ final class ApplicationTest extends TestCase
         $this->assertFileMatchesFormatFile(__DIR__ . '/../expectations/public/releases.rss', '/tmp/phar.example.org/public/releases.rss');
     }
 
+    public function testNamesIgnoredPackagesInCaptionOfLatestReleases(): void
+    {
+        copy(__DIR__ . '/../fixture/gzip-1.0.0.phar', '/tmp/phar.example.org/public/gzip-1.0.0.phar');
+        copy(__DIR__ . '/../fixture/legacy-1.0.0.phar', '/tmp/phar.example.org/public/legacy-1.0.0.phar');
+
+        $this->generate(__DIR__ . '/../fixture/configuration-with-ignored-packages.xml');
+
+        $page = file_get_contents('/tmp/phar.example.org/public/index.html');
+
+        $this->assertIsString($page);
+        $this->assertStringContainsString(
+            '<caption>The most recent release of each PHAR distributed on phar.example.org, except for gzip, legacy, and package</caption>',
+            $page,
+        );
+    }
+
     public function testReportsOnlyCacheHitsWhenNoPharFileWasAdded(): void
     {
         $this->generate();

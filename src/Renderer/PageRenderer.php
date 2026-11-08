@@ -16,10 +16,12 @@ use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
 use function array_filter;
+use function array_pop;
 use function array_values;
 use function assert;
 use function count;
 use function htmlspecialchars;
+use function implode;
 use function in_array;
 use function json_encode;
 use function rtrim;
@@ -69,11 +71,12 @@ final class PageRenderer extends AbstractRenderer
 
         $page->setVar(
             [
-                'domain'          => $this->domain(),
-                'description'     => $this->description(),
-                'structured_data' => $this->renderStructuredData($releases),
-                'latest_releases' => $latestReleases,
-                'all_releases'    => $allReleases,
+                'domain'                  => $this->domain(),
+                'description'             => $this->description(),
+                'structured_data'         => $this->renderStructuredData($releases),
+                'latest_releases_caption' => $this->latestReleasesCaption($releases),
+                'latest_releases'         => $latestReleases,
+                'all_releases'            => $allReleases,
             ],
         );
 
@@ -91,6 +94,50 @@ final class PageRenderer extends AbstractRenderer
                 fn (Release $release): bool => !in_array($release->package(), $this->packagesIgnoredInLatestReleases, true),
             ),
         );
+    }
+
+    /**
+     * Names the packages that have releases but are not listed in the
+     * "Latest Releases" section because they are ignored.
+     */
+    private function latestReleasesCaption(ReleaseCollection $releases): string
+    {
+        $caption = sprintf(
+            'The most recent release of each PHAR distributed on %s',
+            $this->domain(),
+        );
+
+        $ignoredPackages = [];
+
+        foreach ($releases->latestReleasesSortedByPackageName() as $release) {
+            if (in_array($release->package(), $this->packagesIgnoredInLatestReleases, true)) {
+                $ignoredPackages[] = htmlspecialchars($release->package(), ENT_QUOTES | ENT_HTML5);
+            }
+        }
+
+        if ($ignoredPackages === []) {
+            return $caption;
+        }
+
+        return $caption . ', except for ' . $this->enumeration($ignoredPackages);
+    }
+
+    /**
+     * @param non-empty-list<string> $items
+     */
+    private function enumeration(array $items): string
+    {
+        $last = array_pop($items);
+
+        if ($items === []) {
+            return $last;
+        }
+
+        if (count($items) === 1) {
+            return $items[0] . ' and ' . $last;
+        }
+
+        return implode(', ', $items) . ', and ' . $last;
     }
 
     private function description(): string
