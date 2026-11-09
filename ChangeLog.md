@@ -7,6 +7,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 ### Changed
 
 * The "Latest Releases" table on the HTML page is sorted by the date and time of the last modification of the PHAR file, most recent first, instead of by package name
+* The "All Releases" table is no longer part of `index.html`, it is rendered to the separate `all-releases.html` page that is linked from `index.html`
 
 ## [5.8.0] - 2026-11-08
 

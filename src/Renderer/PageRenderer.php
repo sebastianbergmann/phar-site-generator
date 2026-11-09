@@ -39,7 +39,7 @@ final class PageRenderer extends AbstractRenderer
     private readonly array $packagesIgnoredInLatestReleases;
 
     /**
-     * @param non-empty-string       $target
+     * @param non-empty-string       $target                          Directory, with a trailing directory separator, that index.html and all-releases.html are written to
      * @param list<non-empty-string> $packagesIgnoredInLatestReleases
      */
     public function __construct(string $target, string $domain, string $email, array $packagesIgnoredInLatestReleases)
@@ -50,37 +50,99 @@ final class PageRenderer extends AbstractRenderer
     }
 
     /**
+     * Renders index.html, which lists the latest releases and links to
+     * all-releases.html, which lists all releases.
+     *
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
     public function render(ReleaseCollection $releases): void
     {
-        $latestReleases = '';
+        $structuredData = $this->renderStructuredData($releases);
 
-        foreach ($this->latestReleases($releases) as $release) {
-            $latestReleases .= $this->renderRelease($release);
-        }
+        $this->renderPage(
+            'index.html',
+            sprintf('https://%s/', $this->domain()),
+            $structuredData,
+            $this->renderLatestReleases($releases),
+        );
 
-        $allReleases = '';
+        $this->renderPage(
+            'all-releases.html',
+            sprintf('https://%s/all-releases.html', $this->domain()),
+            $structuredData,
+            $this->renderAllReleases($releases),
+        );
+    }
 
-        foreach ($releases->allReleases() as $release) {
-            $allReleases .= $this->renderRelease($release);
-        }
-
+    /**
+     * @param non-empty-string $file
+     *
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     */
+    private function renderPage(string $file, string $url, string $structuredData, string $releases): void
+    {
         $page = new Template(__DIR__ . '/../templates/page.html');
 
         $page->setVar(
             [
-                'domain'                  => $this->domain(),
-                'description'             => $this->description(),
-                'structured_data'         => $this->renderStructuredData($releases),
-                'latest_releases_caption' => $this->latestReleasesCaption($releases),
-                'latest_releases'         => $latestReleases,
-                'all_releases'            => $allReleases,
+                'domain'          => $this->domain(),
+                'url'             => $url,
+                'description'     => $this->description(),
+                'structured_data' => $structuredData,
+                'releases'        => $releases,
             ],
         );
 
-        $page->renderTo($this->target());
+        $page->renderTo($this->target() . $file);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function renderLatestReleases(ReleaseCollection $releases): string
+    {
+        $rows = '';
+
+        foreach ($this->latestReleases($releases) as $release) {
+            $rows .= $this->renderRelease($release);
+        }
+
+        $section = new Template(__DIR__ . '/../templates/latest-releases.html');
+
+        $section->setVar(
+            [
+                'domain'   => $this->domain(),
+                'caption'  => $this->latestReleasesCaption($releases),
+                'releases' => $rows,
+            ],
+        );
+
+        return rtrim($section->render());
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function renderAllReleases(ReleaseCollection $releases): string
+    {
+        $rows = '';
+
+        foreach ($releases->allReleases() as $release) {
+            $rows .= $this->renderRelease($release);
+        }
+
+        $section = new Template(__DIR__ . '/../templates/all-releases.html');
+
+        $section->setVar(
+            [
+                'domain'   => $this->domain(),
+                'releases' => $rows,
+            ],
+        );
+
+        return rtrim($section->render());
     }
 
     /**

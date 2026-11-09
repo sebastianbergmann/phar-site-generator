@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>phar.example.org &ndash; PHP Archive (PHAR) downloads</title>
+  <meta name="description" content="Download PHP Archives (PHAR) from phar.example.org. Every release is listed with its file size, last modification date, SHA-256 checksum, and detached OpenPGP signature.">
+  <meta name="generator" content="phar-site-generator">
+  <link rel="canonical" href="https://phar.example.org/all-releases.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="phar.example.org">
+  <meta property="og:url" content="https://phar.example.org/all-releases.html">
+  <meta property="og:title" content="phar.example.org &ndash; PHP Archive (PHAR) downloads">
+  <meta property="og:description" content="Download PHP Archives (PHAR) from phar.example.org. Every release is listed with its file size, last modification date, SHA-256 checksum, and detached OpenPGP signature.">
+  <meta name="twitter:card" content="summary">
+  <link rel="alternate" type="application/rss+xml" title="Latest releases on phar.example.org" href="https://phar.example.org/releases.rss">
+  <link rel="alternate" type="application/xml" title="Phive repository metadata for phar.example.org" href="https://phar.example.org/phive.xml">
+  <link href="css/style.css" type="text/css" rel="stylesheet">
+  <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "WebSite",
+            "@id": "https://phar.example.org/#website",
+            "url": "https://phar.example.org/",
+            "name": "phar.example.org",
+            "description": "Download PHP Archives (PHAR) from phar.example.org. Every release is listed with its file size, last modification date, SHA-256 checksum, and detached OpenPGP signature."
+        },
+        {
+            "@type": "ItemList",
+            "name": "Latest releases on phar.example.org",
+            "numberOfItems": 1,
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "package",
+                        "softwareVersion": "2.3.4",
+                        "applicationCategory": "DeveloperApplication",
+                        "operatingSystem": "Any",
+                        "dateModified": "%s",
+                        "downloadUrl": "https://phar.example.org/package-2.3.4.phar",
+                        "associatedMedia": {
+                            "@type": "DataDownload",
+                            "contentUrl": "https://phar.example.org/package-2.3.4.phar",
+                            "contentSize": "545",
+                            "sha256": "6362706920bb68f57582e33d0718284aeb659be8dc7e02d026836529c8fe25d1"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
+  </script>
+ </head>
+ <body>
+  <h1>phar.example.org</h1>
+  <p>
+   This site distributes <a href="https://www.php.net/manual/en/intro.phar.php">PHP Archives (PHAR)</a>.
+  </p>
+  <p>
+   For each release, the table below lists the file size, the date the file was last modified, a detached OpenPGP signature, and the SHA-256 checksum of the PHAR file.
+   Where available, it also links to a Software Bill of Materials (SBOM) in <a href="https://cyclonedx.org/">CycloneDX</a> format that describes the PHAR file and the components it contains, together with a detached OpenPGP signature of the SBOM.
+  </p>
+  <p>
+   For PHAR files that list them using their <code>--manifest</code> option, the table also shows the dependencies that are bundled in the PHAR file together with their versions.
+  </p>
+  <h2 id="all-releases">All Releases</h2>
+  <div class="scroll">
+   <table>
+    <caption>Every release of every PHAR distributed on phar.example.org</caption>
+    <thead>
+     <tr>
+      <th scope="col">PHAR</th>
+      <th scope="col">Size</th>
+      <th scope="col">Last Modified</th>
+      <th scope="col">SHA-256</th>
+      <th scope="col">SBOM</th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr>
+      <td>
+       <a href="https://phar.example.org/package-1.2.3.phar">package-1.2.3.phar</a>
+       (<a href="https://phar.example.org/package-1.2.3.phar.asc">signature</a>)
+      </td>
+      <td>3.22K</td>
+      <td><time datetime="%s" title="%s">%s</time></td>
+      <td><samp>a72427688cadc3d3a299cc6658839011bdcbb7337493cf903d22c14864791ab1</samp></td>
+      <td></td>
+     </tr>
+     <tr>
+      <td>
+       <a href="https://phar.example.org/package-2.3.4.phar">package-2.3.4.phar</a>
+       (<a href="https://phar.example.org/package-2.3.4.phar.asc">signature</a>)
+       <details>
+        <summary>2 bundled dependencies</summary>
+        <ul>
+         <li>example/dependency: 1.0.0</li>
+         <li>example/another-dependency: 2.0.0@3d8e0fbe5b2fb2e4d36c4d5be6e7ad0b6c3fd2d1</li>
+        </ul>
+       </details>
+      </td>
+      <td>545.00B</td>
+      <td><time datetime="%s" title="%s">%s</time></td>
+      <td><samp>6362706920bb68f57582e33d0718284aeb659be8dc7e02d026836529c8fe25d1</samp></td>
+      <td><a href="https://phar.example.org/package-2.3.4.phar.cdx.xml">CycloneDX</a> (<a href="https://phar.example.org/package-2.3.4.phar.cdx.xml.asc">signature</a>)</td>
+     </tr>
+
+    </tbody>
+   </table>
+  </div>
+  <h2 id="verifying-a-download">Verifying a Download</h2>
+  <p>
+   Compare the SHA-256 checksum listed above with the checksum of the file you downloaded:
+  </p>
+  <pre><code>sha256sum &lt;file&gt;.phar</code></pre>
+  <p>
+   The <code>.asc</code> file that accompanies each PHAR file is a detached OpenPGP signature.
+   After importing the signing key, verify the signature like this:
+  </p>
+  <pre><code>gpg --verify &lt;file&gt;.phar.asc &lt;file&gt;.phar</code></pre>
+  <p>
+   An SBOM is signed the same way:
+  </p>
+  <pre><code>gpg --verify &lt;file&gt;.phar.cdx.xml.asc &lt;file&gt;.phar.cdx.xml</code></pre>
+ </body>
+</html>

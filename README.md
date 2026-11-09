@@ -3,7 +3,7 @@
 
 # phar-site-generator
 
-`phar-site-generator` is a tool that generates an HTML page ([example](https://phar.phpunit.de/)), RSS feed ([example](https://phar.phpunit.de/releases.rss)), and Phive metadata ([example](https://phar.phpunit.de/phive.xml)) for a PHAR repository.
+`phar-site-generator` is a tool that generates HTML pages ([example](https://phar.phpunit.de/)), RSS feed ([example](https://phar.phpunit.de/releases.rss)), and Phive metadata ([example](https://phar.phpunit.de/phive.xml)) for a PHAR repository.
 
 This tool makes the following assumptions:
 
@@ -13,7 +13,9 @@ This tool makes the following assumptions:
 * A `.phar` file may be accompanied by a `.phar.cdx.xml` file (Software Bill of Materials in [CycloneDX](https://cyclonedx.org/) format) and its `.phar.cdx.xml.asc` (GPG signature) file
 * A `.phar` file may contain a `manifest.txt` (or `phar/manifest.txt`) file that lists the package of the PHAR on its first line and the dependencies bundled in the PHAR on the following lines, one `vendor/package: version` per line, as printed by the `--manifest` option of the PHARs of PHPUnit, for instance
 
-The dependencies bundled in a PHAR are listed in the generated HTML page, collapsed by default. The `manifest.txt` file is read from the PHAR without executing the PHAR.
+The generated `index.html` page lists the latest release of each PHAR, most recent first, and links to the generated `all-releases.html` page, which lists all releases.
+
+The dependencies bundled in a PHAR are listed in the generated HTML pages, collapsed by default. The `manifest.txt` file is read from the PHAR without executing the PHAR.
 
 ## Usage
 
@@ -84,7 +86,7 @@ The optional `<cache>` element configures a file in which information about the 
 
 Without a cache, every `.phar` file is read and hashed on every run. With a cache, only `.phar` files that were not seen before, or whose size or modification time changed, are read and hashed. The cache file should not be located in the PHAR repository directory and should not be shared between configurations. When the cache file cannot be written, `phar-site-generator` reports an error and exits with exit code `1`.
 
-The optional `<latest-releases>` element configures packages, by name, that are not listed in the "Latest Releases" section of the generated HTML page:
+The optional `<latest-releases>` element configures packages, by name, that are not listed in the "Latest Releases" section of the generated `index.html` page:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -102,4 +104,4 @@ The optional `<latest-releases>` element configures packages, by name, that are 
 </phar-site>
 ```
 
-The releases of an ignored package are still listed in the "All Releases" section of the HTML page, and they are still included in the RSS feed, the Phive metadata, and the redirect configuration.
+The releases of an ignored package are still listed on the generated `all-releases.html` page, and they are still included in the RSS feed, the Phive metadata, and the redirect configuration.

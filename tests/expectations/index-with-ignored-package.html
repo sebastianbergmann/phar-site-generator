@@ -43,11 +43,11 @@
    This site distributes <a href="https://www.php.net/manual/en/intro.phar.php">PHP Archives (PHAR)</a>.
   </p>
   <p>
-   For each release, the tables below list the file size, the date the file was last modified, a detached OpenPGP signature, and the SHA-256 checksum of the PHAR file.
-   Where available, they also link to a Software Bill of Materials (SBOM) in <a href="https://cyclonedx.org/">CycloneDX</a> format that describes the PHAR file and the components it contains, together with a detached OpenPGP signature of the SBOM.
+   For each release, the table below lists the file size, the date the file was last modified, a detached OpenPGP signature, and the SHA-256 checksum of the PHAR file.
+   Where available, it also links to a Software Bill of Materials (SBOM) in <a href="https://cyclonedx.org/">CycloneDX</a> format that describes the PHAR file and the components it contains, together with a detached OpenPGP signature of the SBOM.
   </p>
   <p>
-   For PHAR files that list them using their <code>--manifest</code> option, the tables also show the dependencies that are bundled in the PHAR file together with their versions.
+   For PHAR files that list them using their <code>--manifest</code> option, the table also shows the dependencies that are bundled in the PHAR file together with their versions.
   </p>
   <h2 id="latest-releases">Latest Releases</h2>
   <div class="scroll">
@@ -68,50 +68,9 @@
    </table>
   </div>
   <h2 id="all-releases">All Releases</h2>
-  <div class="scroll">
-   <table>
-    <caption>Every release of every PHAR distributed on phar.example.org</caption>
-    <thead>
-     <tr>
-      <th scope="col">PHAR</th>
-      <th scope="col">Size</th>
-      <th scope="col">Last Modified</th>
-      <th scope="col">SHA-256</th>
-      <th scope="col">SBOM</th>
-     </tr>
-    </thead>
-    <tbody>
-     <tr>
-      <td>
-       <a href="https://phar.example.org/package-1.2.3.phar">package-1.2.3.phar</a>
-       (<a href="https://phar.example.org/package-1.2.3.phar.asc">signature</a>)
-      </td>
-      <td>3.22K</td>
-      <td><time datetime="%s" title="%s">%s</time></td>
-      <td><samp>a72427688cadc3d3a299cc6658839011bdcbb7337493cf903d22c14864791ab1</samp></td>
-      <td></td>
-     </tr>
-     <tr>
-      <td>
-       <a href="https://phar.example.org/package-2.3.4.phar">package-2.3.4.phar</a>
-       (<a href="https://phar.example.org/package-2.3.4.phar.asc">signature</a>)
-       <details>
-        <summary>2 bundled dependencies</summary>
-        <ul>
-         <li>example/dependency: 1.0.0</li>
-         <li>example/another-dependency: 2.0.0@3d8e0fbe5b2fb2e4d36c4d5be6e7ad0b6c3fd2d1</li>
-        </ul>
-       </details>
-      </td>
-      <td>545.00B</td>
-      <td><time datetime="%s" title="%s">%s</time></td>
-      <td><samp>6362706920bb68f57582e33d0718284aeb659be8dc7e02d026836529c8fe25d1</samp></td>
-      <td><a href="https://phar.example.org/package-2.3.4.phar.cdx.xml">CycloneDX</a> (<a href="https://phar.example.org/package-2.3.4.phar.cdx.xml.asc">signature</a>)</td>
-     </tr>
-
-    </tbody>
-   </table>
-  </div>
+  <p>
+   Every release of every PHAR distributed on phar.example.org is listed on the <a href="all-releases.html">All Releases</a> page.
+  </p>
   <h2 id="verifying-a-download">Verifying a Download</h2>
   <p>
    Compare the SHA-256 checksum listed above with the checksum of the file you downloaded:

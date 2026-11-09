@@ -117,7 +117,7 @@ final readonly class Application
         $renderer->render($releases);
 
         $renderer = new PageRenderer(
-            $configuration->directory() . DIRECTORY_SEPARATOR . 'index.html',
+            $configuration->directory() . DIRECTORY_SEPARATOR,
             $configuration->domain(),
             $configuration->email(),
             $configuration->packagesIgnoredInLatestReleases(),

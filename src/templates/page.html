@@ -6,10 +6,10 @@
   <title>{domain} &ndash; PHP Archive (PHAR) downloads</title>
   <meta name="description" content="{description}">
   <meta name="generator" content="phar-site-generator">
-  <link rel="canonical" href="https://{domain}/">
+  <link rel="canonical" href="{url}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="{domain}">
-  <meta property="og:url" content="https://{domain}/">
+  <meta property="og:url" content="{url}">
   <meta property="og:title" content="{domain} &ndash; PHP Archive (PHAR) downloads">
   <meta property="og:description" content="{description}">
   <meta name="twitter:card" content="summary">
@@ -26,48 +26,13 @@
    This site distributes <a href="https://www.php.net/manual/en/intro.phar.php">PHP Archives (PHAR)</a>.
   </p>
   <p>
-   For each release, the tables below list the file size, the date the file was last modified, a detached OpenPGP signature, and the SHA-256 checksum of the PHAR file.
-   Where available, they also link to a Software Bill of Materials (SBOM) in <a href="https://cyclonedx.org/">CycloneDX</a> format that describes the PHAR file and the components it contains, together with a detached OpenPGP signature of the SBOM.
+   For each release, the table below lists the file size, the date the file was last modified, a detached OpenPGP signature, and the SHA-256 checksum of the PHAR file.
+   Where available, it also links to a Software Bill of Materials (SBOM) in <a href="https://cyclonedx.org/">CycloneDX</a> format that describes the PHAR file and the components it contains, together with a detached OpenPGP signature of the SBOM.
   </p>
   <p>
-   For PHAR files that list them using their <code>--manifest</code> option, the tables also show the dependencies that are bundled in the PHAR file together with their versions.
+   For PHAR files that list them using their <code>--manifest</code> option, the table also shows the dependencies that are bundled in the PHAR file together with their versions.
   </p>
-  <h2 id="latest-releases">Latest Releases</h2>
-  <div class="scroll">
-   <table>
-    <caption>{latest_releases_caption}</caption>
-    <thead>
-     <tr>
-      <th scope="col">PHAR</th>
-      <th scope="col">Size</th>
-      <th scope="col">Last Modified</th>
-      <th scope="col">SHA-256</th>
-      <th scope="col">SBOM</th>
-     </tr>
-    </thead>
-    <tbody>
-{latest_releases}
-    </tbody>
-   </table>
-  </div>
-  <h2 id="all-releases">All Releases</h2>
-  <div class="scroll">
-   <table>
-    <caption>Every release of every PHAR distributed on {domain}</caption>
-    <thead>
-     <tr>
-      <th scope="col">PHAR</th>
-      <th scope="col">Size</th>
-      <th scope="col">Last Modified</th>
-      <th scope="col">SHA-256</th>
-      <th scope="col">SBOM</th>
-     </tr>
-    </thead>
-    <tbody>
-{all_releases}
-    </tbody>
-   </table>
-  </div>
+{releases}
   <h2 id="verifying-a-download">Verifying a Download</h2>
   <p>
    Compare the SHA-256 checksum listed above with the checksum of the file you downloaded:
