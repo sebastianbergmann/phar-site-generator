@@ -90,7 +90,7 @@ final class PageRenderer extends AbstractRenderer
     {
         return array_values(
             array_filter(
-                $releases->latestReleasesSortedByPackageName(),
+                $releases->latestReleasesSortedByDateDescending(),
                 fn (Release $release): bool => !in_array($release->package(), $this->packagesIgnoredInLatestReleases, true),
             ),
         );

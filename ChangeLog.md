@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.9.0] - 2026-MM-DD
+
+### Changed
+
+* The "Latest Releases" table on the HTML page is sorted by the date and time of the last modification of the PHAR file, most recent first, instead of by package name
+
 ## [5.8.0] - 2026-11-08
 
 ### Added
@@ -227,6 +233,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
+[5.9.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.8.0...main
 [5.8.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.7.0...5.8.0
 [5.7.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.6.0...5.7.0
 [5.6.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.5.0...5.6.0

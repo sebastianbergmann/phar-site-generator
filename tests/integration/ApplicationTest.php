@@ -25,9 +25,13 @@ use function is_file;
 use function json_decode;
 use function json_encode;
 use function mkdir;
+use function preg_match_all;
 use function rmdir;
 use function rtrim;
 use function str_repeat;
+use function strpos;
+use function substr;
+use function touch;
 use function unlink;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Before;
@@ -82,6 +86,23 @@ final class ApplicationTest extends TestCase
         $this->assertFileEquals(__DIR__ . '/../expectations/public/latest-version-of/package', '/tmp/phar.example.org/public/latest-version-of/package');
         $this->assertFileEquals(__DIR__ . '/../expectations/public/phive.xml', '/tmp/phar.example.org/public/phive.xml');
         $this->assertFileMatchesFormatFile(__DIR__ . '/../expectations/public/releases.rss', '/tmp/phar.example.org/public/releases.rss');
+    }
+
+    public function testSortsLatestReleasesByDateInDescendingOrder(): void
+    {
+        copy(__DIR__ . '/../fixture/gzip-1.0.0.phar', '/tmp/phar.example.org/public/gzip-1.0.0.phar');
+        copy(__DIR__ . '/../fixture/legacy-1.0.0.phar', '/tmp/phar.example.org/public/legacy-1.0.0.phar');
+
+        touch('/tmp/phar.example.org/public/package-2.3.4.phar', 1772323200);
+        touch('/tmp/phar.example.org/public/gzip-1.0.0.phar', 1769904000);
+        touch('/tmp/phar.example.org/public/legacy-1.0.0.phar', 1769904000);
+
+        $this->generate();
+
+        $this->assertSame(
+            ['package-2.3.4.phar', 'gzip-1.0.0.phar', 'legacy-1.0.0.phar'],
+            $this->pharsListedInLatestReleases(),
+        );
     }
 
     public function testNamesIgnoredPackagesInCaptionOfLatestReleases(): void
@@ -431,6 +452,25 @@ final class ApplicationTest extends TestCase
                 false,
             ),
         );
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function pharsListedInLatestReleases(): array
+    {
+        $page = file_get_contents('/tmp/phar.example.org/public/index.html');
+
+        assert($page !== false);
+
+        $start = strpos($page, '<h2 id="latest-releases">');
+        $end   = strpos($page, '<h2 id="all-releases">');
+
+        assert($start !== false && $end !== false);
+
+        preg_match_all('#<a href="https://phar\.example\.org/([^"/]+\.phar)">#', substr($page, $start, $end - $start), $matches);
+
+        return $matches[1];
     }
 
     private function mtime(string $file): int

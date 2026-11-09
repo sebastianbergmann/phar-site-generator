@@ -9,6 +9,9 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
+use const DATE_W3C;
+use function date;
+
 final readonly class Release
 {
     /**
@@ -32,9 +35,9 @@ final readonly class Release
     private string $minorVersion;
 
     /**
-     * @var non-empty-string
+     * Time of the last modification of the PHAR file as a Unix timestamp.
      */
-    private string $date;
+    private int $timestamp;
 
     /**
      * @var non-empty-string
@@ -62,19 +65,18 @@ final readonly class Release
      * @param non-empty-string                          $version
      * @param non-empty-string                          $majorVersion
      * @param non-empty-string                          $minorVersion
-     * @param non-empty-string                          $date
      * @param non-empty-string                          $size
      * @param positive-int                              $bytes
      * @param non-empty-string                          $sha256
      * @param array<non-empty-string, non-empty-string> $bundledDependencies
      */
-    public function __construct(string $package, string $version, string $majorVersion, string $minorVersion, string $date, string $size, int $bytes, string $sha256, bool $hasSbom, array $bundledDependencies)
+    public function __construct(string $package, string $version, string $majorVersion, string $minorVersion, int $timestamp, string $size, int $bytes, string $sha256, bool $hasSbom, array $bundledDependencies)
     {
         $this->package             = $package;
         $this->version             = $version;
         $this->majorVersion        = $majorVersion;
         $this->minorVersion        = $minorVersion;
-        $this->date                = $date;
+        $this->timestamp           = $timestamp;
         $this->size                = $size;
         $this->bytes               = $bytes;
         $this->sha256              = $sha256;
@@ -122,12 +124,17 @@ final readonly class Release
         return $this->majorVersion;
     }
 
+    public function timestamp(): int
+    {
+        return $this->timestamp;
+    }
+
     /**
      * @return non-empty-string
      */
     public function date(): string
     {
-        return $this->date;
+        return date(DATE_W3C, $this->timestamp);
     }
 
     /**

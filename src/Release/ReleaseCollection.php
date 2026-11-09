@@ -138,7 +138,27 @@ final class ReleaseCollection
             $latest,
             static function (Release $a, Release $b): int
             {
-                return $a->date() <=> $b->date();
+                return $a->timestamp() <=> $b->timestamp();
+            },
+        );
+
+        return $latest;
+    }
+
+    /**
+     * Releases with the same modification time are sorted by package name.
+     *
+     * @psalm-return list<Release>
+     */
+    public function latestReleasesSortedByDateDescending(): array
+    {
+        $latest = $this->latestReleases();
+
+        usort(
+            $latest,
+            static function (Release $a, Release $b): int
+            {
+                return [$b->timestamp(), $a->package()] <=> [$a->timestamp(), $b->package()];
             },
         );
 

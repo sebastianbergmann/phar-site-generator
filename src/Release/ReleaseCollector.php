@@ -9,11 +9,9 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
-use const DATE_W3C;
 use function array_pop;
 use function array_slice;
 use function assert;
-use function date;
 use function explode;
 use function file_get_contents;
 use function floor;
@@ -90,7 +88,7 @@ final readonly class ReleaseCollector
                         $version,
                         $majorVersion,
                         $minorVersion,
-                        date(DATE_W3C, $mtime),
+                        $mtime,
                         $this->humanReadableSize($bytes),
                         $bytes,
                         $sha256,
