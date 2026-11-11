@@ -116,9 +116,10 @@
             </fileset>
         </copy>
 
-        <condition property="_version" value="${version}" else="snapshot">
-            <equals arg1="${type}" arg2="release"/>
-        </condition>
+        <exec executable="${basedir}/build/scripts/phar-version.php" outputproperty="_version" failonerror="true">
+            <arg value="${version}"/>
+            <arg value="${type}"/>
+        </exec>
 
         <exec executable="${basedir}/build/scripts/phar-manifest.php" taskname="phar-manifest" failonerror="true">
             <arg path="${basedir}/build/tmp/phar/composer.lock"/>
