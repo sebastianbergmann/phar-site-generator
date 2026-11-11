@@ -38,12 +38,14 @@ use function touch;
 use function unlink;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Before;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\TestCase;
 use ReflectionClassConstant;
 use SebastianBergmann\Version;
 
+#[CoversNothing]
 #[Large]
 final class ApplicationTest extends TestCase
 {

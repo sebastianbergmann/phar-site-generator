@@ -13,10 +13,12 @@ use function getenv;
 use function putenv;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Before;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[Small]
+#[CoversClass(ConfigurationLoader::class)]
 final class ConfigurationLoaderTest extends TestCase
 {
     private false|string $home;
