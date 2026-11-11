@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.9.1] - 2026-MM-DD
+
+### Changed
+
+* The PHAR is built reproducibly across filesystems: its files are added to it sorted by their path instead of in the order in which the filesystem lists them
+
 ## [5.9.0] - 2026-11-09
 
 ### Changed
@@ -234,6 +240,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
+[5.9.1]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.9.0...main
 [5.9.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.8.0...5.9.0
 [5.8.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.7.0...5.8.0
 [5.7.0]: https://github.com/sebastianbergmann/phar-site-generator/compare/5.6.0...5.7.0
