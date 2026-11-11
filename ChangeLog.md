@@ -7,6 +7,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 ### Changed
 
 * The PHAR is built reproducibly across filesystems: its files are added to it sorted by their path instead of in the order in which the filesystem lists them
+* The PHAR bundles the versions of its dependencies that are recorded in `composer.lock`, which is now under version control, instead of the most recent versions that are available when the PHAR is built
 
 ### Fixed
 
