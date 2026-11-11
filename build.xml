@@ -149,10 +149,7 @@
     </target>
 
     <target name="-phar-determine-version">
-        <exec executable="bash" outputproperty="version" failonerror="true">
-            <arg value="-c" />
-            <arg value="${basedir}/phar-site-generator --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
-        </exec>
+        <exec executable="${basedir}/build/scripts/version.php" outputproperty="version" failonerror="true" />
     </target>
 
     <target name="publish-phar" description="Publish PHAR on phar.phpunit.de">
