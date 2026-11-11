@@ -10,11 +10,13 @@
 namespace SebastianBergmann\PharSiteGenerator;
 
 use const JSON_THROW_ON_ERROR;
+use const PHP_EOL;
 use function array_keys;
 use function assert;
 use function chmod;
 use function clearstatcache;
 use function copy;
+use function dirname;
 use function file_get_contents;
 use function file_put_contents;
 use function filemtime;
@@ -22,6 +24,7 @@ use function fileperms;
 use function glob;
 use function is_dir;
 use function is_file;
+use function is_string;
 use function json_decode;
 use function json_encode;
 use function mkdir;
@@ -38,6 +41,8 @@ use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\TestCase;
+use ReflectionClassConstant;
+use SebastianBergmann\Version;
 
 #[Large]
 final class ApplicationTest extends TestCase
@@ -64,6 +69,19 @@ final class ApplicationTest extends TestCase
         $this->assertFileEquals(__DIR__ . '/../expectations/public/latest-version-of/package-2.3', '/tmp/phar.example.org/public/latest-version-of/package-2.3');
         $this->assertFileEquals(__DIR__ . '/../expectations/public/phive.xml', '/tmp/phar.example.org/public/phive.xml');
         $this->assertFileMatchesFormatFile(__DIR__ . '/../expectations/public/releases.rss', '/tmp/phar.example.org/public/releases.rss');
+    }
+
+    public function testPrintsVersionThatIsDeterminedForTheProjectDirectory(): void
+    {
+        $release = new ReflectionClassConstant(Application::class, 'VERSION')->getValue();
+        $path    = dirname(__DIR__, 2);
+
+        assert(is_string($release) && $release !== '');
+        assert($path !== '');
+
+        $this->expectOutputString('phar-site-generator ' . new Version($release, $path)->asString() . ' by Sebastian Bergmann.' . PHP_EOL);
+
+        $this->assertSame(0, (new Application)->run(['phar-site-generator', '--version']));
     }
 
     public function testPrintsSummary(): void

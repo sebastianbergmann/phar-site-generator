@@ -8,6 +8,10 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * The PHAR is built reproducibly across filesystems: its files are added to it sorted by their path instead of in the order in which the filesystem lists them
 
+### Fixed
+
+* The version is not determined using `git describe` when phar-site-generator is run from a Git checkout, because the `.git` directory is looked for in the `src` directory instead of in the project directory
+
 ## [5.9.0] - 2026-11-09
 
 ### Changed

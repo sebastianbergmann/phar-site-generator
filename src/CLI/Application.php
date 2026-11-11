@@ -163,7 +163,7 @@ final readonly class Application
 
     private function printVersion(): void
     {
-        $path = dirname(__DIR__);
+        $path = dirname(__DIR__, 2);
 
         assert($path !== '');
 
