@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phive xmlns="https://phar.io/phive">
   <phar name="php-cs-fixer" version="^3.95" installed="3.95.29" location="./tools/php-cs-fixer" copy="true"/>
-  <phar name="phpunit" version="^13.3" installed="13.4.6" location="./tools/phpunit" copy="true"/>
 </phive>
