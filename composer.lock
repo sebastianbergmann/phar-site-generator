@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fc0703a474918df23e44cd0df27cb6bf",
+    "content-hash": "4a07c45ad95b7816b16eb1abad6c3e78",
     "packages": [
         {
             "name": "phpunit/php-text-template",
