@@ -9,6 +9,7 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use const JSON_THROW_ON_ERROR;
 use const PHP_EOL;
 use function array_keys;
@@ -45,9 +46,9 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClassConstant;
 use SebastianBergmann\Version;
 
-#[CoversNothing]
+#[CoversClass(Application::class)]
 #[Large]
-final class ApplicationTest extends TestCase
+final class SiteGenerationTest extends TestCase
 {
     private const string SHA256_OF_PACKAGE_1_2_3 = 'a72427688cadc3d3a299cc6658839011bdcbb7337493cf903d22c14864791ab1';
     private const string SHA256_OF_PACKAGE_2_3_4 = '6362706920bb68f57582e33d0718284aeb659be8dc7e02d026836529c8fe25d1';
