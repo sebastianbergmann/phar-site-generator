@@ -1,14 +1,76 @@
 #!/usr/bin/env php
-<?php declare(strict_types=1);
-if ($_SERVER['SCRIPT_NAME'] !== '-') {
-    $phar = realpath($_SERVER['SCRIPT_NAME']);
-} else {
-    $files = get_included_files();
-    $phar = $files[0];
+<?php
+if (!version_compare(PHP_VERSION, PHP_VERSION, '=')) {
+    fwrite(
+        STDERR,
+        sprintf(
+            '%s declares an invalid value for PHP_VERSION.' . PHP_EOL .
+            'This breaks fundamental functionality such as version_compare().' . PHP_EOL .
+            'Please use a different PHP interpreter.' . PHP_EOL,
+
+            PHP_BINARY
+        )
+    );
+
+    die(1);
 }
 
-define('__PHARSITEGENERATOR_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', $phar));
+if (version_compare('8.4.0', PHP_VERSION, '>')) {
+    fwrite(
+        STDERR,
+        sprintf(
+            'phar-site-generator X.Y.Z by Sebastian Bergmann.' . PHP_EOL . PHP_EOL .
+            'This version of phar-site-generator requires PHP >= 8.4.0.' . PHP_EOL .
+            'You are using PHP %s (%s).' . PHP_EOL,
+            PHP_VERSION,
+            PHP_BINARY
+        )
+    );
+
+    die(1);
+}
+
+$requiredExtensions = ['dom', 'phar'];
+
+$unavailableExtensions = array_filter(
+    $requiredExtensions,
+    static function ($extension) {
+        return !extension_loaded($extension);
+    }
+);
+
+if ([] !== $unavailableExtensions) {
+    fwrite(
+        STDERR,
+        sprintf(
+            'phar-site-generator requires the "%s" extensions, but the "%s" %s not available.' . PHP_EOL,
+            implode('", "', $requiredExtensions),
+            implode('", "', $unavailableExtensions),
+            count($unavailableExtensions) === 1 ? 'extension is' : 'extensions are'
+        )
+    );
+
+    die(1);
+}
+
+unset($requiredExtensions, $unavailableExtensions);
+
+$options = getopt('', array('composer-lock', 'manifest', 'sbom'));
+
+if (isset($options['composer-lock'])) {
+    $printComposerLock = true;
+} elseif (isset($options['manifest'])) {
+    $printManifest = true;
+} elseif (isset($options['sbom'])) {
+    $printSbom = true;
+}
+
+unset($options);
+
+define('__PHARSITEGENERATOR_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', __FILE__));
 define('__PHARSITEGENERATOR_PHAR_ROOT__', 'phar://___PHAR___');
+
+Phar::mapPhar('___PHAR___');
 
 spl_autoload_register(
     function ($class) {
@@ -26,23 +88,24 @@ spl_autoload_register(
     false
 );
 
-Phar::mapPhar('___PHAR___');
-
-if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] === '--composer-lock') {
+if (isset($printComposerLock)) {
     print file_get_contents(__PHARSITEGENERATOR_PHAR_ROOT__ . '/composer.lock');
+
     exit;
 }
 
-if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] === '--manifest') {
+if (isset($printManifest)) {
     print file_get_contents(__PHARSITEGENERATOR_PHAR_ROOT__ . '/manifest.txt');
+
     exit;
 }
 
-if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] === '--sbom') {
+if (isset($printSbom)) {
     print file_get_contents(__PHARSITEGENERATOR_PHAR_ROOT__ . '/sbom.xml');
+
     exit;
 }
 
-exit((new \SebastianBergmann\PharSiteGenerator\Application)->run($_SERVER['argv']));
+exit((new SebastianBergmann\PharSiteGenerator\Application)->run($_SERVER['argv']));
 
 __HALT_COMPILER();
