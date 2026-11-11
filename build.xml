@@ -104,7 +104,6 @@
         <copy todir="${basedir}/build/tmp/phar/sebastian-version">
             <fileset dir="${basedir}/vendor/sebastian/version/src">
                 <include name="**/*.php" />
-                <exclude name="**/autoload.php" />
             </fileset>
         </copy>
     </target>
