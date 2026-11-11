@@ -9,7 +9,6 @@
  */
 namespace SebastianBergmann\PharSiteGenerator;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use const JSON_THROW_ON_ERROR;
 use const PHP_EOL;
 use function array_keys;
@@ -39,7 +38,7 @@ use function touch;
 use function unlink;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Before;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\TestCase;
