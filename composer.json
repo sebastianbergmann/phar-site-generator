@@ -18,9 +18,9 @@
         "php": "^8.4",
         "ext-dom": "*",
         "ext-phar": "*",
-        "phpunit/php-text-template": "^5.0.1",
-        "sebastian/cli-parser": "^4.2.1",
-        "sebastian/version": "^6.0.2"
+        "phpunit/php-text-template": "^6.0.1",
+        "sebastian/cli-parser": "^5.0.1",
+        "sebastian/version": "^7.1.0"
     },
     "autoload": {
         "classmap": [

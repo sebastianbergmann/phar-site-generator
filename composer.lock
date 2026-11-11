@@ -4,32 +4,32 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af37fe691ce3670777be44574dcaa3a3",
+    "content-hash": "5d5078fc0f0fa9cda7e9b290ce1c9917",
     "packages": [
         {
             "name": "phpunit/php-text-template",
-            "version": "5.0.1",
+            "version": "6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-text-template.git",
-                "reference": "babab73b7ef9fae406f2eb3ee11323a61caa63d5"
+                "reference": "97107691cb2b6c743b5e0c44be19e983cb337a02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/babab73b7ef9fae406f2eb3ee11323a61caa63d5",
-                "reference": "babab73b7ef9fae406f2eb3ee11323a61caa63d5",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/97107691cb2b6c743b5e0c44be19e983cb337a02",
+                "reference": "97107691cb2b6c743b5e0c44be19e983cb337a02",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.3"
+                "php": ">=8.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "^12.5.37"
+                "phpunit/phpunit": "^13.3.6"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "5.0-dev"
+                    "dev-main": "6.0-dev"
                 }
             },
             "autoload": {
@@ -56,7 +56,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-text-template/issues",
                 "security": "https://github.com/sebastianbergmann/php-text-template/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-text-template/tree/5.0.1"
+                "source": "https://github.com/sebastianbergmann/php-text-template/tree/6.0.1"
             },
             "funding": [
                 {
@@ -76,33 +76,33 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-03T04:51:29+00:00",
+            "time": "2026-10-03T04:54:24+00:00",
             "published-time": "2026-10-03T04:54:39+00:00"
         },
         {
             "name": "sebastian/cli-parser",
-            "version": "4.2.1",
+            "version": "5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/cli-parser.git",
-                "reference": "7d05781b13f7dec9043a629a21d086ed74582a15"
+                "reference": "eeb759ad3146b7096fb59c3195d39e071cd409e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/cli-parser/zipball/7d05781b13f7dec9043a629a21d086ed74582a15",
-                "reference": "7d05781b13f7dec9043a629a21d086ed74582a15",
+                "url": "https://api.github.com/repos/sebastianbergmann/cli-parser/zipball/eeb759ad3146b7096fb59c3195d39e071cd409e3",
+                "reference": "eeb759ad3146b7096fb59c3195d39e071cd409e3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.3"
+                "php": ">=8.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "^12.5.25"
+                "phpunit/phpunit": "^13.2.6"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "4.2-dev"
+                    "dev-main": "5.0-dev"
                 }
             },
             "autoload": {
@@ -126,7 +126,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/cli-parser/issues",
                 "security": "https://github.com/sebastianbergmann/cli-parser/security/policy",
-                "source": "https://github.com/sebastianbergmann/cli-parser/tree/4.2.1"
+                "source": "https://github.com/sebastianbergmann/cli-parser/tree/5.0.1"
             },
             "funding": [
                 {
@@ -146,30 +146,30 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-17T05:29:34+00:00",
-            "published-time": "2026-05-17T05:30:34+00:00"
+            "time": "2026-08-01T04:27:14+00:00",
+            "published-time": "2026-08-01T04:29:01+00:00"
         },
         {
             "name": "sebastian/version",
-            "version": "6.0.2",
+            "version": "7.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/version.git",
-                "reference": "a8b6643a19ba6c8125a473623e45fb8cbb0e4159"
+                "reference": "08e41d0c7e146bfc8cef7e63989b1294453a6d6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/version/zipball/a8b6643a19ba6c8125a473623e45fb8cbb0e4159",
-                "reference": "a8b6643a19ba6c8125a473623e45fb8cbb0e4159",
+                "url": "https://api.github.com/repos/sebastianbergmann/version/zipball/08e41d0c7e146bfc8cef7e63989b1294453a6d6a",
+                "reference": "08e41d0c7e146bfc8cef7e63989b1294453a6d6a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.3"
+                "php": ">=8.4"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "6.0-dev"
+                    "dev-main": "7.1-dev"
                 }
             },
             "autoload": {
@@ -193,7 +193,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/version/issues",
                 "security": "https://github.com/sebastianbergmann/version/security/policy",
-                "source": "https://github.com/sebastianbergmann/version/tree/6.0.2"
+                "source": "https://github.com/sebastianbergmann/version/tree/7.1.0"
             },
             "funding": [
                 {
@@ -213,8 +213,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-09T06:30:55+00:00",
-            "published-time": "2026-11-09T06:31:20+00:00"
+            "time": "2026-11-09T06:31:27+00:00",
+            "published-time": "2026-11-09T06:31:50+00:00"
         }
     ],
     "packages-dev": [],
